@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">Auto Messenger Clicker</string>
+    <string name="str_msg_group">Grupo de mensagens:</string>
+    <string name="str_delay_time_simple">Delay entre as mensagens:</string>
+    <string name="hint_delay_time_simple">20</string>
+    <string name="check_random_order">Ordem aleatória de envio:</string>
+    <string name="str_delay_time_min">Delay mínimo:</string>
+    <string name="str_delay_time_max">Delay máximo:</string>
+    <string name="check_random_delay">Delay aleatório:</string>
+    <string name="str_basic_settings">Configurações avançadas</string>
+    <string name="str_advanced_settings">Configurações avançadas</string>
+    <string name="menu_tutorials">Tutorias</string>
+    <string name="menu_remove_ads">Remover anúncios</string>
+    <string name="menu_rate_app">Avaliar app</string>
+    <string name="menu_share_app">Compartilhar app</string>
+    <string name="menu_credits">Créditos</string>
+    <string name="menu_privacy_policy">Política de privacidade</string>
+</resources>

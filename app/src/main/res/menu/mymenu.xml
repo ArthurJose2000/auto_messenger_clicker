@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/menu_tutorials"
+        android:icon="@drawable/ic_menu"
+        android:title="@string/menu_tutorials">
+    </item>
+
+    <item android:id="@+id/menu_remove_ads"
+        android:title="@string/menu_remove_ads">
+    </item>
+
+    <item android:id="@+id/menu_rate_app"
+        android:title="@string/menu_rate_app">
+    </item>
+
+    <item android:id="@+id/menu_share_app"
+        android:title="@string/menu_share_app">
+    </item>
+
+    <item android:id="@+id/menu_credits"
+        android:title="@string/menu_credits">
+    </item>
+
+    <item android:id="@+id/menu_privacy_policy"
+        android:icon="@drawable/ic_menu"
+        android:title="@string/menu_privacy_policy">
+    </item>
+</menu>
