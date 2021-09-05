@@ -1,194 +1,298 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    tools:layout_editor_absoluteX="1dp"
+    tools:layout_editor_absoluteY="1dp"
+    android:fillViewport="true">
 
-    <TextView
-        android:id="@+id/str_delay_time_min"
-        android:layout_width="150dp"
-        android:layout_height="34dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
-        android:text="@string/str_delay_time_min"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/str_delay_time_max" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".MainActivity">
 
-    <EditText
-        android:id="@+id/num_delay_time_min"
-        android:layout_width="100dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="505dp"
-        android:ems="10"
-        android:hint="@string/hint_delay_time_simple"
-        android:importantForAutofill="no"
-        android:inputType="numberSigned"
-        android:textAlignment="center"
-        app:layout_constraintStart_toEndOf="@+id/str_delay_time_min"
-        app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/str_other_options"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="48dp"
+            android:background="@color/teal_200"
+            android:text="Outros"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/button_enable_clicker" />
 
-    <TextView
-        android:id="@+id/str_delay_time_max"
-        android:layout_width="150dp"
-        android:layout_height="34dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
-        android:text="@string/str_delay_time_max"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/check_random_delay" />
+        <Spinner
+            android:id="@+id/spinner_unit_time_2"
+            android:layout_width="100dp"
+            android:layout_height="34dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="492dp"
+            android:entries="@array/unity_time"
+            app:layout_constraintStart_toEndOf="@+id/num_delay_time_min"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/num_delay_time_max"
-        android:layout_width="100dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="439dp"
-        android:ems="10"
-        android:hint="@string/hint_delay_time_simple"
-        android:importantForAutofill="no"
-        android:inputType="numberSigned"
-        android:textAlignment="center"
-        app:layout_constraintStart_toEndOf="@+id/str_delay_time_max"
-        app:layout_constraintTop_toTopOf="parent" />
+        <Spinner
+            android:id="@+id/spinner_unit_time_"
+            android:layout_width="100dp"
+            android:layout_height="34dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="428dp"
+            android:entries="@array/unity_time"
+            app:layout_constraintStart_toEndOf="@+id/num_delay_time_max"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/check_random_delay"
-        android:layout_width="150dp"
-        android:layout_height="34dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
-        android:text="@string/check_random_delay"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/str_advanced_settings" />
+        <TextView
+            android:id="@+id/str_delay_time_max"
+            android:layout_width="150dp"
+            android:layout_height="34dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="32dp"
+            android:text="@string/str_delay_time_max"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/check_random_delay" />
 
-    <CheckBox
-        android:id="@+id/checkbox_random_delay"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="372dp"
-        android:checked="false"
-        app:layout_constraintStart_toEndOf="@+id/check_random_delay"
-        app:layout_constraintTop_toTopOf="parent" />
+        <EditText
+            android:id="@+id/num_delay_time_max"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="423dp"
+            android:ems="10"
+            android:hint="@string/hint_delay_time_max"
+            android:importantForAutofill="no"
+            android:inputType="numberSigned"
+            android:textAlignment="center"
+            app:layout_constraintStart_toEndOf="@+id/str_delay_time_max"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/str_basic_settings"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="56dp"
-        android:text="@string/str_basic_settings"
-        android:textAlignment="center"
-        android:textColor="@color/black"
-        android:background="@color/teal_200"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <CheckBox
+            android:id="@+id/checkbox_random_delay"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="360dp"
+            android:checked="false"
+            app:layout_constraintStart_toEndOf="@+id/check_random_delay"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/str_delay_time_simple"
-        android:layout_width="250dp"
-        android:layout_height="34dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
-        android:text="@string/str_delay_time_simple"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/db_msg_group" />
+        <TextView
+            android:id="@+id/check_random_delay"
+            android:layout_width="150dp"
+            android:layout_height="34dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="32dp"
+            android:text="@string/check_random_delay"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/str_advanced_settings" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingActionButton8"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
-        android:layout_marginTop="86dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:tint="@color/white"
-        app:layout_constraintStart_toEndOf="@+id/str_msg_group"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_add_message" />
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/button_edit_lmessage_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="48dp"
+            android:layout_marginTop="86dp"
+            android:background="@color/white"
+            android:clickable="true"
+            android:onClick="openActivityListMessagesGroup"
+            app:backgroundTint="@color/teal_200"
+            app:layout_constraintStart_toEndOf="@+id/str_msg_group"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_edit_message_list" />
 
-    <TextView
-        android:id="@+id/str_advanced_settings"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
-        android:layout_marginEnd="56dp"
-        android:text="@string/str_advanced_settings"
-        android:textAlignment="center"
-        android:textColor="@color/black"
-        android:background="@color/teal_200"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/check_random_order" />
+        <EditText
+            android:id="@+id/num_delay_time_min"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="490dp"
+            android:ems="10"
+            android:hint="@string/hint_delay_time_min"
+            android:importantForAutofill="no"
+            android:inputType="numberSigned"
+            android:textAlignment="center"
+            app:layout_constraintStart_toEndOf="@+id/str_delay_time_min"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <Spinner
-        android:id="@+id/db_msg_group"
-        android:layout_width="200dp"
-        android:layout_height="34dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/str_msg_group" />
+        <TextView
+            android:id="@+id/str_advanced_settings"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="48dp"
+            android:background="@color/teal_200"
+            android:text="@string/str_advanced_settings"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.494"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/check_random_order" />
 
-    <CheckBox
-        android:id="@+id/checkbox_random_order"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="233dp"
-        android:checked="false"
-        app:layout_constraintStart_toEndOf="@+id/check_random_order"
-        app:layout_constraintTop_toTopOf="parent" />
+        <CheckBox
+            android:id="@+id/checkbox_random_order"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="217dp"
+            android:checked="false"
+            app:layout_constraintStart_toEndOf="@+id/check_random_order"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/str_msg_group"
-        android:layout_width="200dp"
-        android:layout_height="34dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
-        android:text="@string/str_msg_group"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/str_basic_settings" />
+        <TextView
+            android:id="@+id/str_delay_time_min"
+            android:layout_width="150dp"
+            android:layout_height="34dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="32dp"
+            android:text="@string/str_delay_time_min"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/str_delay_time_max" />
 
-    <TextView
-        android:id="@+id/check_random_order"
-        android:layout_width="235dp"
-        android:layout_height="34dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="20dp"
-        android:text="@string/check_random_order"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/str_delay_time_simple" />
+        <TextView
+            android:id="@+id/str_basic_settings"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/teal_200"
+            android:text="@string/str_basic_settings"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.494"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/num_delay_time_simple"
-        android:layout_width="100dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="179dp"
-        android:ems="10"
-        android:hint="@string/hint_delay_time_simple"
-        android:importantForAutofill="no"
-        android:inputType="numberSigned"
-        android:textAlignment="center"
-        app:layout_constraintStart_toEndOf="@+id/str_delay_time_simple"
-        app:layout_constraintTop_toTopOf="parent" />
+        <Spinner
+            android:id="@+id/db_msg_group"
+            android:layout_width="200dp"
+            android:layout_height="34dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/str_msg_group" />
 
+        <TextView
+            android:id="@+id/str_delay_time_simple"
+            android:layout_width="wrap_content"
+            android:layout_height="34dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:text="@string/str_delay_time_simple"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/db_msg_group" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <EditText
+            android:id="@+id/num_delay_time_simple"
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="164dp"
+            android:ems="10"
+            android:hint="@string/hint_delay_time_simple"
+            android:importantForAutofill="no"
+            android:inputType="numberSigned"
+            android:textAlignment="center"
+            app:layout_constraintStart_toEndOf="@+id/str_delay_time_simple"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/check_random_order"
+            android:layout_width="235dp"
+            android:layout_height="34dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="20dp"
+            android:text="@string/check_random_order"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/str_delay_time_simple" />
+
+        <TextView
+            android:id="@+id/str_msg_group"
+            android:layout_width="200dp"
+            android:layout_height="34dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="32dp"
+            android:text="@string/str_msg_group"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/str_basic_settings" />
+
+        <Spinner
+            android:id="@+id/spinner_unit_time_1"
+            android:layout_width="100dp"
+            android:layout_height="34dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="164dp"
+            android:entries="@array/unity_time"
+            android:textAlignment="center"
+            app:layout_constraintStart_toEndOf="@+id/num_delay_time_simple"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/button_enable_clicker"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="48dp"
+            android:backgroundTint="#E91E63"
+            android:text="Iniciar"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/num_delay_time_min" />
+
+        <Button
+            android:id="@+id/button_tutorials"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="64dp"
+            android:backgroundTint="@color/teal_200"
+            android:text="Tutoriais"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/str_other_options" />
+
+        <Button
+            android:id="@+id/button_remove_ads"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:backgroundTint="@color/teal_200"
+            android:text="Remover anúncios"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/button_tutorials" />
+
+        <TextView
+            android:id="@+id/str_version"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="64dp"
+            android:layout_marginBottom="80dp"
+            android:text="Versão 1.0.1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/button_remove_ads" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

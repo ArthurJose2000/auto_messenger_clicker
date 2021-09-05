@@ -10,6 +10,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AutoClickerMessengerClicker">
         <activity
+            android:name=".ListMessagesGroupActivity"
+            android:exported="true" />
+        <activity
+            android:name=".MessagesEditorActivity"
+            android:exported="true" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

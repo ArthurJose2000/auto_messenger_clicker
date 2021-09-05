@@ -1,13 +1,15 @@
 <resources>
     <string name="app_name">Auto Messenger Clicker</string>
     <string name="str_msg_group">Grupo de mensagens:</string>
-    <string name="str_delay_time_simple">Delay entre as mensagens:</string>
+    <string name="str_delay_time_simple">Delay:</string>
     <string name="hint_delay_time_simple">20</string>
+    <string name="hint_delay_time_min">10</string>
+    <string name="hint_delay_time_max">30</string>
     <string name="check_random_order">Ordem aleatória de envio:</string>
     <string name="str_delay_time_min">Delay mínimo:</string>
     <string name="str_delay_time_max">Delay máximo:</string>
     <string name="check_random_delay">Delay aleatório:</string>
-    <string name="str_basic_settings">Configurações avançadas</string>
+    <string name="str_basic_settings">Configurações básicas</string>
     <string name="str_advanced_settings">Configurações avançadas</string>
     <string name="menu_tutorials">Tutorias</string>
     <string name="menu_remove_ads">Remover anúncios</string>
@@ -15,4 +17,16 @@
     <string name="menu_share_app">Compartilhar app</string>
     <string name="menu_credits">Créditos</string>
     <string name="menu_privacy_policy">Política de privacidade</string>
+    <string name="srt_add_group_name">Nome do grupo:</string>
+    <string name="button_save_message">Salvar</string>
+    <string name="button_instr_text_message">Instruções</string>
+    <string name="str_list_group">Lista de grupos</string>
+    <string name="instr_title_text_message">Instruções</string>
+    <string name="instr_text_message">O fim de cada mensagem é sinalizado pelo caractere ";" (ponto-e-vírgula), como no
+    exemplo a seguir:\n\nPrimeira mensagem a ser enviada;\nSegunda mensagem;\nTerceira mensagem;</string>
+
+    <string-array name="unity_time">
+        <item>s</item>
+        <item>min</item>
+    </string-array>
 </resources>
