@@ -24,6 +24,11 @@
     <string name="instr_title_text_message">Instruções</string>
     <string name="instr_text_message">O fim de cada mensagem é sinalizado pelo caractere ";" (ponto-e-vírgula), como no
     exemplo a seguir:\n\nPrimeira mensagem a ser enviada;\nSegunda mensagem;\nTerceira mensagem;</string>
+    <string name="str_other_options">Outros</string>
+    <string name="button_enable_clicker">Iniciar</string>
+    <string name="button_tutorials">Tutoriais</string>
+    <string name="button_remove_ads">Remover anúncios</string>
+    <string name="str_version">Versão 1.0.1</string>
 
     <string-array name="unity_time">
         <item>s</item>
