@@ -6,11 +6,16 @@ import android.os.Build;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-
 import static android.content.Context.WINDOW_SERVICE;
+
+import androidx.constraintlayout.widget.ConstraintSet;
+
+import java.util.Calendar;
+
 
 public class Window {
 
@@ -31,7 +36,7 @@ public class Window {
                     // than filling the screen
                     WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT,
                     // Display it on top of other application windows
-                    WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
+                    WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,///////////////////////////////////////MUDAR TBM
                     // Don't let it grab the input focus
                     WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
                     // Make the underlying application window visible
@@ -41,7 +46,7 @@ public class Window {
         else{
             mParams = new WindowManager.LayoutParams(
                     WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT,
-                    WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY,
+                    WindowManager.LayoutParams.TYPE_PHONE,
                     WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
                     PixelFormat.TRANSLUCENT);
         }
@@ -51,17 +56,56 @@ public class Window {
         mView = layoutInflater.inflate(R.layout.action_bar, null);
         // set onClickListener on the remove button, which removes
         // the view from the window
-        mView.findViewById(R.id.clicker_bar).setOnClickListener(new View.OnClickListener() {
+        mView.findViewById(R.id.button_close_bar).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                System.out.println("oi");
                 close();
+            }
+        });
+
+        mView.findViewById(R.id.button_move_bar).setOnTouchListener(new View.OnTouchListener(){
+            int initX, initY;
+            float initTouchX, initTouchY;
+            long startClickTime;
+            int MAX_CLICK_DURATION;
+
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent){
+                switch(motionEvent.getAction()){
+                    case MotionEvent.ACTION_DOWN:
+
+                        //startClickTime = Calendar.getInstance().getTimeInMillis();
+
+                        initX = mParams.x;
+                        initY = mParams.y;
+
+                        initTouchX = motionEvent.getRawX();
+                        initTouchY = motionEvent.getRawY();
+                        return true;
+                    case MotionEvent.ACTION_UP:
+                        //long clickDuration = Calendar.getInstance().getTimeInMillis() - startClickTime;
+
+                        mParams.x = initX + (int) (motionEvent.getRawX() - initTouchX);
+                        mParams.y = initY + (int) (motionEvent.getRawY() - initTouchY);
+
+                        return true;
+                    case MotionEvent.ACTION_MOVE:
+                        mParams.x = initX + (int) (motionEvent.getRawX() - initTouchX);
+                        mParams.y = initY + (int) (motionEvent.getRawY() - initTouchY);
+
+                        mWindowManager.updateViewLayout(mView, mParams);
+
+                        return true;
+                }
+
+                return true;
             }
         });
         // Define the position of the
         // window within the screen
         mParams.gravity = Gravity.CENTER;
         mWindowManager = (WindowManager)context.getSystemService(WINDOW_SERVICE);
+        //mWindowManager.addView(mView, mParams);
 
     }
 

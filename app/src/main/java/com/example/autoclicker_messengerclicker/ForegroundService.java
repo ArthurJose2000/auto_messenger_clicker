@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.IBinder;
-import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
@@ -34,7 +33,7 @@ public class ForegroundService extends Service {
 
         // create an instance of Window class
         // and display the content on screen
-        Window window=new Window(this);
+        Window window = new Window(this);
         window.open();
     }
 
