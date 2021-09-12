@@ -3,6 +3,8 @@ package com.example.autoclicker_messengerclicker;
 import android.content.Context;
 import android.graphics.PixelFormat;
 import android.os.Build;
+import android.os.Handler;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -10,10 +12,15 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Toast;
+
 import static android.content.Context.WINDOW_SERVICE;
 
 import androidx.constraintlayout.widget.ConstraintSet;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Calendar;
 
 
@@ -36,7 +43,7 @@ public class Window {
                     // than filling the screen
                     WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT,
                     // Display it on top of other application windows
-                    WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,///////////////////////////////////////MUDAR TBM
+                    WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
                     // Don't let it grab the input focus
                     WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
                     // Make the underlying application window visible
@@ -100,7 +107,9 @@ public class Window {
 
                 return true;
             }
+
         });
+
         // Define the position of the
         // window within the screen
         mParams.gravity = Gravity.CENTER;

@@ -29,6 +29,8 @@
     <string name="button_tutorials">Tutoriais</string>
     <string name="button_remove_ads">Remover anúncios</string>
     <string name="str_version">Versão 1.0.1</string>
+    <string name="accessibility_service_description">TODO</string>
+    <string name="accessibility_service_name">AutoClickService</string>
 
     <string-array name="unity_time">
         <item>s</item>

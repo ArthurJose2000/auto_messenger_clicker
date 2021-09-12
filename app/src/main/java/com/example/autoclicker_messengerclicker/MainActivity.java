@@ -10,7 +10,9 @@ import android.graphics.Color;
 import android.graphics.Point;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.SystemClock;
+import android.util.Log;
 import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -21,18 +23,31 @@ import android.view.View.OnLongClickListener;
 import android.os.Build;
 import android.provider.Settings;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import android.accessibilityservice.AccessibilityService;
+import android.accessibilityservice.AccessibilityServiceInfo;
+import android.accessibilityservice.GestureDescription;
+
+
 public class MainActivity extends AppCompatActivity {
 
-    private LayoutInflater layoutInflater;
+    private LayoutInflater inflater;
     private Context context;
     private View mView;
+    float x;
+    float y;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,46 +55,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         checkOverlayPermission();
-
-        FloatingActionButton button = (FloatingActionButton) findViewById(R.id.button_edit_message_list);
-
-        int[] location = new int[2];
-        button.getLocationOnScreen(location);
-        System.out.println(location[0]);
-
-        Point point = getPointOfView(button);
-        System.out.println(point.x);
+        checkAccessibilityServicePermission();
+        startService();
+        context = this;
 
 
-
-        long downTime = SystemClock.uptimeMillis();
-        long eventTime = SystemClock.uptimeMillis() + 1000;
-        float x = button.getX();
-        float y = button.getY();
-        System.out.println(x);
-// List of meta states found here: developer.android.com/reference/android/view/KeyEvent.html#getMetaState()
-        int metaState = 0;
-        MotionEvent motionEvent = MotionEvent.obtain(
-                downTime,
-                eventTime,
-                MotionEvent.ACTION_UP,
-                270,
-                95,
-                metaState
-        );
-
-// Dispatch touch event to view
-        button.dispatchTouchEvent(motionEvent);
-        button.performClick();
-
-
-
-    }
-
-    private Point getPointOfView(View view) {
-        int[] location = new int[2];
-        view.getLocationInWindow(location);
-        return new Point(location[0], location[1]);
     }
 
     @Override
@@ -87,6 +67,12 @@ public class MainActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.mymenu, menu);
         return true;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
     }
 
 //    @Override
@@ -98,9 +84,15 @@ public class MainActivity extends AppCompatActivity {
     public void openActivityListMessagesGroup(View view){
         Intent intent = new Intent(this, ListMessagesGroupActivity.class);
         startActivity(intent);
+        int[] location = new int[2];
+        view.getLocationOnScreen(location);
+        int x = (int) view.getX();
+        int y = (int) view.getY();
+        System.out.println(x);
+        System.out.println(y);
     }
 
-    public void openActionBar(View view){
+    public void openActionBar(View view) throws IOException, InterruptedException {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (!Settings.canDrawOverlays(this)) {
                 // send user to the device settings
@@ -120,14 +112,15 @@ public class MainActivity extends AppCompatActivity {
             window.open();
         }
 
+        AutoClickService autoClick = new AutoClickService();
 
-//        View bar = View.inflate(this, R.layout.action_bar, null);
-//        ImageButton btn_move = bar.findViewById(R.id.action_bar);
-//        btn_move.setOnLongClickListener(new moveBar());
-//        View screen = View.inflate(this, R.layout.activity_main, null);
-//        screen.setOnDragListener(new onDragListener());
+        if (autoClick != null) {
+            autoClick.autoClick(2000, 100, 950, 581);
+        } else {
+            System.out.println("sou nulo");
+        }
+
     }
-
 
     // method for starting the service
     public void startService(){
@@ -144,6 +137,8 @@ public class MainActivity extends AppCompatActivity {
             }
         }else{
             startService(new Intent(this, ForegroundService.class));
+            //startService(new Intent(this, AutoClickService.class));
+            System.out.println("aksbdnklsdkidjfljsdlkfslkdfslkdflsdjlfkjsld");
         }
     }
 
@@ -159,49 +154,24 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-//    class moveBar implements OnLongClickListener{
-//        public boolean onLongClick(View v){
-//            ClipData data = ClipData.newPlainText("simple_text", "text");
-//            View.DragShadowBuilder shadow = new View.DragShadowBuilder(v);
-//            v.startDragAndDrop(data, shadow, v, 0);
-//            v.setVisibility(View.INVISIBLE);
-//            return true;
-//        }
-//    }
-//
-//    class onDragListener implements View.OnDragListener {
-//        public boolean onDrag(View v, DragEvent event){
-//            int action = event.getAction();
-//
-//            switch (action){
-//                case DragEvent.ACTION_DRAG_STARTED:
-//                    if(event.getClipDescription().hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN)){
-//                        return true;
-//                    }
-//                    return false;
-//                case DragEvent.ACTION_DRAG_ENTERED:
-//                    v.setBackgroundColor(Color.BLACK);
-//                    break;
-//                case DragEvent.ACTION_DRAG_LOCATION:
-//                    break;
-//                //case DragEvent.ACTION_DRAG_EXITED:
-//                   // v.setBackground(Color.BLACK);
-//                    //break;
-//                case DragEvent.ACTION_DROP:
-//                    View view = (View) event.getLocalState();
-//                    ViewGroup owner = (ViewGroup) view.getParent();
-//                    owner.removeView(view);
-//                    LinearLayout container = (LinearLayout) v;
-//                    container.addView(view);
-//                    view.setVisibility(View.VISIBLE);
-//
-//                case DragEvent.ACTION_DRAG_ENDED:
-//                    //v.setBackgroundColor();
-//                    break;
-//            }
-//            return true;
-//        }
-//    }
+    //rewrite
+    public void checkAccessibilityServicePermission() {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            int acess;
+            try{
+                acess = Settings.Secure.getInt(this.getContentResolver(), android.provider.Settings.Secure.ACCESSIBILITY_ENABLED);
+                System.out.println(acess);
+            } catch (Settings.SettingNotFoundException e){
+                acess = 0;
+            }
+            if (acess == 1) {
+                Intent myIntent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
+                startActivity(myIntent);
+            }
+        }
+    }
+
 
 
 }

@@ -6,10 +6,15 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.os.Handler;
 import android.os.IBinder;
 
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class ForegroundService extends Service {
     public ForegroundService() {
@@ -35,6 +40,7 @@ public class ForegroundService extends Service {
         // and display the content on screen
         Window window = new Window(this);
         window.open();
+
     }
 
     @Override
