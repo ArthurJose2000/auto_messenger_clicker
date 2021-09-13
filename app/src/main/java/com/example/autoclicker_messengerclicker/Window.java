@@ -43,7 +43,7 @@ public class Window {
                     // than filling the screen
                     WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT,
                     // Display it on top of other application windows
-                    WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
+                    WindowManager.LayoutParams.TYPE_ACCESSIBILITY_OVERLAY,
                     // Don't let it grab the input focus
                     WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
                     // Make the underlying application window visible
@@ -53,7 +53,7 @@ public class Window {
         else{
             mParams = new WindowManager.LayoutParams(
                     WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT,
-                    WindowManager.LayoutParams.TYPE_PHONE,
+                    WindowManager.LayoutParams.TYPE_ACCESSIBILITY_OVERLAY,
                     WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
                     PixelFormat.TRANSLUCENT);
         }

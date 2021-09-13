@@ -5,18 +5,24 @@ import android.accessibilityservice.AccessibilityServiceInfo;
 import android.accessibilityservice.GestureDescription;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.PixelFormat;
 import android.os.Binder;
 import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.View;
 import android.view.ViewConfiguration;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.accessibility.AccessibilityEvent;
 import 	android.graphics.Path;
 
 public class AutoClickService extends AccessibilityService {
-
 
     @Override
     public void onCreate() {
@@ -28,14 +34,15 @@ public class AutoClickService extends AccessibilityService {
     @Override
     public void onAccessibilityEvent(AccessibilityEvent accessibilityEvent) {
         System.out.println("access event");
-        autoClick(2000, 100, 950, 581);
+        //autoClick(2000, 100, 950, 581);
     }
 
 
-
     @Override
-    public void onServiceConnected(){
+    public void onServiceConnected() {
         super.onServiceConnected();
+        Window window = new Window(this);
+        window.open();
         //startActivity(new Intent(this, MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
     }
 
@@ -44,18 +51,18 @@ public class AutoClickService extends AccessibilityService {
 
     }
 
-    public void autoClick(int startTimeMs, int durationMs, int x, int y){
-        boolean sl = dispatchGesture(gestureDescription(startTimeMs, durationMs, x, y),null , null);
+    public void autoClick(int startTimeMs, int durationMs, int x, int y) {
+        boolean sl = dispatchGesture(gestureDescription(startTimeMs, durationMs, x, y), null, null);
         System.out.println(sl);
     }
 
-    public static GestureDescription gestureDescription(int startTimeMs, int durationMs, int x, int y){
+    public GestureDescription gestureDescription(int startTimeMs, int durationMs, int x, int y) {
         Path path = new Path();
         path.moveTo(x, y);
         return createGestureDescription(new GestureDescription.StrokeDescription(path, startTimeMs, durationMs));
     }
 
-    private static GestureDescription createGestureDescription(GestureDescription.StrokeDescription... strokes) {
+    public GestureDescription createGestureDescription(GestureDescription.StrokeDescription... strokes) {
         GestureDescription.Builder builder = new GestureDescription.Builder();
         for (GestureDescription.StrokeDescription stroke : strokes) {
             builder.addStroke(stroke);

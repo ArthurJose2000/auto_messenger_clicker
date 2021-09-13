@@ -43,23 +43,13 @@ import android.accessibilityservice.GestureDescription;
 
 public class MainActivity extends AppCompatActivity {
 
-    private LayoutInflater inflater;
-    private Context context;
-    private View mView;
-    float x;
-    float y;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        checkOverlayPermission();
+        //checkOverlayPermission();
         checkAccessibilityServicePermission();
-        startService();
-        context = this;
-
-
+        //startService();
     }
 
     @Override
@@ -74,12 +64,6 @@ public class MainActivity extends AppCompatActivity {
         super.onPause();
 
     }
-
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//        startService();
-//    }
 
     public void openActivityListMessagesGroup(View view){
         Intent intent = new Intent(this, ListMessagesGroupActivity.class);
@@ -111,15 +95,6 @@ public class MainActivity extends AppCompatActivity {
             Window window = new Window(this);
             window.open();
         }
-
-        AutoClickService autoClick = new AutoClickService();
-
-        if (autoClick != null) {
-            autoClick.autoClick(2000, 100, 950, 581);
-        } else {
-            System.out.println("sou nulo");
-        }
-
     }
 
     // method for starting the service
@@ -137,14 +112,10 @@ public class MainActivity extends AppCompatActivity {
             }
         }else{
             startService(new Intent(this, ForegroundService.class));
-            //startService(new Intent(this, AutoClickService.class));
-            System.out.println("aksbdnklsdkidjfljsdlkfslkdfslkdflsdjlfkjsld");
         }
     }
 
-    // method to ask user to grant the Overlay permission
     public void checkOverlayPermission(){
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (!Settings.canDrawOverlays(this)) {
                 // send user to the device settings
@@ -154,19 +125,18 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    //rewrite
     public void checkAccessibilityServicePermission() {
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            int acess;
+            int access = 0;
             try{
-                acess = Settings.Secure.getInt(this.getContentResolver(), android.provider.Settings.Secure.ACCESSIBILITY_ENABLED);
-                System.out.println(acess);
+                access = Settings.Secure.getInt(this.getContentResolver(), android.provider.Settings.Secure.ACCESSIBILITY_ENABLED);
             } catch (Settings.SettingNotFoundException e){
-                acess = 0;
+                e.printStackTrace();
+                //put a Toast
             }
-            if (acess == 1) {
+            if (access == 0) {
                 Intent myIntent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
+                myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(myIntent);
             }
         }
