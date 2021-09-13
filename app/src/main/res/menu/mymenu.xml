@@ -3,7 +3,7 @@
 
     <item android:id="@+id/menu_tutorials"
         android:icon="@drawable/ic_menu"
-        android:title="@string/menu_tutorials">
+        android:title="@string/menu_tutorial">
     </item>
 
     <item android:id="@+id/menu_remove_ads"

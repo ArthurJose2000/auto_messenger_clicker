@@ -34,6 +34,9 @@
             android:name=".ListMessagesGroupActivity"
             android:exported="true" />
         <activity
+            android:name=".ConfigCoordinates"
+            android:exported="true" />
+        <activity
             android:name=".MessagesEditorActivity"
             android:exported="true" />
         <activity

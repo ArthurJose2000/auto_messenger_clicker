@@ -11,7 +11,7 @@
     <string name="check_random_delay">Delay aleatório:</string>
     <string name="str_basic_settings">Configurações básicas</string>
     <string name="str_advanced_settings">Configurações avançadas</string>
-    <string name="menu_tutorials">Tutorias</string>
+    <string name="menu_tutorial">Tutorial</string>
     <string name="menu_remove_ads">Remover anúncios</string>
     <string name="menu_rate_app">Avaliar app</string>
     <string name="menu_share_app">Compartilhar app</string>
@@ -29,8 +29,11 @@
     <string name="button_tutorials">Tutoriais</string>
     <string name="button_remove_ads">Remover anúncios</string>
     <string name="str_version">Versão 1.0.1</string>
-    <string name="accessibility_service_description">TODO</string>
+    <string name="accessibility_service_description">Por favor, ative a permissão de acessibilidade para que o
+        Auto Messenger execute gestos de clique automatizados. Nenhuma informação pessoal é coletada pelo Auto Messenger.</string>
     <string name="accessibility_service_name">Auto Messenger</string>
+    <string name="button_config_coordinates">Coordenadas</string>
+    <string name="str_enable_clicker">Habilitar Auto Messenger</string>
 
     <string-array name="unity_time">
         <item>s</item>

@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //checkOverlayPermission();
-        checkAccessibilityServicePermission();
+        //checkAccessibilityServicePermission();
         //startService();
     }
 
@@ -68,12 +68,11 @@ public class MainActivity extends AppCompatActivity {
     public void openActivityListMessagesGroup(View view){
         Intent intent = new Intent(this, ListMessagesGroupActivity.class);
         startActivity(intent);
-        int[] location = new int[2];
-        view.getLocationOnScreen(location);
-        int x = (int) view.getX();
-        int y = (int) view.getY();
-        System.out.println(x);
-        System.out.println(y);
+    }
+
+    public void openActivityConfigCoordinates(View view){
+        Intent intent = new Intent(this, ConfigCoordinates.class);
+        startActivity(intent);
     }
 
     public void openActionBar(View view) throws IOException, InterruptedException {

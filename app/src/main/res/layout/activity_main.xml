@@ -14,11 +14,25 @@
         android:layout_height="match_parent"
         tools:context=".MainActivity">
 
+        <Button
+            android:id="@+id/button_config_coordinates"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:backgroundTint="@color/teal_200"
+            android:onClick="openActivityConfigCoordinates"
+            android:text="@string/button_config_coordinates"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/check_random_order" />
+
         <TextView
             android:id="@+id/str_other_options"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="48dp"
+            android:layout_marginTop="35dp"
             android:background="@color/teal_200"
             android:text="@string/str_other_options"
             android:textAlignment="center"
@@ -34,20 +48,20 @@
             android:layout_width="100dp"
             android:layout_height="34dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="492dp"
+            android:layout_marginTop="31dp"
             android:entries="@array/unity_time"
             app:layout_constraintStart_toEndOf="@+id/num_delay_time_min"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/spinner_unit_time_" />
 
         <Spinner
             android:id="@+id/spinner_unit_time_"
             android:layout_width="100dp"
             android:layout_height="34dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="428dp"
+            android:layout_marginTop="98dp"
             android:entries="@array/unity_time"
             app:layout_constraintStart_toEndOf="@+id/num_delay_time_max"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/str_advanced_settings" />
 
         <TextView
             android:id="@+id/str_delay_time_max"
@@ -66,24 +80,24 @@
             android:layout_width="100dp"
             android:layout_height="40dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="423dp"
+            android:layout_marginTop="93dp"
             android:ems="10"
             android:hint="@string/hint_delay_time_max"
             android:importantForAutofill="no"
             android:inputType="numberSigned"
             android:textAlignment="center"
             app:layout_constraintStart_toEndOf="@+id/str_delay_time_max"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/str_advanced_settings" />
 
         <CheckBox
             android:id="@+id/checkbox_random_delay"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="360dp"
+            android:layout_marginTop="30dp"
             android:checked="false"
             app:layout_constraintStart_toEndOf="@+id/check_random_delay"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/str_advanced_settings" />
 
         <TextView
             android:id="@+id/check_random_delay"
@@ -102,14 +116,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="48dp"
-            android:layout_marginTop="86dp"
+            android:layout_marginTop="59dp"
             android:background="@color/white"
             android:clickable="true"
             android:focusable="true"
             android:onClick="openActivityListMessagesGroup"
             app:backgroundTint="@color/teal_200"
             app:layout_constraintStart_toEndOf="@+id/str_msg_group"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/str_basic_settings"
             app:srcCompat="@drawable/ic_edit_message_list" />
 
         <EditText
@@ -117,14 +131,14 @@
             android:layout_width="100dp"
             android:layout_height="40dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="490dp"
+            android:layout_marginTop="28dp"
             android:ems="10"
             android:hint="@string/hint_delay_time_min"
             android:importantForAutofill="no"
             android:inputType="numberSigned"
             android:textAlignment="center"
             app:layout_constraintStart_toEndOf="@+id/str_delay_time_min"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/num_delay_time_max" />
 
         <TextView
             android:id="@+id/str_advanced_settings"
@@ -139,17 +153,32 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.494"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/check_random_order" />
+            app:layout_constraintTop_toBottomOf="@+id/button_config_coordinates" />
+
+        <TextView
+            android:id="@+id/str_enable_clicker"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="48dp"
+            android:background="@color/teal_200"
+            android:text="@string/str_enable_clicker"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/num_delay_time_min" />
 
         <CheckBox
             android:id="@+id/checkbox_random_order"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="217dp"
+            android:layout_marginTop="19dp"
             android:checked="false"
             app:layout_constraintStart_toEndOf="@+id/check_random_order"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/spinner_unit_time_1" />
 
         <TextView
             android:id="@+id/str_delay_time_min"
@@ -203,14 +232,14 @@
             android:layout_width="80dp"
             android:layout_height="40dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="164dp"
+            android:layout_marginTop="21dp"
             android:ems="10"
             android:hint="@string/hint_delay_time_simple"
             android:importantForAutofill="no"
             android:inputType="numberSigned"
             android:textAlignment="center"
             app:layout_constraintStart_toEndOf="@+id/str_delay_time_simple"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/db_msg_group" />
 
         <TextView
             android:id="@+id/check_random_order"
@@ -241,24 +270,24 @@
             android:layout_width="100dp"
             android:layout_height="34dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="164dp"
+            android:layout_marginTop="21dp"
             android:entries="@array/unity_time"
             android:textAlignment="center"
             app:layout_constraintStart_toEndOf="@+id/num_delay_time_simple"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/db_msg_group" />
 
         <Button
             android:id="@+id/button_enable_clicker"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="48dp"
+            android:layout_marginTop="32dp"
             android:backgroundTint="#E91E63"
             android:onClick="openActionBar"
             android:text="@string/button_enable_clicker"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/num_delay_time_min" />
+            app:layout_constraintTop_toBottomOf="@+id/str_enable_clicker" />
 
         <Button
             android:id="@+id/button_tutorials"
@@ -266,7 +295,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="64dp"
             android:backgroundTint="@color/teal_200"
-            android:text="@string/button_tutorials"
+            android:text="@string/menu_tutorial"
+            android:textAlignment="center"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.497"

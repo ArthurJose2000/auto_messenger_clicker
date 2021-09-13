@@ -9,6 +9,7 @@
         <entry key="..\:/Users/arthu/AndroidStudioProjects/AutoClickerMessengerClicker/app/src/main/res/drawable/ic_edit_message_list.xml" value="0.160546875" />
         <entry key="..\:/Users/arthu/AndroidStudioProjects/AutoClickerMessengerClicker/app/src/main/res/drawable/ic_launcher_background.xml" value="0.166015625" />
         <entry key="..\:/Users/arthu/AndroidStudioProjects/AutoClickerMessengerClicker/app/src/main/res/layout/action_bar.xml" value="0.275" />
+        <entry key="..\:/Users/arthu/AndroidStudioProjects/AutoClickerMessengerClicker/app/src/main/res/layout/activity_config_coordinates.xml" value="0.264" />
         <entry key="..\:/Users/arthu/AndroidStudioProjects/AutoClickerMessengerClicker/app/src/main/res/layout/activity_list_messages_group.xml" value="0.264" />
         <entry key="..\:/Users/arthu/AndroidStudioProjects/AutoClickerMessengerClicker/app/src/main/res/layout/activity_main.xml" value="0.264" />
         <entry key="..\:/Users/arthu/AndroidStudioProjects/AutoClickerMessengerClicker/app/src/main/res/layout/activity_messages_editor.xml" value="0.264" />
@@ -27,5 +28,12 @@
   </component>
   <component name="ProjectType">
     <option name="id" value="Android" />
+  </component>
+  <component name="VisualizationToolProject">
+    <option name="state">
+      <ProjectState>
+        <option name="scale" value="0.264" />
+      </ProjectState>
+    </option>
   </component>
 </project>
