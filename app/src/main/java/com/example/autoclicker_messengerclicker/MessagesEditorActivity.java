@@ -18,8 +18,8 @@ public class MessagesEditorActivity extends AppCompatActivity {
 
     public void openDialogTextMessageInstruction(View view){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        String instruction_title = getString(R.string.instr_title_text_message);
-        String instruction = getString(R.string.instr_text_message);
+        String instruction_title = getString(R.string.instr_messages_editor_title);
+        String instruction = getString(R.string.instr_messages_editor);
         builder
                 .setTitle(instruction_title)
                 .setMessage(instruction)

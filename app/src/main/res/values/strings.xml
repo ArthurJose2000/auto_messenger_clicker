@@ -21,9 +21,12 @@
     <string name="button_save_message">Salvar</string>
     <string name="button_instr_text_message">Instruções</string>
     <string name="str_list_group">Lista de grupos</string>
-    <string name="instr_title_text_message">Instruções</string>
-    <string name="instr_text_message">O fim de cada mensagem é sinalizado pelo caractere ";" (ponto-e-vírgula), como no
+    <string name="instr_messages_editor_title">Instruções</string>
+    <string name="instr_messages_editor">O fim de cada mensagem é sinalizado pelo caractere ";" (ponto-e-vírgula), como no
     exemplo a seguir:\n\nPrimeira mensagem a ser enviada;\nSegunda mensagem;\nTerceira mensagem;</string>
+    <string name="instr_coordinates_config_title">Atenção</string>
+    <string name="instr_coordinates_config">Para gravar as coordenadas do teclado, digite no campo de
+        texto as letras requisitadas pelo quadro acima.</string>
     <string name="str_other_options">Outros</string>
     <string name="button_enable_clicker">Iniciar</string>
     <string name="button_tutorials">Tutoriais</string>
@@ -34,6 +37,8 @@
     <string name="accessibility_service_name">Auto Messenger</string>
     <string name="button_config_coordinates">Coordenadas</string>
     <string name="str_enable_clicker">Habilitar Auto Messenger</string>
+    <string name="str_start_config_coordinates">Iniciar</string>
+    <string name="str_abort_config_coordinates">Abortar</string>
 
     <string-array name="unity_time">
         <item>s</item>
