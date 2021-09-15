@@ -2,46 +2,24 @@ package com.example.autoclicker_messengerclicker;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.ClipData;
-import android.content.ClipDescription;
-import android.content.Context;
+import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.Point;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.SystemClock;
-import android.util.Log;
-import android.view.DragEvent;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnLongClickListener;
 import android.os.Build;
 import android.provider.Settings;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.Toast;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import android.accessibilityservice.AccessibilityService;
-import android.accessibilityservice.AccessibilityServiceInfo;
-import android.accessibilityservice.GestureDescription;
 
 
 public class MainActivity extends AppCompatActivity {
+
+    Intent globalService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +28,18 @@ public class MainActivity extends AppCompatActivity {
         //checkOverlayPermission();
         //checkAccessibilityServicePermission();
         //startService();
+
+        //globalService = new Intent(this,GlobalTouchService.class);
+        //startService(globalService);
+
+        Window window = new Window(this);
+        window.open();
+
+//        Target target = new Target(this);
+//        target.open();
+
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

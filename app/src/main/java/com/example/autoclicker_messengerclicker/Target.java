@@ -1,10 +1,9 @@
 package com.example.autoclicker_messengerclicker;
 
+import static android.content.Context.WINDOW_SERVICE;
 import android.content.Context;
 import android.graphics.PixelFormat;
 import android.os.Build;
-import android.os.Handler;
-import android.os.SystemClock;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -12,19 +11,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.Toast;
 
-import static android.content.Context.WINDOW_SERVICE;
-
-import androidx.constraintlayout.widget.ConstraintSet;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Calendar;
-
-
-public class Window {
+public class Target {
 
     // declaring required variables
     private Context context;
@@ -33,7 +21,7 @@ public class Window {
     private WindowManager mWindowManager;
     private LayoutInflater layoutInflater;
 
-    public Window(Context context){
+    public Target(Context context){
         this.context = context;
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -57,18 +45,15 @@ public class Window {
                     WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
                     PixelFormat.TRANSLUCENT);
         }
+
+        System.out.println("chuegueeeeeeeeeeiiiii rapeize");
         // getting a LayoutInflater
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         // inflating the view with the custom layout we created
         mView = layoutInflater.inflate(R.layout.action_target, null);
         // set onClickListener on the remove button, which removes
         // the view from the window
-        mView.findViewById(R.id.target).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                close();
-            }
-        });
+
 
         mView.findViewById(R.id.target).setOnTouchListener(new View.OnTouchListener(){
             int initX, initY;
@@ -148,3 +133,4 @@ public class Window {
         }
     }
 }
+
