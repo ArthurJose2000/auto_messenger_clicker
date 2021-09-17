@@ -6,7 +6,9 @@ import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.TypedValue;
@@ -42,12 +44,15 @@ public class ConfigCoordinates extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_config_coordinates);
 
+        checkAccessibilityServicePermission();
+
         startButton = (Button) findViewById(R.id.button_start_config_coordinate);
         typingField = (EditText) findViewById(R.id.text_edit_config_coordinate);
         requiredCharacter = (TextView) findViewById(R.id.str_view_key_config);
     }
 
     public void startCoordinatesConfiguration(View view){
+
         if (!enableAbortOperation) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             String instruction_title = getString(R.string.instr_coordinates_config_title);
@@ -132,5 +137,33 @@ public class ConfigCoordinates extends AppCompatActivity {
             }
 
         });
+    }
+
+    public void checkAccessibilityServicePermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            int access = 0;
+            try{
+                access = Settings.Secure.getInt(this.getContentResolver(), android.provider.Settings.Secure.ACCESSIBILITY_ENABLED);
+            } catch (Settings.SettingNotFoundException e){
+                e.printStackTrace();
+                //put a Toast
+            }
+            if (access == 0) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(ConfigCoordinates.this);
+                String instruction_title = getString(R.string.str_warning);
+                String instruction = getString(R.string.str_enable_accessibility_service);
+                builder
+                        .setTitle(instruction_title)
+                        .setMessage(instruction)
+                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent myIntent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
+                                myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(myIntent);
+                            }
+                        })
+                        .show();
+            }
+        }
     }
 }

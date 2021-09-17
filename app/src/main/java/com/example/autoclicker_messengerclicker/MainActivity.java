@@ -1,9 +1,13 @@
 package com.example.autoclicker_messengerclicker;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.accessibilityservice.GestureDescription;
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Path;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
@@ -19,25 +23,22 @@ import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
 
-    Intent globalService;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //checkOverlayPermission();
-        //checkAccessibilityServicePermission();
+        checkAccessibilityServicePermission();
         //startService();
 
         //globalService = new Intent(this,GlobalTouchService.class);
         //startService(globalService);
 
-        Window window = new Window(this);
-        window.open();
-
-//        Target target = new Target(this);
-//        target.open();
-
+//        Window window = new Window(this);
+//        window.open();
+//
+        Target target = new Target(this);
+        target.open();
     }
 
 
@@ -51,7 +52,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-
     }
 
     public void openActivityListMessagesGroup(View view){
@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void openActivityConfigCoordinates(View view){
+    public void openActivityConfigCoordinates(View view) {
         Intent intent = new Intent(this, ConfigCoordinates.class);
         startActivity(intent);
     }
@@ -123,13 +123,21 @@ public class MainActivity extends AppCompatActivity {
                 //put a Toast
             }
             if (access == 0) {
-                Intent myIntent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
-                myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(myIntent);
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                String instruction_title = getString(R.string.str_warning);
+                String instruction = getString(R.string.str_enable_accessibility_service);
+                builder
+                        .setTitle(instruction_title)
+                        .setMessage(instruction)
+                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent myIntent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
+                                myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(myIntent);
+                            }
+                        })
+                        .show();
             }
         }
     }
-
-
-
 }

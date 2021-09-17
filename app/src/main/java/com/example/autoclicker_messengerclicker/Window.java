@@ -53,24 +53,24 @@ public class Window {
         else{
             mParams = new WindowManager.LayoutParams(
                     WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT,
-                    WindowManager.LayoutParams.TYPE_ACCESSIBILITY_OVERLAY,
+                    WindowManager.LayoutParams.TYPE_PHONE,
                     WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
                     PixelFormat.TRANSLUCENT);
         }
         // getting a LayoutInflater
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         // inflating the view with the custom layout we created
-        mView = layoutInflater.inflate(R.layout.action_target, null);
+        mView = layoutInflater.inflate(R.layout.action_bar, null);
         // set onClickListener on the remove button, which removes
         // the view from the window
-        mView.findViewById(R.id.target).setOnClickListener(new View.OnClickListener() {
+        mView.findViewById(R.id.button_close_bar).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 close();
             }
         });
 
-        mView.findViewById(R.id.target).setOnTouchListener(new View.OnTouchListener(){
+        mView.findViewById(R.id.button_move_bar).setOnTouchListener(new View.OnTouchListener(){
             int initX, initY;
             float initTouchX, initTouchY;
 

@@ -21,28 +21,43 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.accessibility.AccessibilityEvent;
 import 	android.graphics.Path;
+import android.widget.Button;
 
 public class AutoClickService extends AccessibilityService {
+
+    AuxVariables auxVariables;
 
     @Override
     public void onCreate() {
         super.onCreate();
+        auxVariables = new AuxVariables();
+
         //getServiceInfo().flags = AccessibilityServiceInfo.FLAG_REQUEST_TOUCH_EXPLORATION_MODE;
-        //autoClick(950, 581);
+
     }
 
     @Override
     public void onAccessibilityEvent(AccessibilityEvent accessibilityEvent) {
         System.out.println("access event");
-        //autoClick(2000, 100, 950, 581);
+        if(auxVariables.returnFingerReleaseTarget()){
+            System.out.println("A variável é true");
+            int x = auxVariables.returnCoordinateX();
+            int y = auxVariables.returnCoordinateY();
+            System.out.println(x);
+            System.out.println(y);
+            autoClick(2000, 100, auxVariables.returnCoordinateX(), auxVariables.returnCoordinateY());
+            //put if else to check if coordinates are negatives
+        }
+        else{
+            System.out.println("A variável é false");
+        }
     }
 
 
     @Override
     public void onServiceConnected() {
         super.onServiceConnected();
-        Window window = new Window(this);
-        window.open();
+        //autoClick(2000, 100, 950, 581);
         //startActivity(new Intent(this, MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
     }
 

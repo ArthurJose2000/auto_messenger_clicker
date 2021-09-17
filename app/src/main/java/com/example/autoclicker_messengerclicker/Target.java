@@ -12,7 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 
-public class Target {
+public class Target{
 
     // declaring required variables
     private Context context;
@@ -21,8 +21,11 @@ public class Target {
     private WindowManager mWindowManager;
     private LayoutInflater layoutInflater;
 
-    public Target(Context context){
+    AuxVariables auxVariables;
+
+    public Target(Context context) {
         this.context = context;
+        auxVariables = new AuxVariables();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             // set the layout parameters of the window
@@ -41,12 +44,11 @@ public class Target {
         else{
             mParams = new WindowManager.LayoutParams(
                     WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT,
-                    WindowManager.LayoutParams.TYPE_ACCESSIBILITY_OVERLAY,
+                    WindowManager.LayoutParams.TYPE_PHONE,
                     WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
                     PixelFormat.TRANSLUCENT);
         }
 
-        System.out.println("chuegueeeeeeeeeeiiiii rapeize");
         // getting a LayoutInflater
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         // inflating the view with the custom layout we created
@@ -63,27 +65,23 @@ public class Target {
             public boolean onTouch(View view, MotionEvent motionEvent){
                 switch(motionEvent.getAction()){
                     case MotionEvent.ACTION_DOWN:
-
-
                         initX = mParams.x;
                         initY = mParams.y;
-
                         initTouchX = motionEvent.getRawX();
                         initTouchY = motionEvent.getRawY();
                         return true;
                     case MotionEvent.ACTION_UP:
-                        //long clickDuration = Calendar.getInstance().getTimeInMillis() - startClickTime;
-
                         mParams.x = initX + (int) (motionEvent.getRawX() - initTouchX);
                         mParams.y = initY + (int) (motionEvent.getRawY() - initTouchY);
-
+                        System.out.println(mParams.x);
+                        System.out.println(mParams.y);
+                        auxVariables.setCoordinates((int) motionEvent.getRawX(),(int) motionEvent.getRawY());
+                        auxVariables.setFingerReleaseTargetToTrue();
                         return true;
                     case MotionEvent.ACTION_MOVE:
                         mParams.x = initX + (int) (motionEvent.getRawX() - initTouchX);
                         mParams.y = initY + (int) (motionEvent.getRawY() - initTouchY);
-
                         mWindowManager.updateViewLayout(mView, mParams);
-
                         return true;
                 }
 
@@ -96,7 +94,6 @@ public class Target {
         // window within the screen
         mParams.gravity = Gravity.CENTER;
         mWindowManager = (WindowManager)context.getSystemService(WINDOW_SERVICE);
-        //mWindowManager.addView(mView, mParams);
 
     }
 
