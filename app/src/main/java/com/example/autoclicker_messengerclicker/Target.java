@@ -23,7 +23,7 @@ public class Target{
 
     AuxVariables auxVariables;
 
-    public Target(Context context) {
+    public Target(Context context, int situationType) {
         this.context = context;
         auxVariables = new AuxVariables();
 
@@ -58,7 +58,7 @@ public class Target{
 
 
         mView.findViewById(R.id.target).setOnTouchListener(new View.OnTouchListener(){
-            int initX, initY;
+            int initX, initY, coordX, coordY;
             float initTouchX, initTouchY;
 
             @Override
@@ -71,12 +71,18 @@ public class Target{
                         initTouchY = motionEvent.getRawY();
                         return true;
                     case MotionEvent.ACTION_UP:
-                        mParams.x = initX + (int) (motionEvent.getRawX() - initTouchX);
-                        mParams.y = initY + (int) (motionEvent.getRawY() - initTouchY);
-                        System.out.println(mParams.x);
-                        System.out.println(mParams.y);
-                        auxVariables.setCoordinates((int) motionEvent.getRawX(),(int) motionEvent.getRawY());
-                        auxVariables.setFingerReleaseTargetToTrue();
+                        coordX = (int) motionEvent.getRawX();
+                        coordY = (int) motionEvent.getRawY();
+                        mParams.x = initX + (coordX - (int) initTouchX);
+                        mParams.y = initY + (coordY - (int) initTouchY);
+                        if(situationType == auxVariables.CONFIGCOORDINATES) {
+                            AutoClickService.instance.autoClick(100, 100, coordX, coordY);
+                            auxVariables.setCoordinates(coordX, coordY);
+                            auxVariables.setArtificialTouchToTrue();
+                            mParams.x = 0;
+                            mParams.y = 0;
+                            mWindowManager.updateViewLayout(mView, mParams);
+                        }
                         return true;
                     case MotionEvent.ACTION_MOVE:
                         mParams.x = initX + (int) (motionEvent.getRawX() - initTouchX);
@@ -121,7 +127,7 @@ public class Target{
             // invalidate the view
             mView.invalidate();
             // remove all views
-            ((ViewGroup)mView.getParent()).removeAllViews();
+            /////////////((ViewGroup)mView.getParent()).removeAllViews(); -> was returning null
 
             // the above steps are necessary when you are adding and removing
             // the view simultaneously, it might give some exceptions

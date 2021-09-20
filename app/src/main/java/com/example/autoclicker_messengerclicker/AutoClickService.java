@@ -26,39 +26,23 @@ import android.widget.Button;
 public class AutoClickService extends AccessibilityService {
 
     AuxVariables auxVariables;
+    public static AutoClickService instance;
 
     @Override
     public void onCreate() {
         super.onCreate();
+        instance = this;
         auxVariables = new AuxVariables();
-
-        //getServiceInfo().flags = AccessibilityServiceInfo.FLAG_REQUEST_TOUCH_EXPLORATION_MODE;
-
     }
 
     @Override
     public void onAccessibilityEvent(AccessibilityEvent accessibilityEvent) {
-        System.out.println("access event");
-        if(auxVariables.returnFingerReleaseTarget()){
-            System.out.println("A variável é true");
-            int x = auxVariables.returnCoordinateX();
-            int y = auxVariables.returnCoordinateY();
-            System.out.println(x);
-            System.out.println(y);
-            autoClick(2000, 100, auxVariables.returnCoordinateX(), auxVariables.returnCoordinateY());
-            //put if else to check if coordinates are negatives
-        }
-        else{
-            System.out.println("A variável é false");
-        }
-    }
 
+    }
 
     @Override
     public void onServiceConnected() {
         super.onServiceConnected();
-        //autoClick(2000, 100, 950, 581);
-        //startActivity(new Intent(this, MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
     }
 
     @Override
@@ -67,8 +51,7 @@ public class AutoClickService extends AccessibilityService {
     }
 
     public void autoClick(int startTimeMs, int durationMs, int x, int y) {
-        boolean sl = dispatchGesture(gestureDescription(startTimeMs, durationMs, x, y), null, null);
-        System.out.println(sl);
+        dispatchGesture(gestureDescription(startTimeMs, durationMs, x, y), null, null);
     }
 
     public GestureDescription gestureDescription(int startTimeMs, int durationMs, int x, int y) {

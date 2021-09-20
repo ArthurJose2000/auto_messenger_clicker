@@ -37,8 +37,8 @@ public class MainActivity extends AppCompatActivity {
 //        Window window = new Window(this);
 //        window.open();
 //
-        Target target = new Target(this);
-        target.open();
+//        Target target = new Target(this);
+//        target.open();
     }
 
 

@@ -20,20 +20,23 @@ public class AuxVariables {
     }
 
 
-    //////////Finger release////////////////////////
-    public static volatile boolean fingerReleaseTarget = false;
+    //////////Artificial touch////////////////////////
+    public static volatile boolean artificialTouch = false;
     
     
-    public void setFingerReleaseTargetToTrue(){
-        fingerReleaseTarget = true;
+    public void setArtificialTouchToTrue(){
+        artificialTouch = true;
     }
 
-    public void setFingerReleaseTargetToFalse(){
-        fingerReleaseTarget = false;
+    public void setArtificialTouchToFalse(){
+        artificialTouch = false;
     }
 
-    public boolean returnFingerReleaseTarget(){
-        return fingerReleaseTarget;
+    public boolean isArtificialTouch() {
+        return artificialTouch;
     }
+
+    //////////Use target type////////////////////////
+    public static final int CONFIGCOORDINATES = 1;
 
 }

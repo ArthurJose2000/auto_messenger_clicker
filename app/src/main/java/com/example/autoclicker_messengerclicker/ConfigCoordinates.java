@@ -3,6 +3,7 @@ package com.example.autoclicker_messengerclicker;
 import static com.example.autoclicker_messengerclicker.R.color.teal_200;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -31,13 +32,15 @@ public class ConfigCoordinates extends AppCompatActivity {
     EditText typingField;
     TextView requiredCharacter;
     Button startButton;
+    AuxVariables auxVariables;
+    Target target;
     String characters = "qwertyuiopasdfghjklzxcvbnm1234567890+/_!@#$%*()-'\":,?.";
+    String tableName_DB = "coordinates";
     int sizeCharacters = characters.length();
     int count = 0; //auxiliar count to verifyConfigProcess()
     int enableToListen = 0; //check if user clean the typingField
     boolean enableAbortOperation = false;
     boolean enableListener = false;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +52,9 @@ public class ConfigCoordinates extends AppCompatActivity {
         startButton = (Button) findViewById(R.id.button_start_config_coordinate);
         typingField = (EditText) findViewById(R.id.text_edit_config_coordinate);
         requiredCharacter = (TextView) findViewById(R.id.str_view_key_config);
+
+        auxVariables = new AuxVariables();
+        target = new Target(this, auxVariables.CONFIGCOORDINATES);
     }
 
     public void startCoordinatesConfiguration(View view){
@@ -62,6 +68,7 @@ public class ConfigCoordinates extends AppCompatActivity {
                     .setMessage(instruction)
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
+                            target.open();
                             enableAbortOperation = true;
                             enableListener = true;
                             startButton.setText(R.string.str_abort_config_coordinates);
@@ -71,7 +78,7 @@ public class ConfigCoordinates extends AppCompatActivity {
                     })
                     .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-                            // Continue with delete operation
+                            // Nothing
                         }
                     })
                     .show();
@@ -83,6 +90,7 @@ public class ConfigCoordinates extends AppCompatActivity {
             requiredCharacter.setTextColor(Color.BLACK);
             enableListener = false;
             enableAbortOperation = false;
+            target.close();
             //add function to clear database
         }
     }
@@ -92,7 +100,8 @@ public class ConfigCoordinates extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable text) {
-                if(text.length() != 0 & enableListener) { //check if user clean totally field text and if listener is enable
+                if(text.length() != 0 & enableListener & auxVariables.isArtificialTouch()) { //check if user clean totally field text and if listener is enable
+                    auxVariables.setArtificialTouchToFalse();
                     String stringText = text.toString();
                     char lastCharacter = stringText.charAt(stringText.length() - 1);
                     char required = requiredCharacter.getText().charAt(0);
@@ -104,7 +113,7 @@ public class ConfigCoordinates extends AppCompatActivity {
                             //add alert
                             requiredCharacter.setText("OK!");
                             requiredCharacter.setTextColor(Color.BLACK);
-                            System.out.println("acabou");
+                            //System.out.println("acabou");
                             startButton.setText(R.string.str_start_config_coordinates);
                             startButton.setBackgroundColor(Color.parseColor("#FF03DAC5"));
                         } else {
