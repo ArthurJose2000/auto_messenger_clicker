@@ -21,12 +21,21 @@
     <string name="button_save_message">Salvar</string>
     <string name="button_instr_text_message">Instruções</string>
     <string name="str_list_group">Lista de grupos</string>
+    <string name="alert_delete_groupname_title">Atenção!</string>
+    <string name="alert_delete_groupname">Clique em OK para apagar este grupo de mensagens:</string>
+    <string name="alert_messages_editor_empty_title">Quase lá!</string>
+    <string name="alert_messages_editor_empty_message">Escreva suas mensagens.</string>
+    <string name="alert_messages_editor_empty_groupname">Nomeie seu grupo de mensagens.</string>
     <string name="instr_messages_editor_title">Instruções</string>
-    <string name="instr_messages_editor">O fim de cada mensagem é sinalizado pelo caractere ";" (ponto-e-vírgula), como no
-    exemplo a seguir:\n\nPrimeira mensagem a ser enviada;\nSegunda mensagem;\nTerceira mensagem;</string>
+    <string name="instr_messages_editor">Pule linha para representar o término de uma mensagem, como no
+    exemplo a seguir:\n\nPrimeira mensagem a ser enviada\nSegunda mensagem\nTerceira mensagem</string>
     <string name="instr_coordinates_config_title">Atenção</string>
-    <string name="instr_coordinates_config">Para gravar as coordenadas do teclado, digite no campo de
-        texto as letras requisitadas pelo quadro acima.</string>
+    <string name="instr_coordinates_config">Para gravar as coordenadas do teclado, arraste o alvo para
+        o símbolo correspondente ao requisitado pelo quadro acima.</string>
+    <string name="str_success_register_title">Pronto</string>
+    <string name="str_success_register">Coordenadas registradas!</string>
+    <string name="str_register_capslock">Grave a coordenada correspondente ao Caps Lock.</string>
+    <string name="str_register_special_char">Grave a coordenada relacionada aos caracteres especiais (!#1 ou ?123).</string>
     <string name="str_other_options">Outros</string>
     <string name="button_enable_clicker">Iniciar</string>
     <string name="button_tutorials">Tutoriais</string>

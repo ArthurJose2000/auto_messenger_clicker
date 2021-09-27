@@ -12,6 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 
+import java.util.concurrent.TimeUnit;
+
 public class Target{
 
     // declaring required variables
@@ -76,12 +78,28 @@ public class Target{
                         mParams.x = initX + (coordX - (int) initTouchX);
                         mParams.y = initY + (coordY - (int) initTouchY);
                         if(situationType == auxVariables.CONFIGCOORDINATES) {
-                            AutoClickService.instance.autoClick(100, 100, coordX, coordY);
-                            auxVariables.setCoordinates(coordX, coordY);
-                            auxVariables.setArtificialTouchToTrue();
-                            mParams.x = 0;
-                            mParams.y = 0;
-                            mWindowManager.updateViewLayout(mView, mParams);
+                            if(auxVariables.isTimeToCheckCapsLock() || auxVariables.isTimeToCheckSpecialChar()){
+                                auxVariables.setArtificialTouchToTrue();
+                                AutoClickService.instance.autoClick(0, 100, coordX, coordY);
+                                auxVariables.setCoordinates(coordX, coordY);
+                                try {
+                                    TimeUnit.MILLISECONDS.sleep(100);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                                AutoClickService.instance.autoClick(100, 100, auxVariables.returnTestCoordinateX(), auxVariables.returnTestCoordinateY()); //teste correspondente à letra 'a'. Verifica se 'a' maiúsculo é digitado.
+                                mParams.x = 0;
+                                mParams.y = 0;
+                                mWindowManager.updateViewLayout(mView, mParams);
+                            }
+                            else{
+                                auxVariables.setArtificialTouchToTrue();
+                                AutoClickService.instance.autoClick(100, 100, coordX, coordY);
+                                auxVariables.setCoordinates(coordX, coordY);
+                                mParams.x = 0;
+                                mParams.y = 0;
+                                mWindowManager.updateViewLayout(mView, mParams);
+                            }
                         }
                         return true;
                     case MotionEvent.ACTION_MOVE:

@@ -29,16 +29,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         //checkOverlayPermission();
         checkAccessibilityServicePermission();
-        //startService();
-
-        //globalService = new Intent(this,GlobalTouchService.class);
-        //startService(globalService);
-
-//        Window window = new Window(this);
-//        window.open();
-//
-//        Target target = new Target(this);
-//        target.open();
     }
 
 
@@ -113,6 +103,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    //////////////////////////////////modificar cancelable para false!!!!!!!!!!!
+
     public void checkAccessibilityServicePermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             int access = 0;
@@ -136,6 +128,7 @@ public class MainActivity extends AppCompatActivity {
                                 startActivity(myIntent);
                             }
                         })
+                        .setCancelable(true) ////////////////modificar para false
                         .show();
             }
         }

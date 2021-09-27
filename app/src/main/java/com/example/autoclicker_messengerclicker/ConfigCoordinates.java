@@ -29,12 +29,15 @@ import java.util.ArrayList;
 
 public class ConfigCoordinates extends AppCompatActivity {
 
+    Context context;
     EditText typingField;
     TextView requiredCharacter;
     Button startButton;
     AuxVariables auxVariables;
     Target target;
-    String characters = "qwertyuiopasdfghjklzxcvbnm1234567890+/_!@#$%*()-'\":,?.";
+    DataBase dbListener;
+    //String characters = "qwertyuiopasdfghjklzxcvbnm1234567890+/_!@#$%*()-'\":,?.XY"; //X -> relacionado ao Caps Lock, Y -> relacionado ao Special Char
+    String characters = "qwaXY"; //para testes
     String tableName_DB = "coordinates";
     int sizeCharacters = characters.length();
     int count = 0; //auxiliar count to verifyConfigProcess()
@@ -55,6 +58,7 @@ public class ConfigCoordinates extends AppCompatActivity {
 
         auxVariables = new AuxVariables();
         target = new Target(this, auxVariables.CONFIGCOORDINATES);
+        context = this;
     }
 
     public void startCoordinatesConfiguration(View view){
@@ -68,6 +72,7 @@ public class ConfigCoordinates extends AppCompatActivity {
                     .setMessage(instruction)
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
+                            dbListener = new DataBase(context, "coordinates");
                             target.open();
                             enableAbortOperation = true;
                             enableListener = true;
@@ -91,7 +96,8 @@ public class ConfigCoordinates extends AppCompatActivity {
             enableListener = false;
             enableAbortOperation = false;
             target.close();
-            //add function to clear database
+            typingField.setText("");
+            dbListener = null;
         }
     }
 
@@ -109,20 +115,48 @@ public class ConfigCoordinates extends AppCompatActivity {
                     if (enableToListen < stringText.length()) {
                         enableToListen = stringText.length();
 
-                        if (count == sizeCharacters - 1) {
-                            //add alert
+                        if (lastCharacter == required) {
+                            dbListener.insertCoordinatesToDataBase(Character.toString(lastCharacter), auxVariables.returnCoordinateX(), auxVariables.returnCoordinateY());
+                            count += 1;
+                            char nextCharacter = characters.charAt(count);
+                            requiredCharacter.setText(Character.toString(nextCharacter));
+                            requiredCharacter.setTextColor(Color.BLACK);
+                            if(count == sizeCharacters - 2){ //time to check capslock
+                                clickOnCapsLockButton();
+                                auxVariables.setCheckCapsLockToTrue();
+                                requiredCharacter.setText("...");
+                                int[] testCoordinates =  dbListener.getCoordinatesFromDataBase("a");
+                                auxVariables.setTestCoordinates(testCoordinates[0], testCoordinates[1]);
+                            }
+                        }
+                        else if(lastCharacter == 'A' && auxVariables.isTimeToCheckCapsLock()){
+                            typingField.setText("");
+                            dbListener.insertCoordinatesToDataBase("capslock", auxVariables.returnCoordinateX(), auxVariables.returnCoordinateY());
+                            count += 1;
+                            auxVariables.setCheckCapsLockToFalse();
+                            auxVariables.setCheckSpecialCharToTrue();
+                            clickOnSpecialCharButton();
+                        }
+                        else if(lastCharacter != 'a' && lastCharacter != 'A' && auxVariables.isTimeToCheckSpecialChar()){
+                            typingField.setText("");
+                            dbListener.insertCoordinatesToDataBase("specialchar", auxVariables.returnCoordinateX(), auxVariables.returnCoordinateY());
+                            auxVariables.setCheckSpecialCharToFalse();
                             requiredCharacter.setText("OK!");
                             requiredCharacter.setTextColor(Color.BLACK);
-                            //System.out.println("acabou");
                             startButton.setText(R.string.str_start_config_coordinates);
                             startButton.setBackgroundColor(Color.parseColor("#FF03DAC5"));
-                        } else {
-                            if (lastCharacter == required) {
-                                count += 1;
-                                char nextCharacter = characters.charAt(count);
-                                requiredCharacter.setText(Character.toString(nextCharacter));
-                                requiredCharacter.setTextColor(Color.BLACK);
-                            } else {
+                            successRegister();
+                        }
+                        else {
+                            if(auxVariables.isTimeToCheckCapsLock()){
+                                typingField.setText("");
+                                clickOnCapsLockButton();
+                            }
+                            else if(auxVariables.isTimeToCheckSpecialChar()){
+                                typingField.setText("");
+                                clickOnSpecialCharButton();
+                            }
+                            else {
                                 requiredCharacter.setTextColor(Color.RED);
                             }
                         }
@@ -146,6 +180,52 @@ public class ConfigCoordinates extends AppCompatActivity {
             }
 
         });
+    }
+
+    public void successRegister(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(ConfigCoordinates.this);
+        String instruction_title = getString(R.string.str_success_register_title);
+        String instruction = getString(R.string.str_success_register);
+        builder
+                .setTitle(instruction_title)
+                .setMessage(instruction)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        target.close();
+                        finish();
+                    }
+                })
+                .show();
+    }
+
+    public void clickOnCapsLockButton(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(ConfigCoordinates.this);
+        String instruction_title = getString(R.string.instr_coordinates_config_title);
+        String instruction = getString(R.string.str_register_capslock);
+        builder
+                .setTitle(instruction_title)
+                .setMessage(instruction)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        //
+                    }
+                })
+                .show();
+    }
+
+    public void clickOnSpecialCharButton(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(ConfigCoordinates.this);
+        String instruction_title = getString(R.string.instr_coordinates_config_title);
+        String instruction = getString(R.string.str_register_special_char);
+        builder
+                .setTitle(instruction_title)
+                .setMessage(instruction)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        //
+                    }
+                })
+                .show();
     }
 
     public void checkAccessibilityServicePermission() {

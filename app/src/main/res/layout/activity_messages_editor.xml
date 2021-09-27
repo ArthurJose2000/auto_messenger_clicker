@@ -4,9 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:fillViewport="true"
+    android:onClick="deleteGroup"
     tools:layout_editor_absoluteX="1dp"
-    tools:layout_editor_absoluteY="1dp"
-    android:fillViewport="true">
+    tools:layout_editor_absoluteY="1dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -57,6 +58,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
             android:backgroundTint="@color/teal_200"
+            android:onClick="saveMessage"
             android:text="@string/button_save_message"
             android:textColor="@color/white"
             android:textSize="20sp"
@@ -76,6 +78,17 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/button_save_message" />
+
+        <ImageButton
+            android:id="@+id/button_delete_group"
+            android:layout_width="86dp"
+            android:layout_height="51dp"
+            android:layout_marginTop="32dp"
+            android:onClick="deleteGroup"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/button_instr_text_message"
+            app:srcCompat="@drawable/ic_delete_group" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

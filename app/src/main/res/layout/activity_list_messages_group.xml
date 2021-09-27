@@ -39,12 +39,13 @@
 
     <ListView
         android:id="@+id/list_view_group_messages"
-        android:layout_width="wrap_content"
-        android:layout_height="500dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:animateLayoutChanges="true"
         android:clickable="true"
         android:clipToPadding="true"
+        android:textSize="18sp"
         android:focusable="true"
         android:textIsSelectable="false"
         app:layout_constraintEnd_toEndOf="parent"

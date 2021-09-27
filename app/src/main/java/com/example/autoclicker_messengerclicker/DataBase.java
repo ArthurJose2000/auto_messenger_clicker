@@ -21,51 +21,12 @@ public final class DataBase {
         if(table == Coordinates.TABLE_NAME){
             coordinatesDbHelper = new CoordinatesDbHelper(context);
             coordinatesDB = coordinatesDbHelper.getWritableDatabase();
+            coordinatesDbHelper.onUpgrade(coordinatesDB, 1, 1);
         }
         else if (table == Messages.TABLE_NAME){
             messagesDbHelper = new MessagesDbHelper(context);
             messagesDB = messagesDbHelper.getWritableDatabase();
         }
-    }
-
-    public boolean insertCoordinatesInDataBase(String s, int x, int y){
-        boolean sucess = true;
-        ContentValues values = new ContentValues();
-        values.put(Coordinates.COLUMN_CHARACTER, s);
-        values.put(Coordinates.COLUMN_X_COORDINATE, x);
-        values.put(Coordinates.COLUMN_Y_COORDINATE, y);
-        long newRowID = coordinatesDB.insert(Coordinates.TABLE_NAME, null, values);
-        if(newRowID == -1) sucess = false;
-        return sucess;
-    }
-
-    public int[] getCoordinatesInDataBase(String character){
-        coordinatesDB = coordinatesDbHelper.getReadableDatabase();
-        String[] projection = {
-            Coordinates.COLUMN_X_COORDINATE,
-            Coordinates.COLUMN_Y_COORDINATE
-        };
-        String selection = Coordinates.COLUMN_CHARACTER + " = ?";
-        String[] selectionArgs = { character };
-        String sortOrder = Coordinates.COLUMN_X_COORDINATE + " ASC";
-
-        Cursor cursor = coordinatesDB.query(
-                Coordinates.TABLE_NAME,
-                projection,
-                selection,
-                selectionArgs,
-                null,
-                null,
-                sortOrder
-        );
-
-        cursor.moveToFirst();
-        int coordinates[];
-        coordinates = new int[2];
-        coordinates[0] = cursor.getInt(0);
-        coordinates[1] = cursor.getInt(1);
-        cursor.close();
-        return coordinates;
     }
 
     /**** Coordinates data base configuration ****/
@@ -105,6 +66,46 @@ public final class DataBase {
         }
     }
 
+    public void insertCoordinatesToDataBase(String s, int x, int y){
+        //boolean sucess = true;
+        ContentValues values = new ContentValues();
+        values.put(Coordinates.COLUMN_CHARACTER, s);
+        values.put(Coordinates.COLUMN_X_COORDINATE, x);
+        values.put(Coordinates.COLUMN_Y_COORDINATE, y);
+        long newRowID = coordinatesDB.insert(Coordinates.TABLE_NAME, null, values);
+        //if(newRowID == -1) sucess = false;
+        //return sucess;
+    }
+
+    public int[] getCoordinatesFromDataBase(String StringCharacter){
+        coordinatesDB = coordinatesDbHelper.getReadableDatabase();
+        String[] projection = {
+                Coordinates.COLUMN_X_COORDINATE,
+                Coordinates.COLUMN_Y_COORDINATE
+        };
+        String selection = Coordinates.COLUMN_CHARACTER + " = ?";
+        String[] selectionArgs = { StringCharacter };
+        String sortOrder = Coordinates.COLUMN_X_COORDINATE + " ASC"; //unnecessary
+
+        Cursor cursor = coordinatesDB.query(
+                Coordinates.TABLE_NAME,
+                projection,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                sortOrder
+        );
+
+        cursor.moveToFirst();
+        int coordinates[];
+        coordinates = new int[2];
+        coordinates[0] = cursor.getInt(0);
+        coordinates[1] = cursor.getInt(1);
+        cursor.close();
+        return coordinates;
+    }
+
     /**** Messages data base configuration ****/
     public static class Messages implements BaseColumns {
         public static final String TABLE_NAME = "messages";
@@ -116,7 +117,7 @@ public final class DataBase {
             "CREATE TABLE " + Messages.TABLE_NAME + " (" +
                     Messages._ID + " INTEGER PRIMARY KEY," +
                     Messages.COLUMN_MESSAGE + " TEXT," +
-                    Messages.COLUMN_GROUP_MESSAGE + " INTEGER)";
+                    Messages.COLUMN_GROUP_MESSAGE + " TEXT)";
 
     private static final String SQL_DELETE_ENTRIES_MESSAGES =
             "DROP TABLE IF EXISTS " + Messages.TABLE_NAME;
@@ -138,5 +139,72 @@ public final class DataBase {
         public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
             onUpgrade(db, oldVersion, newVersion);
         }
+    }
+
+    public void insertMessagesToDataBase(String message, String groupName){
+        //boolean sucess = true;
+        ContentValues values = new ContentValues();
+        values.put(Messages.COLUMN_MESSAGE, message);
+        values.put(Messages.COLUMN_GROUP_MESSAGE, groupName);
+        long newRowID = messagesDB.insert(Messages.TABLE_NAME, null, values);
+        //if(newRowID == -1) sucess = false;
+        //return sucess;
+    }
+
+    public void deleteGroupName(String groupName){
+        String selection = Messages.COLUMN_GROUP_MESSAGE + " LIKE ?";
+        String[] selectionArgs = { groupName };
+        int deletedRows = messagesDB.delete(Messages.TABLE_NAME, selection, selectionArgs);
+    }
+
+    public String getMessageFromDataBase(String groupName){
+        messagesDB = messagesDbHelper.getReadableDatabase();
+        String[] projection = {
+                Messages.COLUMN_MESSAGE
+        };
+        String selection = Messages.COLUMN_GROUP_MESSAGE + " = ?";
+        String[] selectionArgs = { groupName };
+        String sortOrder = Messages.COLUMN_MESSAGE + " ASC"; //unnecessary
+
+        Cursor cursor = messagesDB.query(
+                Messages.TABLE_NAME,
+                projection,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                sortOrder
+        );
+
+        cursor.moveToFirst();
+        String msg = cursor.getString(0);
+        cursor.close();
+        return msg;
+    }
+
+    public ArrayList<String> getGroupNamesFromDataBase(){
+        messagesDB = messagesDbHelper.getReadableDatabase();
+        String[] projection = {
+                Messages.COLUMN_GROUP_MESSAGE
+        };
+        String sortOrder = Messages._ID + " ASC";
+
+        Cursor cursor = messagesDB.query(
+                Messages.TABLE_NAME,
+                projection,
+                null,
+                null,
+                null,
+                null,
+                sortOrder
+        );
+
+        ArrayList<String> groups = new ArrayList<String>();
+
+        while(cursor.moveToNext())
+            groups.add(cursor.getString(0));
+
+        cursor.close();
+        return groups;
     }
 }
