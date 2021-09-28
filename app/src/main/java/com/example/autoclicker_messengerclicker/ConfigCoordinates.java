@@ -21,6 +21,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.view.KeyEvent;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -36,11 +37,11 @@ public class ConfigCoordinates extends AppCompatActivity {
     AuxVariables auxVariables;
     Target target;
     DataBase dbListener;
-    //String characters = "qwertyuiopasdfghjklzxcvbnm1234567890+/_!@#$%*()-'\":,?.XY"; //X -> relacionado ao Caps Lock, Y -> relacionado ao Special Char
-    String characters = "qwaXY"; //para testes
+    String characters = "qwertyuiopasdfghjklzxcvbnm1234567890+/_!@#$%*()-'\":,?.XYZ"; //X -> relacionado ao Caps Lock, Y -> relacionado ao Special Char, Z -> relacionado ao Space Bar
+    //String characters = "qwaXYZ"; //para testes
     String tableName_DB = "coordinates";
     int sizeCharacters = characters.length();
-    int count = 0; //auxiliar count to verifyConfigProcess()
+    int count; //auxiliar count to verifyConfigProcess()
     int enableToListen = 0; //check if user clean the typingField
     boolean enableAbortOperation = false;
     boolean enableListener = false;
@@ -57,7 +58,6 @@ public class ConfigCoordinates extends AppCompatActivity {
         requiredCharacter = (TextView) findViewById(R.id.str_view_key_config);
 
         auxVariables = new AuxVariables();
-        target = new Target(this, auxVariables.CONFIGCOORDINATES);
         context = this;
     }
 
@@ -72,7 +72,10 @@ public class ConfigCoordinates extends AppCompatActivity {
                     .setMessage(instruction)
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
+                            count = 0;
+                            target = new Target(context, auxVariables.CONFIGCOORDINATES);
                             dbListener = new DataBase(context, "coordinates");
+                            dbListener.deleteAllCoordinates();
                             target.open();
                             enableAbortOperation = true;
                             enableListener = true;
@@ -96,6 +99,10 @@ public class ConfigCoordinates extends AppCompatActivity {
             enableListener = false;
             enableAbortOperation = false;
             target.close();
+            target = null;
+            auxVariables.setCheckCapsLockToFalse();
+            auxVariables.setCheckSpecialCharToFalse();
+            auxVariables.setCheckSpaceBarToFalse();
             typingField.setText("");
             dbListener = null;
         }
@@ -121,7 +128,7 @@ public class ConfigCoordinates extends AppCompatActivity {
                             char nextCharacter = characters.charAt(count);
                             requiredCharacter.setText(Character.toString(nextCharacter));
                             requiredCharacter.setTextColor(Color.BLACK);
-                            if(count == sizeCharacters - 2){ //time to check capslock
+                            if(count == sizeCharacters - 3){ //time to check capslock
                                 clickOnCapsLockButton();
                                 auxVariables.setCheckCapsLockToTrue();
                                 requiredCharacter.setText("...");
@@ -137,24 +144,40 @@ public class ConfigCoordinates extends AppCompatActivity {
                             auxVariables.setCheckSpecialCharToTrue();
                             clickOnSpecialCharButton();
                         }
-                        else if(lastCharacter != 'a' && lastCharacter != 'A' && auxVariables.isTimeToCheckSpecialChar()){
+                        else if(!Character.isLetter(lastCharacter) && auxVariables.isTimeToCheckSpecialChar()){
                             typingField.setText("");
                             dbListener.insertCoordinatesToDataBase("specialchar", auxVariables.returnCoordinateX(), auxVariables.returnCoordinateY());
                             auxVariables.setCheckSpecialCharToFalse();
+                            auxVariables.setCheckSpaceBarToTrue();
+                            clickOnSpaceBarButton();
+                        }
+                        else if(lastCharacter == ' ' && auxVariables.isTimeToCheckSpaceBar()){
+                            typingField.setText("");
+                            dbListener.insertCoordinatesToDataBase("spacebar", auxVariables.returnCoordinateX(), auxVariables.returnCoordinateY());
+                            auxVariables.setCheckSpaceBarToFalse();
                             requiredCharacter.setText("OK!");
                             requiredCharacter.setTextColor(Color.BLACK);
                             startButton.setText(R.string.str_start_config_coordinates);
                             startButton.setBackgroundColor(Color.parseColor("#FF03DAC5"));
+                            dbListener.insertCoordinatesToDataBase("sendfield", 0, 0); //pré-configuração das coordenadas da tecla de envio
+                            dbListener.insertCoordinatesToDataBase("typefield", 0, 0); //pré-configuração das coordenadas do campo de escrita
                             successRegister();
                         }
                         else {
                             if(auxVariables.isTimeToCheckCapsLock()){
                                 typingField.setText("");
-                                clickOnCapsLockButton();
+                                Toast toast = Toast.makeText(context, context.getResources().getString(R.string.toast_error_register_capslock), Toast.LENGTH_LONG);
+                                toast.show();
                             }
                             else if(auxVariables.isTimeToCheckSpecialChar()){
                                 typingField.setText("");
-                                clickOnSpecialCharButton();
+                                Toast toast = Toast.makeText(context, context.getResources().getString(R.string.toast_error_register_special_char), Toast.LENGTH_LONG);
+                                toast.show();
+                            }
+                            else if(auxVariables.isTimeToCheckSpaceBar()){
+                                typingField.setText("");
+                                Toast toast = Toast.makeText(context, context.getResources().getString(R.string.toast_error_register_space_bar), Toast.LENGTH_LONG);
+                                toast.show();
                             }
                             else {
                                 requiredCharacter.setTextColor(Color.RED);
@@ -192,6 +215,7 @@ public class ConfigCoordinates extends AppCompatActivity {
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         target.close();
+                        target = null;
                         finish();
                     }
                 })
@@ -217,6 +241,21 @@ public class ConfigCoordinates extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(ConfigCoordinates.this);
         String instruction_title = getString(R.string.instr_coordinates_config_title);
         String instruction = getString(R.string.str_register_special_char);
+        builder
+                .setTitle(instruction_title)
+                .setMessage(instruction)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        //
+                    }
+                })
+                .show();
+    }
+
+    public void clickOnSpaceBarButton(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(ConfigCoordinates.this);
+        String instruction_title = getString(R.string.instr_coordinates_config_title);
+        String instruction = getString(R.string.str_register_space_bar);
         builder
                 .setTitle(instruction_title)
                 .setMessage(instruction)

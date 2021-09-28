@@ -22,9 +22,13 @@ import android.view.WindowManager;
 import android.view.accessibility.AccessibilityEvent;
 import 	android.graphics.Path;
 import android.widget.Button;
+import android.widget.Toast;
+
+import java.util.ArrayList;
 
 public class AutoClickService extends AccessibilityService {
 
+    Context context;
     AuxVariables auxVariables;
     public static AutoClickService instance;
 
@@ -32,6 +36,7 @@ public class AutoClickService extends AccessibilityService {
     public void onCreate() {
         super.onCreate();
         instance = this;
+        context = this;
         auxVariables = new AuxVariables();
     }
 
@@ -50,8 +55,31 @@ public class AutoClickService extends AccessibilityService {
 
     }
 
-    public void autoClick(int startTimeMs, int durationMs, int x, int y) {
+    public void simpleAutoClick(int startTimeMs, int durationMs, int x, int y) {
+        //auxVariables.setFinishedGestureToFalse();
         dispatchGesture(gestureDescription(startTimeMs, durationMs, x, y), null, null);
+    }
+
+    public void chainedAutoClick(int startTimeMs, int durationMs, ArrayList<ArrayList<Integer>> coordinates) {
+        //auxVariables.setFinishedGestureToFalse();
+        dispatchGesture(gestureDescription(startTimeMs, durationMs, coordinates.get(0).get(0), coordinates.get(0).get(1)),
+                new GestureResultCallback() {
+                    @Override
+                    public void onCompleted(GestureDescription gestureDescription) {
+                        super.onCompleted(gestureDescription);
+                        coordinates.remove(0);
+                        int amountOfClicks = coordinates.size();
+                        if(amountOfClicks > 0) {
+                            chainedAutoClick(startTimeMs, durationMs, coordinates);
+                        }
+                    }
+                    @Override
+                    public void onCancelled(GestureDescription gestureDescription) {
+                        super.onCancelled(gestureDescription);
+                        Toast toast = Toast.makeText(context, getString(R.string.generic_error), Toast.LENGTH_LONG);
+                        toast.show();
+                    }
+                }, null);
     }
 
     public GestureDescription gestureDescription(int startTimeMs, int durationMs, int x, int y) {

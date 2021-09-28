@@ -21,7 +21,6 @@ public final class DataBase {
         if(table == Coordinates.TABLE_NAME){
             coordinatesDbHelper = new CoordinatesDbHelper(context);
             coordinatesDB = coordinatesDbHelper.getWritableDatabase();
-            coordinatesDbHelper.onUpgrade(coordinatesDB, 1, 1);
         }
         else if (table == Messages.TABLE_NAME){
             messagesDbHelper = new MessagesDbHelper(context);
@@ -66,6 +65,21 @@ public final class DataBase {
         }
     }
 
+    public void deleteAllCoordinates(){
+        coordinatesDbHelper.onUpgrade(coordinatesDB, 1, 1);
+    }
+
+    public void updateKeyCoordinate(String s, int x, int y){
+        coordinatesDB = coordinatesDbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(Coordinates.COLUMN_CHARACTER, s);
+        values.put(Coordinates.COLUMN_X_COORDINATE, x);
+        values.put(Coordinates.COLUMN_Y_COORDINATE, y);
+        String selection = Coordinates.COLUMN_CHARACTER + " LIKE ?";
+        String[] selectionArgs = { s };
+        int count = coordinatesDB.update(Coordinates.TABLE_NAME, values, selection, selectionArgs);
+    }
+
     public void insertCoordinatesToDataBase(String s, int x, int y){
         //boolean sucess = true;
         ContentValues values = new ContentValues();
@@ -104,6 +118,28 @@ public final class DataBase {
         coordinates[1] = cursor.getInt(1);
         cursor.close();
         return coordinates;
+    }
+
+    public int getAmountOfRowsFromCoordinatesDataBase(){
+        coordinatesDB = coordinatesDbHelper.getReadableDatabase();
+        String[] projection = {
+                Coordinates.COLUMN_X_COORDINATE,
+        };
+
+        String sortOrder = Coordinates.COLUMN_X_COORDINATE + " ASC"; //unnecessary
+
+        Cursor cursor = coordinatesDB.query(
+                Coordinates.TABLE_NAME,
+                projection,
+                null,
+                null,
+                null,
+                null,
+                sortOrder
+        );
+
+        cursor.moveToFirst();
+        return cursor.getCount();
     }
 
     /**** Messages data base configuration ****/

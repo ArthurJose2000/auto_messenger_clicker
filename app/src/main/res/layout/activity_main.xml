@@ -45,17 +45,17 @@
             app:layout_constraintTop_toBottomOf="@+id/button_enable_clicker" />
 
         <Spinner
-            android:id="@+id/spinner_unit_time_2"
+            android:id="@+id/spinner_unit_time_3"
             android:layout_width="100dp"
             android:layout_height="34dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="31dp"
             android:entries="@array/unity_time"
             app:layout_constraintStart_toEndOf="@+id/num_delay_time_min"
-            app:layout_constraintTop_toBottomOf="@+id/spinner_unit_time_" />
+            app:layout_constraintTop_toBottomOf="@+id/spinner_unit_time_2" />
 
         <Spinner
-            android:id="@+id/spinner_unit_time_"
+            android:id="@+id/spinner_unit_time_2"
             android:layout_width="100dp"
             android:layout_height="34dp"
             android:layout_marginStart="16dp"
@@ -233,7 +233,7 @@
             android:layout_width="80dp"
             android:layout_height="40dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="21dp"
+            android:layout_marginTop="20dp"
             android:ems="10"
             android:hint="@string/hint_delay_time_simple"
             android:importantForAutofill="no"
@@ -271,7 +271,7 @@
             android:layout_width="100dp"
             android:layout_height="34dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="21dp"
+            android:layout_marginTop="24dp"
             android:entries="@array/unity_time"
             android:textAlignment="center"
             app:layout_constraintStart_toEndOf="@+id/num_delay_time_simple"

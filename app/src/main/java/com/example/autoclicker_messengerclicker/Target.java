@@ -11,7 +11,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 public class Target{
@@ -22,6 +24,7 @@ public class Target{
     private WindowManager.LayoutParams mParams;
     private WindowManager mWindowManager;
     private LayoutInflater layoutInflater;
+    DataBase dbListener;
 
     AuxVariables auxVariables;
 
@@ -80,26 +83,55 @@ public class Target{
                         if(situationType == auxVariables.CONFIGCOORDINATES) {
                             if(auxVariables.isTimeToCheckCapsLock() || auxVariables.isTimeToCheckSpecialChar()){
                                 auxVariables.setArtificialTouchToTrue();
-                                AutoClickService.instance.autoClick(0, 100, coordX, coordY);
+                                ArrayList<ArrayList<Integer>> coordinates = new ArrayList<ArrayList<Integer>>();
+                                coordinates.add(new ArrayList<Integer>());
+                                coordinates.get(0).add(coordX);
+                                coordinates.get(0).add(coordY);
+                                coordinates.add(new ArrayList<Integer>());
+                                coordinates.get(1).add(auxVariables.returnTestCoordinateX());
+                                coordinates.get(1).add(auxVariables.returnTestCoordinateY());
                                 auxVariables.setCoordinates(coordX, coordY);
-                                try {
-                                    TimeUnit.MILLISECONDS.sleep(100);
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                }
-                                AutoClickService.instance.autoClick(100, 100, auxVariables.returnTestCoordinateX(), auxVariables.returnTestCoordinateY()); //teste correspondente à letra 'a'. Verifica se 'a' maiúsculo é digitado.
+                                AutoClickService.instance.chainedAutoClick(100, 100, coordinates); //teste correspondente à letra 'a'. Verifica se 'a' maiúsculo é digitado.
                                 mParams.x = 0;
                                 mParams.y = 0;
                                 mWindowManager.updateViewLayout(mView, mParams);
                             }
                             else{
                                 auxVariables.setArtificialTouchToTrue();
-                                AutoClickService.instance.autoClick(100, 100, coordX, coordY);
+                                AutoClickService.instance.simpleAutoClick(100, 100, coordX, coordY);
                                 auxVariables.setCoordinates(coordX, coordY);
                                 mParams.x = 0;
                                 mParams.y = 0;
                                 mWindowManager.updateViewLayout(mView, mParams);
                             }
+                        }
+                        else if(situationType == auxVariables.CONFIGSENDMESSAGECOORDINATE) {
+                                //auxVariables.setArtificialTouchToTrue();
+                                //AutoClickService.instance.autoClick(100, 100, coordX, coordY);
+                                //auxVariables.setCoordinates(coordX, coordY);
+                                dbListener = new DataBase(context, "coordinates");
+                                dbListener.updateKeyCoordinate("sendfield", coordX, coordY);
+                                mParams.x = 0;
+                                mParams.y = 0;
+                                mWindowManager.updateViewLayout(mView, mParams);
+                                Toast toast = Toast.makeText(context, context.getResources().getString(R.string.toast_coordinate_registered), Toast.LENGTH_LONG);
+                                toast.show();
+                                close();
+                                dbListener = null;
+                        }
+                        else if(situationType == auxVariables.CONFIGTYPEFIELDCOORDINATE) {
+                            //auxVariables.setArtificialTouchToTrue();
+                            //AutoClickService.instance.autoClick(100, 100, coordX, coordY);
+                            //auxVariables.setCoordinates(coordX, coordY);
+                            dbListener = new DataBase(context, "coordinates");
+                            dbListener.updateKeyCoordinate("typefield", coordX, coordY);
+                            mParams.x = 0;
+                            mParams.y = 0;
+                            mWindowManager.updateViewLayout(mView, mParams);
+                            Toast toast = Toast.makeText(context, context.getResources().getString(R.string.toast_coordinate_registered), Toast.LENGTH_LONG);
+                            toast.show();
+                            close();
+                            dbListener = null;
                         }
                         return true;
                     case MotionEvent.ACTION_MOVE:
