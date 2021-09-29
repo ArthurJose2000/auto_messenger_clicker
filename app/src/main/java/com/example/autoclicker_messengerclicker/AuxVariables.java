@@ -173,6 +173,28 @@ public class AuxVariables {
         return checkSpaceBar;
     }
 
+    //////////Send message registered////////////////////////
+    public static volatile boolean sendMessageRegistered = false;
+
+    public void setSendMessageRegister(boolean b){
+        sendMessageRegistered = b;
+    }
+
+    public boolean isSendMessageRegistered() {
+        return sendMessageRegistered;
+    }
+
+    //////////Type field registered////////////////////////
+    public static volatile boolean typeFieldRegistered = false;
+
+    public void setTypeFieldRegister(boolean b){
+        typeFieldRegistered = b;
+    }
+
+    public boolean isTypeFieldRegisteredRegistered() {
+        return typeFieldRegistered;
+    }
+
     //////////Use target type////////////////////////
     public static final int CONFIGCOORDINATES = 1; //config all coordinates
 

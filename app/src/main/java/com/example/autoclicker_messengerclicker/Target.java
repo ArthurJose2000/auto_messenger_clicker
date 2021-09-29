@@ -106,31 +106,27 @@ public class Target{
                             }
                         }
                         else if(situationType == auxVariables.CONFIGSENDMESSAGECOORDINATE) {
-                                //auxVariables.setArtificialTouchToTrue();
-                                //AutoClickService.instance.autoClick(100, 100, coordX, coordY);
-                                //auxVariables.setCoordinates(coordX, coordY);
-                                dbListener = new DataBase(context, "coordinates");
-                                dbListener.updateKeyCoordinate("sendfield", coordX, coordY);
-                                mParams.x = 0;
-                                mParams.y = 0;
-                                mWindowManager.updateViewLayout(mView, mParams);
-                                Toast toast = Toast.makeText(context, context.getResources().getString(R.string.toast_coordinate_registered), Toast.LENGTH_LONG);
-                                toast.show();
-                                close();
-                                dbListener = null;
+                            dbListener = new DataBase(context, "coordinates");
+                            dbListener.updateKeyCoordinate("sendfield", coordX, coordY);
+                            mParams.x = 0;
+                            mParams.y = 0;
+                            mWindowManager.updateViewLayout(mView, mParams);
+                            auxVariables.setSendMessageRegister(true);
+                            Toast toast = Toast.makeText(context, context.getResources().getString(R.string.toast_coordinate_registered), Toast.LENGTH_LONG);
+                            toast.show();
+                            hide();
+                            dbListener = null;
                         }
                         else if(situationType == auxVariables.CONFIGTYPEFIELDCOORDINATE) {
-                            //auxVariables.setArtificialTouchToTrue();
-                            //AutoClickService.instance.autoClick(100, 100, coordX, coordY);
-                            //auxVariables.setCoordinates(coordX, coordY);
                             dbListener = new DataBase(context, "coordinates");
                             dbListener.updateKeyCoordinate("typefield", coordX, coordY);
                             mParams.x = 0;
                             mParams.y = 0;
                             mWindowManager.updateViewLayout(mView, mParams);
+                            auxVariables.setTypeFieldRegister(true);
                             Toast toast = Toast.makeText(context, context.getResources().getString(R.string.toast_coordinate_registered), Toast.LENGTH_LONG);
                             toast.show();
-                            close();
+                            hide();
                             dbListener = null;
                         }
                         return true;
@@ -185,5 +181,22 @@ public class Target{
             Log.d("Error2",e.toString());
         }
     }
+
+    public void hide(){
+        try {
+            mView.setVisibility(View.INVISIBLE);
+        } catch (Exception e) {
+            Log.d("Error2",e.toString());
+        }
+    }
+
+    public void unhide(){
+        try {
+            mView.setVisibility(View.VISIBLE);
+        } catch (Exception e) {
+            Log.d("Error2",e.toString());
+        }
+    }
+
 }
 

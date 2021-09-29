@@ -31,6 +31,8 @@ public class AutoClickService extends AccessibilityService {
     Context context;
     AuxVariables auxVariables;
     public static AutoClickService instance;
+    public boolean typeFieldWasClicked;
+    //public boolean isTimeToClickInSendMessageButton;
 
     @Override
     public void onCreate() {
@@ -38,6 +40,8 @@ public class AutoClickService extends AccessibilityService {
         instance = this;
         context = this;
         auxVariables = new AuxVariables();
+        typeFieldWasClicked = true;
+        //isTimeToClickInSendMessageButton = false;
     }
 
     @Override
@@ -56,17 +60,32 @@ public class AutoClickService extends AccessibilityService {
     }
 
     public void simpleAutoClick(int startTimeMs, int durationMs, int x, int y) {
-        //auxVariables.setFinishedGestureToFalse();
         dispatchGesture(gestureDescription(startTimeMs, durationMs, x, y), null, null);
     }
 
     public void chainedAutoClick(int startTimeMs, int durationMs, ArrayList<ArrayList<Integer>> coordinates) {
-        //auxVariables.setFinishedGestureToFalse();
         dispatchGesture(gestureDescription(startTimeMs, durationMs, coordinates.get(0).get(0), coordinates.get(0).get(1)),
                 new GestureResultCallback() {
                     @Override
                     public void onCompleted(GestureDescription gestureDescription) {
                         super.onCompleted(gestureDescription);
+
+                        if(typeFieldWasClicked){
+                            try {
+                                Thread.sleep(1000);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                            typeFieldWasClicked = false;
+                        }
+                        else if(coordinates.size() == 2){
+                            try {
+                                Thread.sleep(1000);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
                         coordinates.remove(0);
                         int amountOfClicks = coordinates.size();
                         if(amountOfClicks > 0) {

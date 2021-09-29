@@ -112,10 +112,17 @@ public final class DataBase {
         );
 
         cursor.moveToFirst();
+        int size = cursor.getCount();
         int coordinates[];
-        coordinates = new int[2];
-        coordinates[0] = cursor.getInt(0);
-        coordinates[1] = cursor.getInt(1);
+
+        if(size != 0) {
+            coordinates = new int[2];
+            coordinates[0] = cursor.getInt(0);
+            coordinates[1] = cursor.getInt(1);
+        }
+        else{
+            coordinates = null;
+        }
         cursor.close();
         return coordinates;
     }

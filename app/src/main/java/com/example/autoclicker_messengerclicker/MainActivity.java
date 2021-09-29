@@ -245,25 +245,189 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void openActionBar(View view) throws IOException, InterruptedException {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (!Settings.canDrawOverlays(this)) {
-                // send user to the device settings
+        if(enableToPlay())
+            backlightAlert();
 
-                //add popup
 
-                Intent myIntent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
-                startActivity(myIntent);
+
+
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//            if (!Settings.canDrawOverlays(this)) {
+//                // send user to the device settings
+//
+//                //add popup
+//
+//                Intent myIntent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
+//                startActivity(myIntent);
+//            }
+//            else{
+//                Window window = new Window(this);
+//                window.open();
+//            }
+//        }
+//        else{
+//            Window window = new Window(this);
+//            window.open();
+//        }
+    }
+
+    public boolean enableToPlay(){
+        //Check if messages db is empty
+        dbListener = new DataBase(context, "messages");
+        ArrayList<String> groupNames = dbListener.getGroupNamesFromDataBase();
+        if(groupNames.size() == 0) {
+            configureMessagesDb();
+            dbListener = null;
+            return false;
+        }
+        dbListener = null;
+
+        //Check if coordinates db is empty
+        dbListener = new DataBase(context, "coordinates");
+        int amountOfRows = dbListener.getAmountOfRowsFromCoordinatesDataBase();
+        if(amountOfRows != 59) {
+            configureCoordinatesDb();
+            dbListener = null;
+            return false;
+        }
+        dbListener = null;
+
+        //Check delay situation
+        if(auxVariables.isRandomDelay()){
+            int timeSecondMaxDelay, timeSecondMinDelay;
+            if(auxVariables.returnTimeUnityMaxDelay().equals("s")){
+                timeSecondMaxDelay = auxVariables.returnMaxDelay();
             }
             else{
-                Window window = new Window(this);
-                window.open();
+                timeSecondMaxDelay = auxVariables.returnMaxDelay() * 60;
+            }
+
+            if(auxVariables.returnTimeUnityMinDelay().equals("s")){
+                timeSecondMinDelay = auxVariables.returnMinDelay();
+            }
+            else{
+                timeSecondMinDelay = auxVariables.returnMinDelay() * 60;
+            }
+
+
+            if(timeSecondMinDelay < 1 || timeSecondMaxDelay > 300){
+                configureDelayLimit();
+                return false;
+            }
+            else if(timeSecondMaxDelay - timeSecondMinDelay < 1){
+                configureDelayDifference();
+                return false;
             }
         }
         else{
-            Window window = new Window(this);
-            window.open();
+            int timeSecondDelay;
+            if(auxVariables.returnTimeUnityDelay().equals("s")){
+                timeSecondDelay = auxVariables.returnDelay();
+            }
+            else{
+                timeSecondDelay = auxVariables.returnDelay() * 60;
+            }
+
+            if(timeSecondDelay < 1 || timeSecondDelay > 300){
+                configureDelayLimit();
+                return false;
+            }
         }
+
+        return true;
     }
+
+    public void backlightAlert(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        String instruction_title = context.getResources().getString(R.string.instr_coordinates_config_title);
+        String instruction = context.getResources().getString(R.string.alert_backlight_duration);
+        builder
+                .setTitle(instruction_title)
+                .setMessage(instruction)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        registerSendMessageButtonAndTypeField();
+                    }
+                })
+                .show();
+    }
+
+    public void registerSendMessageButtonAndTypeField(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        String instruction_title = context.getResources().getString(R.string.instr_coordinates_config_title);
+        String instruction = context.getResources().getString(R.string.str_register_send_message_key_and_type_field);
+        builder
+                .setTitle(instruction_title)
+                .setMessage(instruction)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        Window window = new Window(context);
+                        window.open();
+                    }
+                })
+                .show();
+    }
+
+    public void configureDelayLimit(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        String instruction_title = context.getResources().getString(R.string.error_alert_title);
+        String instruction = context.getResources().getString(R.string.error_delay_limit);
+        builder
+                .setTitle(instruction_title)
+                .setMessage(instruction)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                })
+                .show();
+    }
+
+    public void configureDelayDifference(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        String instruction_title = context.getResources().getString(R.string.error_alert_title);
+        String instruction = context.getResources().getString(R.string.error_delay_max_min);
+        builder
+                .setTitle(instruction_title)
+                .setMessage(instruction)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                })
+                .show();
+    }
+
+    public void configureMessagesDb(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        String instruction_title = context.getResources().getString(R.string.error_alert_title);
+        String instruction = context.getResources().getString(R.string.error_messages_db);
+        builder
+                .setTitle(instruction_title)
+                .setMessage(instruction)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                })
+                .show();
+    }
+
+    public void configureCoordinatesDb(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        String instruction_title = context.getResources().getString(R.string.error_alert_title);
+        String instruction = context.getResources().getString(R.string.error_coordinates_db);
+        builder
+                .setTitle(instruction_title)
+                .setMessage(instruction)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                })
+                .show();
+    }
+
 
     // method for starting the service
     public void startService(){
@@ -293,8 +457,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    //////////////////////////////////modificar cancelable para false!!!!!!!!!!!
-
     public void checkAccessibilityServicePermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             int access = 0;
@@ -318,7 +480,7 @@ public class MainActivity extends AppCompatActivity {
                                 startActivity(myIntent);
                             }
                         })
-                        .setCancelable(true) ////////////////modificar para false
+                        .setCancelable(false)
                         .show();
             }
         }

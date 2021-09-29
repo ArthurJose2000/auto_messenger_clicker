@@ -41,8 +41,10 @@
     <string name="toast_error_register_capslock">Clique em CAPS LOCK.</string>
     <string name="toast_error_register_special_char">Clique na chave !#1 ou ?123</string>
     <string name="toast_error_register_space_bar">Clique na barra de espaços</string>
-    <string name="str_register_send_message_key">Clique em OK e arraste o alvo para a coordenada correspondente ao envio de mensagens. Ela se encontra no teclado.</string>
-    <string name="str_register_type_field">Clique em OK e arraste o alvo para o campo de escrita.\n\nCertifique-se de que o teclado está fechado!</string>
+    <string name="str_register_send_message_key_and_type_field">Registre a coordenada correspondente ao envio de mensagens e a coordenada
+        correspondente ao campo de escrita. O Auto Messenger só funcionará se estas coordenadas estiverem registradas. Clique em OK para continuar.</string>
+    <string name="str_register_send_message">Arraste o alvo para a coordenada correspondente ao envio de mensagens. Ela se encontra no teclado.</string>
+    <string name="str_register_type_field">Arraste o alvo para o campo de escrita. O teclado deve estar fechado.</string>
     <string name="toast_coordinate_registered">Coordenada registrada</string>
     <string name="str_other_options">Outros</string>
     <string name="button_enable_clicker">Iniciar</string>
@@ -60,13 +62,18 @@
     <string name="str_enable_accessibility_service">Ative a permissão de acessibilidade para que o
         Auto Messenger execute gestos de clique automatizados.</string>
 
+    <string name="error_alert_title">Quase lá!</string>
     <string name="error_messages_db">Suas mensagens ainda não estão configuradas!</string>
     <string name="error_coordinates_db">Suas coordenadas ainda não estão configuradas!</string>
     <string name="error_delay_limit">O delay deve estar dentro da faixa de 1 segundo a 300 segundos.</string>
     <string name="error_delay_max_min">O delay máximo deve ser maior que o delay mínimo.</string>
+    <string name="error_send_message_button">Configure a coordenada correspondente ao envio de mensagens.
+    Clique no botão relacionado na barra de ação e configure.</string>
+    <string name="error_type_field">Configure a coordenada correspondente ao campo de escrita.
+    Clique no botão relacionado na barra de ação e configure.</string>
 
     <string name="alert_backlight_duration">Certifique-se de que a duração da sua luz de fundo está configurada
-        com tempo suficiente para que o Auto Messenger trabalhe. Se for esse o caso, clique em OK para ativá-lo.</string>
+        com tempo suficiente para que o Auto Messenger trabalhe. Clique em OK para continuar.</string>
 
     <string-array name="unity_time">
         <item>s</item>

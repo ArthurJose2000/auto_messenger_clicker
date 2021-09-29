@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Scanner;
 
 
 public class Window {
@@ -38,6 +39,8 @@ public class Window {
     private LayoutInflater layoutInflater;
     AuxVariables auxVariables;
     Target target;
+    Target targetSendMessage;
+    Target targetTypeField;
     DataBase dbListener;
     //String groupName;
     int delay, maxDelay, minDelay;
@@ -46,6 +49,12 @@ public class Window {
     public Window(Context context){
         this.context = context;
         auxVariables = new AuxVariables();
+        targetSendMessage = new Target(context, auxVariables.CONFIGSENDMESSAGECOORDINATE);
+        targetSendMessage.open();
+        targetSendMessage.hide();
+        targetTypeField = new Target(context, auxVariables.CONFIGTYPEFIELDCOORDINATE);
+        targetTypeField.open();
+        targetTypeField.hide();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             // set the layout parameters of the window
@@ -78,8 +87,8 @@ public class Window {
         mView.findViewById(R.id.button_play_clicker).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(enableToPlay())
-                    playAutoMessenger();
+                if(auxVariables.isSendMessageRegistered() && auxVariables.isTypeFieldRegisteredRegistered())
+                    runAlgorithm();
             }
         });
 
@@ -93,16 +102,14 @@ public class Window {
         mView.findViewById(R.id.button_send_message).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                target = new Target(context, auxVariables.CONFIGSENDMESSAGECOORDINATE);
-                clickOnSendMessageField();
+                targetSendMessage.unhide();
             }
         });
 
         mView.findViewById(R.id.button_type_field).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                target = new Target(context, auxVariables.CONFIGTYPEFIELDCOORDINATE);
-                clickOnTypeField();
+                targetTypeField.unhide();
             }
         });
 
@@ -184,185 +191,109 @@ public class Window {
         }
     }
 
-    public boolean enableToPlay(){
-        ////Check if messages db is empty
+    public void runAlgorithm(){
         dbListener = new DataBase(context, "messages");
-        ArrayList<String> groupNames = dbListener.getGroupNamesFromDataBase();
-        if(groupNames.size() == 0) {
-            configureMessagesDb();
-            return false;
-        }
+        String messages = dbListener.getMessageFromDataBase(auxVariables.returnGroupName());
         dbListener = null;
 
-        ////Check if coordinates db is empty
+        Scanner scanner = new Scanner(messages);
+        while (scanner.hasNextLine()) {
+            String line = scanner.nextLine();
+            typeLine(line);
+        }
+        scanner.close();
+    }
+
+    public void typeLine(String message){
         dbListener = new DataBase(context, "coordinates");
-        int amountOfRows = dbListener.getAmountOfRowsFromCoordinatesDataBase();
-        if(amountOfRows != 59) {
-            configureCoordinatesDb();
-            return false;
+        int amountOfClick = 0;
+        int[] auxCoordinates;
+        ArrayList<ArrayList<Integer>> coordinates = new ArrayList<ArrayList<Integer>>();
+
+        coordinates.add(new ArrayList<Integer>());
+        auxCoordinates = dbListener.getCoordinatesFromDataBase("typefield");
+        coordinates.get(amountOfClick).add(auxCoordinates[0]);
+        coordinates.get(amountOfClick).add(auxCoordinates[1]);
+        amountOfClick++;
+
+        int sizeMessage = message.length();
+        for(int i = 0; i < sizeMessage; i++){
+            char key = message.charAt(i);
+            if(Character.isLetter(key)){
+                if(Character.isUpperCase(key)){
+                    coordinates.add(new ArrayList<Integer>());
+                    auxCoordinates = dbListener.getCoordinatesFromDataBase("capslock");
+                    coordinates.get(amountOfClick).add(auxCoordinates[0]);
+                    coordinates.get(amountOfClick).add(auxCoordinates[1]);
+                    amountOfClick++;
+
+                    coordinates.add(new ArrayList<Integer>());
+                    auxCoordinates = dbListener.getCoordinatesFromDataBase(Character.toString(Character.toLowerCase(key)));
+                    coordinates.get(amountOfClick).add(auxCoordinates[0]);
+                    coordinates.get(amountOfClick).add(auxCoordinates[1]);
+                    amountOfClick++;
+
+                    coordinates.add(new ArrayList<Integer>());
+                    auxCoordinates = dbListener.getCoordinatesFromDataBase("capslock");
+                    coordinates.get(amountOfClick).add(auxCoordinates[0]);
+                    coordinates.get(amountOfClick).add(auxCoordinates[1]);
+                    amountOfClick++;
+                }
+                else{
+                    coordinates.add(new ArrayList<Integer>());
+                    auxCoordinates = dbListener.getCoordinatesFromDataBase(Character.toString(key));
+                    coordinates.get(amountOfClick).add(auxCoordinates[0]);
+                    coordinates.get(amountOfClick).add(auxCoordinates[1]);
+                    amountOfClick++;
+                }
+            }
+            else if(key == ' '){
+                coordinates.add(new ArrayList<Integer>());
+                auxCoordinates = dbListener.getCoordinatesFromDataBase("spacebar");
+                coordinates.get(amountOfClick).add(auxCoordinates[0]);
+                coordinates.get(amountOfClick).add(auxCoordinates[1]);
+                amountOfClick++;
+            }
+            else{
+                auxCoordinates = dbListener.getCoordinatesFromDataBase(Character.toString(key));
+                if(auxCoordinates == null){
+                    coordinates.add(new ArrayList<Integer>());
+                    auxCoordinates = dbListener.getCoordinatesFromDataBase("spacebar");
+                    coordinates.get(amountOfClick).add(auxCoordinates[0]);
+                    coordinates.get(amountOfClick).add(auxCoordinates[1]);
+                    amountOfClick++;
+                }
+                else{
+                    coordinates.add(new ArrayList<Integer>());
+                    auxCoordinates = dbListener.getCoordinatesFromDataBase("specialchar");
+                    coordinates.get(amountOfClick).add(auxCoordinates[0]);
+                    coordinates.get(amountOfClick).add(auxCoordinates[1]);
+                    amountOfClick++;
+
+                    coordinates.add(new ArrayList<Integer>());
+                    auxCoordinates = dbListener.getCoordinatesFromDataBase(Character.toString(Character.toLowerCase(key)));
+                    coordinates.get(amountOfClick).add(auxCoordinates[0]);
+                    coordinates.get(amountOfClick).add(auxCoordinates[1]);
+                    amountOfClick++;
+
+                    coordinates.add(new ArrayList<Integer>());
+                    auxCoordinates = dbListener.getCoordinatesFromDataBase("specialchar");
+                    coordinates.get(amountOfClick).add(auxCoordinates[0]);
+                    coordinates.get(amountOfClick).add(auxCoordinates[1]);
+                    amountOfClick++;
+                }
+            }
         }
+
+        coordinates.add(new ArrayList<Integer>());
+        auxCoordinates = dbListener.getCoordinatesFromDataBase("sendfield");
+        coordinates.get(amountOfClick).add(auxCoordinates[0]);
+        coordinates.get(amountOfClick).add(auxCoordinates[1]);
+        amountOfClick++;
+
+        AutoClickService.instance.chainedAutoClick(500, 100, coordinates);
+
         dbListener = null;
-
-        //Check delay situation
-        if(auxVariables.isRandomDelay()){
-            int timeSecondMaxDelay, timeSecondMinDelay;
-            if(auxVariables.returnTimeUnityMaxDelay().equals("s")){
-                timeSecondMaxDelay = auxVariables.returnMaxDelay();
-            }
-            else{
-                timeSecondMaxDelay = auxVariables.returnMaxDelay() * 60;
-            }
-
-            if(auxVariables.returnTimeUnityMinDelay().equals("s")){
-                timeSecondMinDelay = auxVariables.returnMinDelay();
-            }
-            else{
-                timeSecondMinDelay = auxVariables.returnMinDelay() * 60;
-            }
-
-            System.out.println(timeSecondMaxDelay);
-            System.out.println(timeSecondMinDelay);
-
-            if(timeSecondMinDelay < 1 || timeSecondMaxDelay > 300){
-                configureDelayLimit();
-                return false;
-            }
-            else if(timeSecondMaxDelay - timeSecondMinDelay < 1){
-                configureDelayDifference();
-                return false;
-            }
-        }
-        else{
-            int timeSecondDelay;
-            if(auxVariables.returnTimeUnityDelay().equals("s")){
-                timeSecondDelay = auxVariables.returnDelay();
-            }
-            else{
-                timeSecondDelay = auxVariables.returnDelay() * 60;
-            }
-
-            if(timeSecondDelay < 1 || timeSecondDelay > 300){
-                configureDelayLimit();
-                return false;
-            }
-        }
-
-        return true;
     }
-
-    public void playAutoMessenger(){
-        backlightAlert();
-    }
-
-    public void backlightAlert(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        String instruction_title = context.getResources().getString(R.string.instr_coordinates_config_title);
-        String instruction = context.getResources().getString(R.string.alert_backlight_duration);
-        builder
-                .setTitle(instruction_title)
-                .setMessage(instruction)
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        //runAlgorithm();
-                    }
-                })
-                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        //
-                    }
-                })
-                .show();
-    }
-
-    public void configureDelayLimit(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        String instruction_title = context.getResources().getString(R.string.instr_coordinates_config_title);
-        String instruction = context.getResources().getString(R.string.error_delay_limit);
-        builder
-                .setTitle(instruction_title)
-                .setMessage(instruction)
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-
-                    }
-                })
-                .show();
-    }
-
-    public void configureDelayDifference(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        String instruction_title = context.getResources().getString(R.string.instr_coordinates_config_title);
-        String instruction = context.getResources().getString(R.string.error_delay_max_min);
-        builder
-                .setTitle(instruction_title)
-                .setMessage(instruction)
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-
-                    }
-                })
-                .show();
-    }
-
-    public void configureMessagesDb(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        String instruction_title = context.getResources().getString(R.string.instr_coordinates_config_title);
-        String instruction = context.getResources().getString(R.string.error_messages_db);
-        builder
-                .setTitle(instruction_title)
-                .setMessage(instruction)
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-
-                    }
-                })
-                .show();
-    }
-
-    public void configureCoordinatesDb(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        String instruction_title = context.getResources().getString(R.string.instr_coordinates_config_title);
-        String instruction = context.getResources().getString(R.string.error_coordinates_db);
-        builder
-                .setTitle(instruction_title)
-                .setMessage(instruction)
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-
-                    }
-                })
-                .show();
-    }
-
-    public void clickOnSendMessageField(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        String instruction_title = context.getResources().getString(R.string.instr_coordinates_config_title);
-        String instruction = context.getResources().getString(R.string.str_register_send_message_key);
-        builder
-                .setTitle(instruction_title)
-                .setMessage(instruction)
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        target.open();
-                    }
-                })
-                .show();
-    }
-
-    public void clickOnTypeField(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        String instruction_title = context.getResources().getString(R.string.instr_coordinates_config_title);
-        String instruction = context.getResources().getString(R.string.str_register_type_field);
-        builder
-                .setTitle(instruction_title)
-                .setMessage(instruction)
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        target.open();
-                    }
-                })
-                .show();
-    }
-
 
 }
