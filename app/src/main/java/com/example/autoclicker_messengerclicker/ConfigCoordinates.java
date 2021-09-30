@@ -37,8 +37,8 @@ public class ConfigCoordinates extends AppCompatActivity {
     AuxVariables auxVariables;
     Target target;
     DataBase dbListener;
-    String characters = "qwertyuiopasdfghjklzxcvbnm1234567890+/_!@#$%*()-'\":,?.XYZ"; //X -> relacionado ao Caps Lock, Y -> relacionado ao Special Char, Z -> relacionado ao Space Bar
-    //String characters = "qwaXYZ"; //para testes
+    String characters = "qwertyuiopasdfghjklzxcvbnm1234567890+/_!@#$%*()-'\":,?.XYZW"; //X -> relacionado ao Caps Lock, Y -> relacionado ao Special Char, Z -> relacionado ao Space Bar, W -> relacionado ao break line ("\n")
+    //String characters = "qwaXYZW"; //para testes
     String tableName_DB = "coordinates";
     int sizeCharacters = characters.length();
     int count; //auxiliar count to verifyConfigProcess()
@@ -128,7 +128,7 @@ public class ConfigCoordinates extends AppCompatActivity {
                             char nextCharacter = characters.charAt(count);
                             requiredCharacter.setText(Character.toString(nextCharacter));
                             requiredCharacter.setTextColor(Color.BLACK);
-                            if(count == sizeCharacters - 3){ //time to check capslock
+                            if(count == sizeCharacters - 4){ //time to check capslock
                                 clickOnCapsLockButton();
                                 auxVariables.setCheckCapsLockToTrue();
                                 requiredCharacter.setText("...");
@@ -161,6 +161,7 @@ public class ConfigCoordinates extends AppCompatActivity {
                             startButton.setBackgroundColor(Color.parseColor("#FF03DAC5"));
                             dbListener.insertCoordinatesToDataBase("sendfield", 0, 0); //pré-configuração das coordenadas da tecla de envio
                             dbListener.insertCoordinatesToDataBase("typefield", 0, 0); //pré-configuração das coordenadas do campo de escrita
+                            dbListener.insertCoordinatesToDataBase("breakline", 0, 0); //configuração da coordenada que representa a quebra de linha
                             successRegister();
                         }
                         else {

@@ -47,7 +47,8 @@
     <string name="str_register_type_field">Arraste o alvo para o campo de escrita. O teclado deve estar fechado.</string>
     <string name="toast_coordinate_registered">Coordenada registrada</string>
     <string name="str_other_options">Outros</string>
-    <string name="button_enable_clicker">Iniciar</string>
+    <string name="button_enable_clicker">Habilitar</string>
+    <string name="button_disable_clicker">Desabilitar</string>
     <string name="button_tutorials">Tutoriais</string>
     <string name="button_remove_ads">Remover anúncios</string>
     <string name="str_version">Versão 1.0.1</string>

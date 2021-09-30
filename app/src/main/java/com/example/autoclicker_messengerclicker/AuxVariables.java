@@ -191,9 +191,32 @@ public class AuxVariables {
         typeFieldRegistered = b;
     }
 
-    public boolean isTypeFieldRegisteredRegistered() {
+    public boolean isTypeFieldRegistered() {
         return typeFieldRegistered;
     }
+
+    //////////Type field was (or will be) clicked////////////////////////
+    public static volatile boolean typeFieldWasClicked = false;
+
+    public void setTypeFieldWasClicked(boolean b){
+        typeFieldWasClicked = b;
+    }
+
+    public boolean isTypeFieldWasClicked() {
+        return typeFieldWasClicked;
+    }
+
+    //////////Action bar////////////////////////
+    public static volatile boolean actionBarIsOpen = false;
+
+    public void setActionBarIsOpen(boolean b){
+        actionBarIsOpen = b;
+    }
+
+    public boolean isActionBarOpen() {
+        return actionBarIsOpen;
+    }
+
 
     //////////Use target type////////////////////////
     public static final int CONFIGCOORDINATES = 1; //config all coordinates

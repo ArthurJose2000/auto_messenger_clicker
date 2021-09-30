@@ -8,6 +8,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Path;
 import android.net.Uri;
 import android.os.Bundle;
@@ -23,11 +24,18 @@ import android.provider.Settings;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -42,15 +50,30 @@ public class MainActivity extends AppCompatActivity {
     String groupName;
     EditText delay, maxDelay, minDelay;
     CheckBox randomOrder, randomDelay;
-
+    Window window;
+    Button startActionBar;
+    private AdView mAdView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+
+            }
+        });
+
+        mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+
         //checkOverlayPermission();
         auxVariables = new AuxVariables();
         context = this;
+        startActionBar = (Button) findViewById(R.id.button_enable_clicker);
         setPreviousOptions();
         checkAccessibilityServicePermission();
     }
@@ -245,11 +268,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void openActionBar(View view) throws IOException, InterruptedException {
-        if(enableToPlay())
-            backlightAlert();
-
-
-
+        if(!auxVariables.isActionBarOpen()) {
+            if (enableToPlay())
+                backlightAlert();
+        }
 
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 //            if (!Settings.canDrawOverlays(this)) {
@@ -285,7 +307,7 @@ public class MainActivity extends AppCompatActivity {
         //Check if coordinates db is empty
         dbListener = new DataBase(context, "coordinates");
         int amountOfRows = dbListener.getAmountOfRowsFromCoordinatesDataBase();
-        if(amountOfRows != 59) {
+        if(amountOfRows != 60) {
             configureCoordinatesDb();
             dbListener = null;
             return false;
@@ -334,6 +356,16 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
+        //Check if send message button and type field are registered
+        dbListener = new DataBase(context, "coordinates");
+        int[] coordinates = dbListener.getCoordinatesFromDataBase("sendfield");
+        if(coordinates[0] != 0 && coordinates[1] != 0)
+            auxVariables.setSendMessageRegister(true);
+        coordinates = dbListener.getCoordinatesFromDataBase("typefield");
+        if(coordinates[0] != 0 && coordinates[1] != 0)
+            auxVariables.setTypeFieldRegister(true);
+        dbListener = null;
+
         return true;
     }
 
@@ -361,8 +393,9 @@ public class MainActivity extends AppCompatActivity {
                 .setMessage(instruction)
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        Window window = new Window(context);
+                        window = new Window(context);
                         window.open();
+                        auxVariables.setActionBarIsOpen(true);
                     }
                 })
                 .show();

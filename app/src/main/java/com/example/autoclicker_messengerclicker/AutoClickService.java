@@ -31,8 +31,6 @@ public class AutoClickService extends AccessibilityService {
     Context context;
     AuxVariables auxVariables;
     public static AutoClickService instance;
-    public boolean typeFieldWasClicked;
-    //public boolean isTimeToClickInSendMessageButton;
 
     @Override
     public void onCreate() {
@@ -40,7 +38,6 @@ public class AutoClickService extends AccessibilityService {
         instance = this;
         context = this;
         auxVariables = new AuxVariables();
-        typeFieldWasClicked = true;
         //isTimeToClickInSendMessageButton = false;
     }
 
@@ -70,26 +67,45 @@ public class AutoClickService extends AccessibilityService {
                     public void onCompleted(GestureDescription gestureDescription) {
                         super.onCompleted(gestureDescription);
 
-                        if(typeFieldWasClicked){
+                        if(auxVariables.isTypeFieldWasClicked()){
                             try {
-                                Thread.sleep(1000);
+                                Thread.sleep(2000);
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }
-                            typeFieldWasClicked = false;
+                            auxVariables.setTypeFieldWasClicked(false);
                         }
                         else if(coordinates.size() == 2){
                             try {
-                                Thread.sleep(1000);
+                                Thread.sleep(1500);
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }
                         }
 
                         coordinates.remove(0);
-                        int amountOfClicks = coordinates.size();
-                        if(amountOfClicks > 0) {
-                            chainedAutoClick(startTimeMs, durationMs, coordinates);
+                        int sizeStackCoordinates = coordinates.size();
+
+                        if(sizeStackCoordinates > 0) {
+
+                            while (coordinates.get(0).get(0) == 0 && coordinates.get(0).get(1) == 0) {
+
+                                try {
+                                    Thread.sleep(delayBetweenMessages() * 1000);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+
+                                coordinates.remove(0);
+                                sizeStackCoordinates = coordinates.size();
+                                if(sizeStackCoordinates == 0)
+                                    break;
+
+                                auxVariables.setTypeFieldWasClicked(true); //will be clicked
+                            }
+
+                            if(sizeStackCoordinates > 0)
+                                chainedAutoClick(randomInt(150, 350), durationMs, coordinates);
                         }
                     }
                     @Override
@@ -113,5 +129,18 @@ public class AutoClickService extends AccessibilityService {
             builder.addStroke(stroke);
         }
         return builder.build();
+    }
+
+    public int randomInt(int min, int max){
+        return (int) ((Math.random() * (max - min)) + min);
+    }
+
+    public int delayBetweenMessages(){
+        if(auxVariables.isRandomDelay()){
+            return (int) ((Math.random() * (auxVariables.returnMaxDelay() - auxVariables.returnMinDelay())) + auxVariables.returnMinDelay());
+        }
+        else{
+            return auxVariables.returnDelay();
+        }
     }
 }

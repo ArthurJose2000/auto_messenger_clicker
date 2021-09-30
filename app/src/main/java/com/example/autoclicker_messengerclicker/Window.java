@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Toast;
 
 import static android.content.Context.WINDOW_SERVICE;
@@ -63,7 +64,7 @@ public class Window {
                     // than filling the screen
                     WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT,
                     // Display it on top of other application windows
-                    WindowManager.LayoutParams.TYPE_ACCESSIBILITY_OVERLAY,
+                    WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
                     // Don't let it grab the input focus
                     WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
                     // Make the underlying application window visible
@@ -87,7 +88,7 @@ public class Window {
         mView.findViewById(R.id.button_play_clicker).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(auxVariables.isSendMessageRegistered() && auxVariables.isTypeFieldRegisteredRegistered())
+                if(auxVariables.isSendMessageRegistered() && auxVariables.isTypeFieldRegistered())
                     runAlgorithm();
             }
         });
@@ -182,7 +183,9 @@ public class Window {
             // invalidate the view
             mView.invalidate();
             // remove all views
-            ((ViewGroup)mView.getParent()).removeAllViews();
+            //((ViewGroup)mView.getParent()).removeAllViews();
+
+            auxVariables.setActionBarIsOpen(false);
 
             // the above steps are necessary when you are adding and removing
             // the view simultaneously, it might give some exceptions
@@ -191,109 +194,148 @@ public class Window {
         }
     }
 
-    public void runAlgorithm(){
+    public void runAlgorithm() {
+        auxVariables.setTypeFieldWasClicked(true); //will be clicked
         dbListener = new DataBase(context, "messages");
         String messages = dbListener.getMessageFromDataBase(auxVariables.returnGroupName());
         dbListener = null;
-
-        Scanner scanner = new Scanner(messages);
-        while (scanner.hasNextLine()) {
-            String line = scanner.nextLine();
-            typeLine(line);
+        System.out.println(auxVariables.isRandomOrder());
+        if (auxVariables.isRandomOrder()) {
+            String randomMessages = "";
+            Scanner scanner = new Scanner(messages);
+            ArrayList<String> messagesStack = new ArrayList<String>();
+            while (scanner.hasNextLine()) {
+                messagesStack.add(scanner.nextLine() + "\n");
+            }
+            scanner.close();
+            while (messagesStack.size() > 0){
+                int randomIndex = (int) (Math.random() * (messagesStack.size() - 1));
+                randomMessages += messagesStack.get(randomIndex);
+                messagesStack.remove(randomIndex);
+            }
+            typeMessages(randomMessages);
+        } else {
+            typeMessages(messages);
         }
-        scanner.close();
     }
 
-    public void typeLine(String message){
+    public void typeMessages(String message){
         dbListener = new DataBase(context, "coordinates");
-        int amountOfClick = 0;
+        int sizeStackCoordinates = 0;
         int[] auxCoordinates;
         ArrayList<ArrayList<Integer>> coordinates = new ArrayList<ArrayList<Integer>>();
 
         coordinates.add(new ArrayList<Integer>());
         auxCoordinates = dbListener.getCoordinatesFromDataBase("typefield");
-        coordinates.get(amountOfClick).add(auxCoordinates[0]);
-        coordinates.get(amountOfClick).add(auxCoordinates[1]);
-        amountOfClick++;
+        coordinates.get(sizeStackCoordinates).add(auxCoordinates[0]);
+        coordinates.get(sizeStackCoordinates).add(auxCoordinates[1]);
+        sizeStackCoordinates++;
 
         int sizeMessage = message.length();
         for(int i = 0; i < sizeMessage; i++){
             char key = message.charAt(i);
             if(Character.isLetter(key)){
-                if(Character.isUpperCase(key)){
+                auxCoordinates = dbListener.getCoordinatesFromDataBase(Character.toString(key));
+                if(auxCoordinates == null){
                     coordinates.add(new ArrayList<Integer>());
-                    auxCoordinates = dbListener.getCoordinatesFromDataBase("capslock");
-                    coordinates.get(amountOfClick).add(auxCoordinates[0]);
-                    coordinates.get(amountOfClick).add(auxCoordinates[1]);
-                    amountOfClick++;
-
-                    coordinates.add(new ArrayList<Integer>());
-                    auxCoordinates = dbListener.getCoordinatesFromDataBase(Character.toString(Character.toLowerCase(key)));
-                    coordinates.get(amountOfClick).add(auxCoordinates[0]);
-                    coordinates.get(amountOfClick).add(auxCoordinates[1]);
-                    amountOfClick++;
-
-                    coordinates.add(new ArrayList<Integer>());
-                    auxCoordinates = dbListener.getCoordinatesFromDataBase("capslock");
-                    coordinates.get(amountOfClick).add(auxCoordinates[0]);
-                    coordinates.get(amountOfClick).add(auxCoordinates[1]);
-                    amountOfClick++;
+                    auxCoordinates = dbListener.getCoordinatesFromDataBase("spacebar");
+                    coordinates.get(sizeStackCoordinates).add(auxCoordinates[0]);
+                    coordinates.get(sizeStackCoordinates).add(auxCoordinates[1]);
+                    sizeStackCoordinates++;
                 }
                 else{
-                    coordinates.add(new ArrayList<Integer>());
-                    auxCoordinates = dbListener.getCoordinatesFromDataBase(Character.toString(key));
-                    coordinates.get(amountOfClick).add(auxCoordinates[0]);
-                    coordinates.get(amountOfClick).add(auxCoordinates[1]);
-                    amountOfClick++;
+                    if(Character.isUpperCase(key)){
+                        coordinates.add(new ArrayList<Integer>());
+                        auxCoordinates = dbListener.getCoordinatesFromDataBase("capslock");
+                        coordinates.get(sizeStackCoordinates).add(auxCoordinates[0]);
+                        coordinates.get(sizeStackCoordinates).add(auxCoordinates[1]);
+                        sizeStackCoordinates++;
+
+                        coordinates.add(new ArrayList<Integer>());
+                        auxCoordinates = dbListener.getCoordinatesFromDataBase(Character.toString(Character.toLowerCase(key)));
+                        coordinates.get(sizeStackCoordinates).add(auxCoordinates[0]);
+                        coordinates.get(sizeStackCoordinates).add(auxCoordinates[1]);
+                        sizeStackCoordinates++;
+
+                        coordinates.add(new ArrayList<Integer>());
+                        auxCoordinates = dbListener.getCoordinatesFromDataBase("capslock");
+                        coordinates.get(sizeStackCoordinates).add(auxCoordinates[0]);
+                        coordinates.get(sizeStackCoordinates).add(auxCoordinates[1]);
+                        sizeStackCoordinates++;
+                    }
+                    else{
+                        coordinates.add(new ArrayList<Integer>());
+                        auxCoordinates = dbListener.getCoordinatesFromDataBase(Character.toString(key));
+                        coordinates.get(sizeStackCoordinates).add(auxCoordinates[0]);
+                        coordinates.get(sizeStackCoordinates).add(auxCoordinates[1]);
+                        sizeStackCoordinates++;
+                    }
                 }
             }
             else if(key == ' '){
                 coordinates.add(new ArrayList<Integer>());
                 auxCoordinates = dbListener.getCoordinatesFromDataBase("spacebar");
-                coordinates.get(amountOfClick).add(auxCoordinates[0]);
-                coordinates.get(amountOfClick).add(auxCoordinates[1]);
-                amountOfClick++;
+                coordinates.get(sizeStackCoordinates).add(auxCoordinates[0]);
+                coordinates.get(sizeStackCoordinates).add(auxCoordinates[1]);
+                sizeStackCoordinates++;
+            }
+            else if(key == '\n'){
+                coordinates.add(new ArrayList<Integer>());
+                auxCoordinates = dbListener.getCoordinatesFromDataBase("sendfield");
+                coordinates.get(sizeStackCoordinates).add(auxCoordinates[0]);
+                coordinates.get(sizeStackCoordinates).add(auxCoordinates[1]);
+                sizeStackCoordinates++;
+
+                coordinates.add(new ArrayList<Integer>());
+                coordinates.get(sizeStackCoordinates).add(0);
+                coordinates.get(sizeStackCoordinates).add(0); //Coordenada 0 0 representa o fim de uma mensagem (break line)
+                sizeStackCoordinates++; // a quantidade de cliques é igual à sizeStackCoordinates - (as ocorrências nesse if)
+
+                coordinates.add(new ArrayList<Integer>());
+                auxCoordinates = dbListener.getCoordinatesFromDataBase("typefield");
+                coordinates.get(sizeStackCoordinates).add(auxCoordinates[0]);
+                coordinates.get(sizeStackCoordinates).add(auxCoordinates[1]);
+                sizeStackCoordinates++;
             }
             else{
                 auxCoordinates = dbListener.getCoordinatesFromDataBase(Character.toString(key));
                 if(auxCoordinates == null){
                     coordinates.add(new ArrayList<Integer>());
                     auxCoordinates = dbListener.getCoordinatesFromDataBase("spacebar");
-                    coordinates.get(amountOfClick).add(auxCoordinates[0]);
-                    coordinates.get(amountOfClick).add(auxCoordinates[1]);
-                    amountOfClick++;
+                    coordinates.get(sizeStackCoordinates).add(auxCoordinates[0]);
+                    coordinates.get(sizeStackCoordinates).add(auxCoordinates[1]);
+                    sizeStackCoordinates++;
                 }
                 else{
                     coordinates.add(new ArrayList<Integer>());
                     auxCoordinates = dbListener.getCoordinatesFromDataBase("specialchar");
-                    coordinates.get(amountOfClick).add(auxCoordinates[0]);
-                    coordinates.get(amountOfClick).add(auxCoordinates[1]);
-                    amountOfClick++;
+                    coordinates.get(sizeStackCoordinates).add(auxCoordinates[0]);
+                    coordinates.get(sizeStackCoordinates).add(auxCoordinates[1]);
+                    sizeStackCoordinates++;
 
                     coordinates.add(new ArrayList<Integer>());
-                    auxCoordinates = dbListener.getCoordinatesFromDataBase(Character.toString(Character.toLowerCase(key)));
-                    coordinates.get(amountOfClick).add(auxCoordinates[0]);
-                    coordinates.get(amountOfClick).add(auxCoordinates[1]);
-                    amountOfClick++;
+                    auxCoordinates = dbListener.getCoordinatesFromDataBase(Character.toString(key));
+                    coordinates.get(sizeStackCoordinates).add(auxCoordinates[0]);
+                    coordinates.get(sizeStackCoordinates).add(auxCoordinates[1]);
+                    sizeStackCoordinates++;
 
                     coordinates.add(new ArrayList<Integer>());
                     auxCoordinates = dbListener.getCoordinatesFromDataBase("specialchar");
-                    coordinates.get(amountOfClick).add(auxCoordinates[0]);
-                    coordinates.get(amountOfClick).add(auxCoordinates[1]);
-                    amountOfClick++;
+                    coordinates.get(sizeStackCoordinates).add(auxCoordinates[0]);
+                    coordinates.get(sizeStackCoordinates).add(auxCoordinates[1]);
+                    sizeStackCoordinates++;
                 }
             }
         }
 
         coordinates.add(new ArrayList<Integer>());
         auxCoordinates = dbListener.getCoordinatesFromDataBase("sendfield");
-        coordinates.get(amountOfClick).add(auxCoordinates[0]);
-        coordinates.get(amountOfClick).add(auxCoordinates[1]);
-        amountOfClick++;
-
-        AutoClickService.instance.chainedAutoClick(500, 100, coordinates);
+        coordinates.get(sizeStackCoordinates).add(auxCoordinates[0]);
+        coordinates.get(sizeStackCoordinates).add(auxCoordinates[1]);
+        sizeStackCoordinates++;
 
         dbListener = null;
+        AutoClickService.instance.chainedAutoClick(500, 100, coordinates);
     }
 
 }
