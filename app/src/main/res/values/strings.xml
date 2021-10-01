@@ -62,6 +62,7 @@
     <string name="str_warning">Aviso</string>
     <string name="str_enable_accessibility_service">Ative a permissão de acessibilidade para que o
         Auto Messenger execute gestos de clique automatizados.</string>
+    <string name="str_enable_overlay_permission">Ative também a permissão de navegabilidade sobre outros apps para que o Auto Messenger possa atuar.</string>
 
     <string name="error_alert_title">Quase lá!</string>
     <string name="error_messages_db">Suas mensagens ainda não estão configuradas!</string>

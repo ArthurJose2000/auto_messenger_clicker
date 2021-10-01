@@ -25,7 +25,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="16dp"
             app:adSize="BANNER"
-            app:adUnitId="ca-app-pub-3940256099942544/6300978111"
+            app:adUnitId="ca-app-pub-8798131674672035/6441501957"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"></com.google.android.gms.ads.AdView>
@@ -117,7 +117,7 @@
 
         <TextView
             android:id="@+id/check_random_delay"
-            android:layout_width="150dp"
+            android:layout_width="200dp"
             android:layout_height="34dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="32dp"
@@ -260,7 +260,7 @@
 
         <TextView
             android:id="@+id/check_random_order"
-            android:layout_width="235dp"
+            android:layout_width="270dp"
             android:layout_height="34dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="20dp"
@@ -312,6 +312,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="64dp"
             android:backgroundTint="@color/teal_200"
+            android:onClick="openYouTubeTutorial"
             android:text="@string/menu_tutorial"
             android:textAlignment="center"
             android:textSize="20sp"
@@ -328,6 +329,7 @@
             android:backgroundTint="@color/teal_200"
             android:text="@string/button_remove_ads"
             android:textSize="20sp"
+            android:enabled="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/button_tutorials" />

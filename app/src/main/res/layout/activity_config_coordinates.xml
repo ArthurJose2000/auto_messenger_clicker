@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="144dp"
         android:backgroundTint="@color/teal_200"
+        android:onClick="openYouTubeTutorial"
         android:text="@string/menu_tutorial"
         android:textAlignment="center"
         android:textSize="20sp"

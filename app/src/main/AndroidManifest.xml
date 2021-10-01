@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.autoclicker_messengerclicker">
+    package="com.amadorprog.autoclicker_messengerclicker">
 
 <!--    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>-->
 <!--    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>-->
@@ -8,7 +8,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_my_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
@@ -18,7 +18,7 @@
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-8798131674672035~3651687081"/>
         <service
-            android:name=".AutoClickService"
+            android:name="com.amadorprog.autoclicker_messengerclicker.AutoClickService"
             android:enabled="true"
             android:label="@string/accessibility_service_name"
             android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE"
@@ -38,16 +38,16 @@
 <!--            android:enabled="true"-->
 <!--            android:exported="true"/>-->
         <activity
-            android:name=".ListMessagesGroupActivity"
+            android:name="com.amadorprog.autoclicker_messengerclicker.ListMessagesGroupActivity"
             android:exported="true" />
         <activity
-            android:name=".ConfigCoordinates"
+            android:name="com.amadorprog.autoclicker_messengerclicker.ConfigCoordinates"
             android:exported="true" />
         <activity
-            android:name=".MessagesEditorActivity"
+            android:name="com.amadorprog.autoclicker_messengerclicker.MessagesEditorActivity"
             android:exported="true" />
         <activity
-            android:name=".MainActivity"
+            android:name="com.amadorprog.autoclicker_messengerclicker.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
