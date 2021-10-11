@@ -53,6 +53,32 @@ public class ConfigCoordinates extends AppCompatActivity {
         context = this;
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        if(target != null){
+            target.close();
+            target = null;
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        if(target != null)
+            target.hide();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+
+        if(target != null)
+            target.unhide();
+    }
+
     public void openYouTubeTutorial(View view){
         Intent viewIntent =
                 new Intent("android.intent.action.VIEW",

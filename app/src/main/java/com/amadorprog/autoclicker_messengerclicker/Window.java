@@ -171,7 +171,12 @@ public class Window {
             // remove all views
             //((ViewGroup)mView.getParent()).removeAllViews();
 
+            //new target are created very time the enable action bar button is clicked (if action bar is closed)
             auxVariables.setActionBarIsOpen(false);
+            targetSendMessage.close();
+            targetSendMessage = null;
+            targetTypeField.close();
+            targetTypeField = null;
 
             // the above steps are necessary when you are adding and removing
             // the view simultaneously, it might give some exceptions
@@ -221,7 +226,7 @@ public class Window {
         for(int i = 0; i < sizeMessage; i++){
             char key = message.charAt(i);
             if(Character.isLetter(key)){
-                auxCoordinates = dbListener.getCoordinatesFromDataBase(Character.toString(key));
+                auxCoordinates = dbListener.getCoordinatesFromDataBase(Character.toString(Character.toLowerCase(key)));
                 if(auxCoordinates == null){
                     coordinates.add(new ArrayList<Integer>());
                     auxCoordinates = dbListener.getCoordinatesFromDataBase("spacebar");
@@ -243,11 +248,11 @@ public class Window {
                         coordinates.get(sizeStackCoordinates).add(auxCoordinates[1]);
                         sizeStackCoordinates++;
 
-                        coordinates.add(new ArrayList<Integer>());
-                        auxCoordinates = dbListener.getCoordinatesFromDataBase("capslock");
-                        coordinates.get(sizeStackCoordinates).add(auxCoordinates[0]);
-                        coordinates.get(sizeStackCoordinates).add(auxCoordinates[1]);
-                        sizeStackCoordinates++;
+//                        coordinates.add(new ArrayList<Integer>());
+//                        auxCoordinates = dbListener.getCoordinatesFromDataBase("capslock");
+//                        coordinates.get(sizeStackCoordinates).add(auxCoordinates[0]);
+//                        coordinates.get(sizeStackCoordinates).add(auxCoordinates[1]);
+//                        sizeStackCoordinates++;
                     }
                     else{
                         coordinates.add(new ArrayList<Integer>());

@@ -51,7 +51,7 @@
     <string name="button_disable_clicker">Desabilitar</string>
     <string name="button_tutorials">Tutoriais</string>
     <string name="button_remove_ads">Remover anúncios</string>
-    <string name="str_version">Versão 1.0.1</string>
+    <string name="str_version">Versão 1.0.5</string>
     <string name="accessibility_service_description">Por favor, ative a permissão de acessibilidade para que o
         Auto Messenger execute gestos de clique automatizados.\n\nNenhuma informação pessoal é coletada pelo Auto Messenger.</string>
     <string name="accessibility_service_name">Auto Messenger</string>

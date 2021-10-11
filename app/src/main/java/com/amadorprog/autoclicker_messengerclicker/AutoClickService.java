@@ -74,13 +74,11 @@ public class AutoClickService extends AccessibilityService {
 
                             if (sizeStackCoordinates > 0) {
 
+                                boolean newMessage = false;
+
                                 while (coordinates.get(0).get(0) == 0 && coordinates.get(0).get(1) == 0) {
 
-                                    try {
-                                        Thread.sleep(delayBetweenMessages() * 1000);
-                                    } catch (InterruptedException e) {
-                                        e.printStackTrace();
-                                    }
+                                    newMessage = true;
 
                                     coordinates.remove(0);
                                     sizeStackCoordinates = coordinates.size();
@@ -91,7 +89,22 @@ public class AutoClickService extends AccessibilityService {
                                 }
 
                                 if (sizeStackCoordinates > 0) {
-                                    chainedAutoClick(randomInt(150, 350), durationMs, coordinates);
+                                    if(newMessage){
+                                        new java.util.Timer().schedule(
+                                                new java.util.TimerTask() {
+                                                    @Override
+                                                    public void run() {
+                                                        if(auxVariables.isActionBarOpen())
+                                                            chainedAutoClick(randomInt(150, 400), durationMs, coordinates);
+                                                    }
+                                                },
+                                                delayBetweenMessages() * 1000
+                                        );
+                                    }
+                                    else {
+                                        if(auxVariables.isActionBarOpen())
+                                            chainedAutoClick(randomInt(150, 400), durationMs, coordinates);
+                                    }
                                 }
                                 else{
                                     auxVariables.setAutoMessengerRunningTo(false);

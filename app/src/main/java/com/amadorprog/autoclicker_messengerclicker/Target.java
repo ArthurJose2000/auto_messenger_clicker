@@ -182,7 +182,8 @@ public class Target{
 
     public void hide(){
         try {
-            mView.setVisibility(View.INVISIBLE);
+            if(mView.getVisibility() == View.VISIBLE)
+                    mView.setVisibility(View.INVISIBLE);
         } catch (Exception e) {
             Log.d("Error2",e.toString());
         }
@@ -190,7 +191,8 @@ public class Target{
 
     public void unhide(){
         try {
-            mView.setVisibility(View.VISIBLE);
+            if(mView.getVisibility() == View.INVISIBLE)
+                mView.setVisibility(View.VISIBLE);
         } catch (Exception e) {
             Log.d("Error2",e.toString());
         }

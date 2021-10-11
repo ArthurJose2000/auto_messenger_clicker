@@ -64,7 +64,6 @@ public class MainActivity extends AppCompatActivity {
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
 
-        //checkOverlayPermission();
         auxVariables = new AuxVariables();
         context = this;
         startActionBar = (Button) findViewById(R.id.button_enable_clicker);
@@ -258,7 +257,25 @@ public class MainActivity extends AppCompatActivity {
 
     public void completeGroupNamesSpinner(){
         dbListener = new DataBase(context, "messages");
-        ArrayList<String> groups = dbListener.getGroupNamesFromDataBase();
+        ArrayList<String> aux = dbListener.getGroupNamesFromDataBase();
+        ArrayList<String> groups = new ArrayList<>();
+        //verifica se há a necessidade de se reorganizar o spinner colocando o grupo previamente escolhido como o primeiro da lista
+        for(int i = 0; i < aux.size(); i++){ //seek for previous group name and put it on first
+            String previousGroup = auxVariables.returnGroupName();
+            if(aux.get(i).equals(previousGroup)){
+                groups.add(previousGroup);
+                aux.remove(i);
+                for(int j = 0; j < aux.size(); j++){
+                    groups.add(aux.get(j));
+                }
+                break;
+            }
+            else if(i == aux.size() - 1){
+                for(int j = 0; j < aux.size(); j++){
+                    groups.add(aux.get(j));
+                }
+            }
+        }
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, groups);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         groupNames.setAdapter(adapter);
@@ -336,6 +353,10 @@ public class MainActivity extends AppCompatActivity {
                 configureDelayDifference();
                 return false;
             }
+            else{
+                auxVariables.setMinDelay(timeSecondMinDelay);
+                auxVariables.setMaxDelay(timeSecondMaxDelay);
+            }
         }
         else{
             int timeSecondDelay;
@@ -349,6 +370,9 @@ public class MainActivity extends AppCompatActivity {
             if(timeSecondDelay < 1 || timeSecondDelay > 300){
                 configureDelayLimit();
                 return false;
+            }
+            else{
+                auxVariables.setDelay(timeSecondDelay);
             }
         }
 
@@ -546,7 +570,7 @@ public class MainActivity extends AppCompatActivity {
 
                     //System.out.println("-------------- > accessibilityService :: " + accessibilityService + " " + service);
                     if (accessibilityService.equalsIgnoreCase(service)) {
-                        System.out.println("We've found the correct setting - accessibility is switched on!");
+                        //System.out.println("We've found the correct setting - accessibility is switched on!");
                         return true;
                     }
                 }
