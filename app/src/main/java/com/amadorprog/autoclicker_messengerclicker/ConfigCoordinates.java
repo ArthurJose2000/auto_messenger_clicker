@@ -37,6 +37,7 @@ public class ConfigCoordinates extends AppCompatActivity {
     int enableToListen = 0; //check if user clean the typingField
     boolean enableAbortOperation = false;
     boolean enableListener = false;
+    boolean isTimeToCheckThreeLastKeys = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,7 +148,7 @@ public class ConfigCoordinates extends AppCompatActivity {
                     if (enableToListen < stringText.length()) {
                         enableToListen = stringText.length();
 
-                        if (lastCharacter == required) {
+                        if (lastCharacter == required && !isTimeToCheckThreeLastKeys) { //isTimeToCheckThreeLastKeys check if user click on '.', because requiredCharacter is set to "..." and algorithm check last char. This boolean is a "gambiarra"
                             dbListener.insertCoordinatesToDataBase(Character.toString(lastCharacter), auxVariables.returnCoordinateX(), auxVariables.returnCoordinateY());
                             count += 1;
                             char nextCharacter = characters.charAt(count);
@@ -159,12 +160,12 @@ public class ConfigCoordinates extends AppCompatActivity {
                                 requiredCharacter.setText("...");
                                 int[] testCoordinates =  dbListener.getCoordinatesFromDataBase("a");
                                 auxVariables.setTestCoordinates(testCoordinates[0], testCoordinates[1]);
+                                isTimeToCheckThreeLastKeys = true;
                             }
                         }
                         else if(lastCharacter == 'A' && auxVariables.isTimeToCheckCapsLock()){
                             typingField.setText("");
                             dbListener.insertCoordinatesToDataBase("capslock", auxVariables.returnCoordinateX(), auxVariables.returnCoordinateY());
-                            count += 1;
                             auxVariables.setCheckCapsLockToFalse();
                             auxVariables.setCheckSpecialCharToTrue();
                             clickOnSpecialCharButton();

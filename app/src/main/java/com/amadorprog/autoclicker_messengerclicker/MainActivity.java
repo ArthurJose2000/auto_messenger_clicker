@@ -82,10 +82,34 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item){
         switch (item.getItemId()){
             case R.id.menu_tutorials:
-                Intent viewIntent =
+                Intent watchTutorial =
                         new Intent("android.intent.action.VIEW",
                                 Uri.parse("https://www.youtube.com/watch?v=-Ykr-FV1-s8"));
-                startActivity(viewIntent);
+                startActivity(watchTutorial);
+                return true;
+            case R.id.menu_rate_app:
+                Intent rateApp =
+                        new Intent("android.intent.action.VIEW",
+                                Uri.parse("http://play.google.com/store/apps/details?id=" + getPackageName()));
+                startActivity(rateApp);
+                return true;
+            case R.id.menu_share_app:
+                try {
+                    Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                    shareIntent.setType("text/plain");
+                    shareIntent.putExtra(Intent.EXTRA_SUBJECT, "My application name");
+                    String shareMessage = "https://play.google.com/store/apps/details?id=" + BuildConfig.APPLICATION_ID +"\n\n";
+                    shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage);
+                    startActivity(Intent.createChooser(shareIntent, "choose one"));
+                } catch(Exception e) {
+                    //e.toString();
+                }
+                return true;
+            case R.id.menu_desktop_version:
+                Intent goToDesktopVersion =
+                        new Intent("android.intent.action.VIEW",
+                                Uri.parse("https://amadorprog.com/"));
+                startActivity(goToDesktopVersion);
                 return true;
         }
         return super.onOptionsItemSelected(item);

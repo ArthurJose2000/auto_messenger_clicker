@@ -1,81 +1,81 @@
 <resources>
     <string name="app_name">Auto Messenger</string>
-    <string name="str_msg_group">Grupo de mensagens:</string>
+    <string name="str_msg_group">Message group:</string>
     <string name="str_delay_time_simple">Delay:</string>
     <string name="hint_delay_time_simple">20</string>
     <string name="hint_delay_time_min">10</string>
     <string name="hint_delay_time_max">30</string>
-    <string name="check_random_order">Ordem aleatória de envio:</string>
-    <string name="str_delay_time_min">Delay mínimo:</string>
-    <string name="str_delay_time_max">Delay máximo:</string>
-    <string name="check_random_delay">Delay aleatório:</string>
-    <string name="str_basic_settings">Configurações básicas</string>
-    <string name="str_advanced_settings">Configurações avançadas</string>
+    <string name="check_random_order">Random order:</string>
+    <string name="str_delay_time_min">Minimum delay:</string>
+    <string name="str_delay_time_max">Maximum delay:</string>
+    <string name="check_random_delay">Random delay:</string>
+    <string name="str_basic_settings">Basic settings</string>
+    <string name="str_advanced_settings">Advanced settings</string>
     <string name="menu_tutorial">Tutorial</string>
-    <string name="menu_remove_ads">Remover anúncios</string>
-    <string name="menu_rate_app">Avaliar app</string>
-    <string name="menu_share_app">Compartilhar app</string>
-    <string name="menu_credits">Créditos</string>
-    <string name="menu_privacy_policy">Política de privacidade</string>
-    <string name="srt_add_group_name">Nome do grupo:</string>
-    <string name="button_save_message">Salvar</string>
-    <string name="generic_error">Algum erro ocorreu</string>
-    <string name="button_instr_text_message">Instruções</string>
-    <string name="str_list_group">Lista de grupos</string>
-    <string name="alert_delete_groupname_title">Atenção!</string>
-    <string name="alert_delete_groupname">Clique em OK para apagar este grupo de mensagens:</string>
-    <string name="alert_messages_editor_empty_title">Quase lá!</string>
-    <string name="alert_messages_editor_empty_message">Escreva suas mensagens.</string>
-    <string name="alert_messages_editor_empty_groupname">Nomeie seu grupo de mensagens.</string>
-    <string name="instr_messages_editor_title">Instruções</string>
-    <string name="instr_messages_editor">Pule linha para representar o término de uma mensagem, como no
-    exemplo a seguir:\n\nPrimeira mensagem a ser enviada\nSegunda mensagem\nTerceira mensagem</string>
-    <string name="instr_coordinates_config_title">Atenção</string>
-    <string name="instr_coordinates_config">Para gravar as coordenadas do teclado, arraste o alvo para
-        o símbolo correspondente ao requisitado pelo quadro acima.</string>
-    <string name="str_success_register_title">Pronto</string>
-    <string name="str_success_register">Coordenadas registradas!</string>
-    <string name="str_register_capslock">Grave a coordenada correspondente ao Caps Lock.</string>
-    <string name="str_register_special_char">Grave a coordenada relacionada aos caracteres especiais (!#1 ou ?123).</string>
-    <string name="str_register_space_bar">Grave a coordenada correspondente à barra de espaços.</string>
-    <string name="toast_error_register_capslock">Clique em CAPS LOCK.</string>
-    <string name="toast_error_register_special_char">Clique na chave !#1 ou ?123</string>
-    <string name="toast_error_register_space_bar">Clique na barra de espaços</string>
-    <string name="str_register_send_message_key_and_type_field">Registre a coordenada correspondente ao envio de mensagens e a coordenada
-        correspondente ao campo de escrita. O Auto Messenger só funcionará se estas coordenadas estiverem registradas. Clique em OK para continuar.</string>
-    <string name="str_register_send_message">Arraste o alvo para a coordenada correspondente ao envio de mensagens. Ela se encontra no teclado.</string>
-    <string name="str_register_type_field">Arraste o alvo para o campo de escrita. O teclado deve estar fechado.</string>
-    <string name="toast_coordinate_registered">Coordenada registrada</string>
-    <string name="str_other_options">Outros</string>
-    <string name="button_enable_clicker">Habilitar</string>
-    <string name="button_disable_clicker">Desabilitar</string>
-    <string name="button_tutorials">Tutoriais</string>
-    <string name="button_remove_ads">Remover anúncios</string>
-    <string name="str_version">Versão 1.0.5</string>
-    <string name="accessibility_service_description">Por favor, ative a permissão de acessibilidade para que o
-        Auto Messenger execute gestos de clique automatizados.\n\nNenhuma informação pessoal é coletada pelo Auto Messenger.</string>
+    <string name="menu_remove_ads">Remove ads</string>
+    <string name="menu_rate_app">Rate app</string>
+    <string name="menu_share_app">Share app</string>
+    <string name="menu_credits">Credits</string>
+    <string name="menu_privacy_policy">Privacy policy</string>
+    <string name="menu_desktop_version">Desktop version</string>
+    <string name="srt_add_group_name">Group name:</string>
+    <string name="button_save_message">Save</string>
+    <string name="generic_error">Some error occurred</string>
+    <string name="button_instr_text_message">Instructions</string>
+    <string name="str_list_group">Group list</string>
+    <string name="alert_delete_groupname_title">Attention!</string>
+    <string name="alert_delete_groupname">Click OK to delete this message group:</string>
+    <string name="alert_messages_editor_empty_title">Almost there!</string>
+    <string name="alert_messages_editor_empty_message">Type your messages.</string>
+    <string name="alert_messages_editor_empty_groupname">Name your message group.</string>
+    <string name="instr_messages_editor_title">Instructions</string>
+    <string name="instr_messages_editor">Skip line to represent the end of a message, as in
+    example bellow:\n\nFirst message\nSecond message\nThird message</string>
+    <string name="instr_coordinates_config_title">Attention</string>
+    <string name="instr_coordinates_config">To record keyboard coordinates, drag the target to
+        the symbol corresponding to the one requested by the table above.</string>
+    <string name="str_success_register_title">Ready</string>
+    <string name="str_success_register">Registered coordinates!</string>
+    <string name="str_register_capslock">Record the coordinate corresponding to Caps Lock.</string>
+    <string name="str_register_special_char">Write the coordinate related to special characters (!#1 or ?123).</string>
+    <string name="str_register_space_bar">Write the coordinate corresponding to the spacebar.</string>
+    <string name="toast_error_register_capslock">Click CAPS LOCK.</string>
+    <string name="toast_error_register_special_char">Click !#1 or ?123</string>
+    <string name="toast_error_register_space_bar">Click spacebar</string>
+    <string name="str_register_send_message_key_and_type_field">Register the coordinate corresponding to the sending of messages and the coordinate
+        corresponding to the writing field. Auto Messenger will only work if these coordinates are registered. It is recommended to watch the tutorial. Click OK to continue.</string>
+    <string name="str_register_send_message">Drag the target to the coordinate corresponding to sending messages. she is at the keyboard.</string>
+    <string name="str_register_type_field">Drag the target into the writing field. The keyboard must be closed.</string>
+    <string name="toast_coordinate_registered">Registered coordinate</string>
+    <string name="str_other_options">Others</string>
+    <string name="button_enable_clicker">Enable</string>
+    <string name="button_disable_clicker">Disable</string>
+    <string name="button_tutorials">Tutorials</string>
+    <string name="button_remove_ads">Remove adds</string>
+    <string name="str_version">Version 1.0.8</string>
+    <string name="accessibility_service_description">Please enable accessibility permission for the
+        Auto Messenger perform automated click gestures.\n\nNo personal information is collected by Auto Messenger.</string>
     <string name="accessibility_service_name">Auto Messenger</string>
-    <string name="button_config_coordinates">Coordenadas</string>
-    <string name="str_enable_clicker">Habilitar Auto Messenger</string>
-    <string name="str_start_config_coordinates">Iniciar</string>
-    <string name="str_abort_config_coordinates">Abortar</string>
-    <string name="str_warning">Aviso</string>
-    <string name="str_enable_accessibility_service">Ative a permissão de acessibilidade para que o
-        Auto Messenger execute gestos de clique automatizados.</string>
-    <string name="str_enable_overlay_permission">Ative também a permissão de navegabilidade sobre outros apps para que o Auto Messenger possa atuar.</string>
+    <string name="button_config_coordinates">Coordinates</string>
+    <string name="str_enable_clicker">Enable Auto Messenger</string>
+    <string name="str_start_config_coordinates">Start</string>
+    <string name="str_abort_config_coordinates">Abort</string>
+    <string name="str_warning">Warning</string>
+    <string name="str_enable_accessibility_service">Enable accessibility permission for the
+        Auto Messenger perform automated click gestures.</string>
+    <string name="str_enable_overlay_permission">Also enable draw over other apps permission so that Auto Messenger can act.</string>
 
-    <string name="error_alert_title">Quase lá!</string>
-    <string name="error_messages_db">Suas mensagens ainda não estão configuradas!</string>
-    <string name="error_coordinates_db">Suas coordenadas ainda não estão configuradas!</string>
-    <string name="error_delay_limit">O delay deve estar dentro da faixa de 1 segundo a 300 segundos.</string>
-    <string name="error_delay_max_min">O delay máximo deve ser maior que o delay mínimo.</string>
-    <string name="error_send_message_button">Configure a coordenada correspondente ao envio de mensagens.
-    Clique no botão relacionado na barra de ação e configure.</string>
-    <string name="error_type_field">Configure a coordenada correspondente ao campo de escrita.
-    Clique no botão relacionado na barra de ação e configure.</string>
+    <string name="error_alert_title">Almost there!</string>
+    <string name="error_messages_db">Your messages are not set up yet!</string>
+    <string name="error_coordinates_db">Your coordinates are not set yet!</string>
+    <string name="error_delay_limit">The delay must be within the range of 1 second to 300 seconds.</string>
+    <string name="error_delay_max_min">The maximum delay must be greater than the minimum delay.</string>
+    <string name="error_send_message_button">Configure the coordinate corresponding to sending messages.
+    Click the related button on the action bar and configure it.</string>
+    <string name="error_type_field">Set the coordinate corresponding to the writing field.
+    Click the related button on the action bar and configure it.</string>
 
-    <string name="alert_backlight_duration">Certifique-se de que a duração da sua luz de fundo está configurada
-        com tempo suficiente para que o Auto Messenger trabalhe. Clique em OK para continuar.</string>
+    <string name="alert_backlight_duration">Make sure your backlight duration is set with enough time for Auto Messenger to work. Click OK to continue.</string>
 
     <string-array name="unity_time">
         <item>s</item>

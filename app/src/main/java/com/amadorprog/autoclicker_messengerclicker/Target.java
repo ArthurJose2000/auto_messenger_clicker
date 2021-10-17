@@ -89,14 +89,14 @@ public class Target{
                                 coordinates.get(1).add(auxVariables.returnTestCoordinateX());
                                 coordinates.get(1).add(auxVariables.returnTestCoordinateY());
                                 auxVariables.setCoordinates(coordX, coordY);
-                                AutoClickService.instance.chainedAutoClick(100, 100, coordinates); //teste correspondente à letra 'a'. Verifica se 'a' maiúsculo é digitado.
+                                AutoClickService.instance.chainedAutoClick(150, 100, coordinates); //teste correspondente à letra 'a'. Verifica se 'a' maiúsculo é digitado.
                                 mParams.x = 0;
                                 mParams.y = 0;
                                 mWindowManager.updateViewLayout(mView, mParams);
                             }
                             else{
                                 auxVariables.setArtificialTouchToTrue();
-                                AutoClickService.instance.simpleAutoClick(100, 100, coordX, coordY);
+                                AutoClickService.instance.simpleAutoClick(150, 100, coordX, coordY);
                                 auxVariables.setCoordinates(coordX, coordY);
                                 mParams.x = 0;
                                 mParams.y = 0;

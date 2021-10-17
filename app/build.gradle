@@ -9,8 +9,8 @@ android {
         applicationId "com.amadorprog.autoclicker_messengerclicker"
         minSdk 24
         targetSdk 31
-        versionCode 5
-        versionName "1.0.5"
+        versionCode 8
+        versionName "1.0.8"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

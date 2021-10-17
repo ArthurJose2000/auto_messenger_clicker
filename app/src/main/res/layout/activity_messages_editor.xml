@@ -14,17 +14,30 @@
         android:layout_height="match_parent"
         tools:context=".MessagesEditorActivity">
 
+        <com.google.android.gms.ads.AdView
+            android:id="@+id/adView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="16dp"
+            app:adSize="BANNER"
+            app:adUnitId="ca-app-pub-8798131674672035/8129620586"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"></com.google.android.gms.ads.AdView>
+
         <TextView
             android:id="@+id/str_add_group_name"
             android:layout_width="170dp"
             android:layout_height="34dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="22dp"
             android:text="@string/srt_add_group_name"
             android:textColor="@color/black"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/adView2" />
 
         <EditText
             android:id="@+id/text_add_group_name"
@@ -37,7 +50,7 @@
             android:textColor="@color/black"
             android:textSize="20sp"
             app:layout_constraintStart_toEndOf="@+id/str_add_group_name"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/adView2" />
 
         <EditText
             android:id="@+id/text_message"
@@ -84,7 +97,9 @@
             android:layout_width="86dp"
             android:layout_height="51dp"
             android:layout_marginTop="32dp"
+            android:layout_marginBottom="32dp"
             android:onClick="deleteGroup"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/button_instr_text_message"
