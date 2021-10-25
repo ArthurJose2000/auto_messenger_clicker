@@ -330,6 +330,13 @@ public class MainActivity extends AppCompatActivity {
         startActivity(viewIntent);
     }
 
+    public void goToDesktopVersion(View view){
+        Intent goToDesktopVersion =
+                new Intent("android.intent.action.VIEW",
+                        Uri.parse("https://amadorprog.com/"));
+        startActivity(goToDesktopVersion);
+    }
+
     public boolean enableToPlay(){
         //Check if messages db is empty
         dbListener = new DataBase(context, "messages");
@@ -503,25 +510,6 @@ public class MainActivity extends AppCompatActivity {
                     }
                 })
                 .show();
-    }
-
-
-    // method for starting the service
-    public void startService(){
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            // check if the user has already granted
-            // the Draw over other apps permission
-            if(Settings.canDrawOverlays(this)) {
-                // start the service based on the android version
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    startForegroundService(new Intent(this, ForegroundService.class));
-                } else {
-                    startService(new Intent(this, ForegroundService.class));
-                }
-            }
-        }else{
-            startService(new Intent(this, ForegroundService.class));
-        }
     }
 
     public void checkPermissions(){

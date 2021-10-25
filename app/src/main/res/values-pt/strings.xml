@@ -19,6 +19,7 @@
     <string name="menu_credits">Créditos</string>
     <string name="menu_privacy_policy">Política de privacidade</string>
     <string name="menu_desktop_version">Versão Desktop</string>
+    <string name="button_desktop_version">Versão para PC</string>
     <string name="srt_add_group_name">Nome do grupo:</string>
     <string name="button_save_message">Salvar</string>
     <string name="generic_error">Algum erro ocorreu</string>
@@ -53,7 +54,7 @@
     <string name="button_disable_clicker">Desabilitar</string>
     <string name="button_tutorials">Tutoriais</string>
     <string name="button_remove_ads">Remover anúncios</string>
-    <string name="str_version">Versão 1.0.8</string>
+    <string name="str_version">Versão 1.0.9</string>
     <string name="accessibility_service_description">Por favor, ative a permissão de acessibilidade para que o
         Auto Messenger execute gestos de clique automatizados.\n\nNenhuma informação pessoal é coletada pelo Auto Messenger.</string>
     <string name="accessibility_service_name">Auto Messenger</string>

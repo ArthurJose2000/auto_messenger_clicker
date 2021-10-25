@@ -21,7 +21,6 @@ public class AutoClickService extends AccessibilityService {
         instance = this;
         context = this;
         auxVariables = new AuxVariables();
-        //isTimeToClickInSendMessageButton = false;
     }
 
     @Override
@@ -54,20 +53,23 @@ public class AutoClickService extends AccessibilityService {
 
                         if(auxVariables.isAutoMessengerRunning()) {
 
-                            if (auxVariables.isTypeFieldWasClicked()) {
+                            if (auxVariables.isTypeFieldWasClicked()) { //type field was clicked
                                 try {
-                                    Thread.sleep(2500);
+                                    Thread.currentThread().sleep(2000);
                                 } catch (InterruptedException e) {
                                     e.printStackTrace();
                                 }
                                 auxVariables.setTypeFieldWasClicked(false);
-                            } else if (coordinates.size() == 2) {
-                                try {
-                                    Thread.sleep(1500);
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                }
                             }
+//                            else if (coordinates.size() == 2) {
+//                                try {
+//                                    System.out.println(coordinates.get(0).get(0));
+//                                    System.out.println(coordinates.get(0).get(1));
+//                                    Thread.currentThread().sleep(1500);
+//                                } catch (InterruptedException e) {
+//                                    e.printStackTrace();
+//                                }
+//                            }
 
                             coordinates.remove(0);
                             sizeStackCoordinates = coordinates.size();
@@ -76,7 +78,7 @@ public class AutoClickService extends AccessibilityService {
 
                                 boolean newMessage = false;
 
-                                while (coordinates.get(0).get(0) == 0 && coordinates.get(0).get(1) == 0) {
+                                while (coordinates.get(0).get(0) == 0 && coordinates.get(0).get(1) == 0) {  //coordinates.get(0).get(0) == 0 && coordinates.get(0).get(1) == 0 -> '\n'
 
                                     newMessage = true;
 
@@ -85,7 +87,7 @@ public class AutoClickService extends AccessibilityService {
                                     if (sizeStackCoordinates == 0)
                                         break;
 
-                                    auxVariables.setTypeFieldWasClicked(true); //will be clicked
+                                    auxVariables.setTypeFieldWasClicked(true); //type field will be clicked
                                 }
 
                                 if (sizeStackCoordinates > 0) {
@@ -111,7 +113,7 @@ public class AutoClickService extends AccessibilityService {
                                 }
                             }
                         }
-                        else{
+                        else{  //here auto messenger is not running but the coordinates register is running (double click)
                             coordinates.remove(0);
                             sizeStackCoordinates = coordinates.size();
                             if (sizeStackCoordinates > 0) {

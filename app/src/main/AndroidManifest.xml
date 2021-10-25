@@ -31,12 +31,7 @@
                 android:name="android.accessibilityservice"
                 android:resource="@xml/config_accessibility_service"/>
         </service>
-<!--        <service android:name=".GlobalTouchService" >-->
-<!--        </service>-->
-<!--        <service-->
-<!--            android:name=".ForegroundService"-->
-<!--            android:enabled="true"-->
-<!--            android:exported="true"/>-->
+
         <activity
             android:name="com.amadorprog.autoclicker_messengerclicker.ListMessagesGroupActivity"
             android:exported="true" />

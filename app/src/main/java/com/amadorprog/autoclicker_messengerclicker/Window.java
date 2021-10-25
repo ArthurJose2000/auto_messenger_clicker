@@ -215,6 +215,7 @@ public class Window {
         int sizeStackCoordinates = 0;
         int[] auxCoordinates;
         ArrayList<ArrayList<Integer>> coordinates = new ArrayList<ArrayList<Integer>>();
+        boolean lastKeyIsASpecialChar = false;
 
         coordinates.add(new ArrayList<Integer>());
         auxCoordinates = dbListener.getCoordinatesFromDataBase("typefield");
@@ -247,12 +248,6 @@ public class Window {
                         coordinates.get(sizeStackCoordinates).add(auxCoordinates[0]);
                         coordinates.get(sizeStackCoordinates).add(auxCoordinates[1]);
                         sizeStackCoordinates++;
-
-//                        coordinates.add(new ArrayList<Integer>());
-//                        auxCoordinates = dbListener.getCoordinatesFromDataBase("capslock");
-//                        coordinates.get(sizeStackCoordinates).add(auxCoordinates[0]);
-//                        coordinates.get(sizeStackCoordinates).add(auxCoordinates[1]);
-//                        sizeStackCoordinates++;
                     }
                     else{
                         coordinates.add(new ArrayList<Integer>());
@@ -298,11 +293,13 @@ public class Window {
                     sizeStackCoordinates++;
                 }
                 else{
-                    coordinates.add(new ArrayList<Integer>());
-                    auxCoordinates = dbListener.getCoordinatesFromDataBase("specialchar");
-                    coordinates.get(sizeStackCoordinates).add(auxCoordinates[0]);
-                    coordinates.get(sizeStackCoordinates).add(auxCoordinates[1]);
-                    sizeStackCoordinates++;
+                    if(lastKeyIsASpecialChar == false) {
+                        coordinates.add(new ArrayList<Integer>());
+                        auxCoordinates = dbListener.getCoordinatesFromDataBase("specialchar");
+                        coordinates.get(sizeStackCoordinates).add(auxCoordinates[0]);
+                        coordinates.get(sizeStackCoordinates).add(auxCoordinates[1]);
+                        sizeStackCoordinates++;
+                    }
 
                     coordinates.add(new ArrayList<Integer>());
                     auxCoordinates = dbListener.getCoordinatesFromDataBase(Character.toString(key));
@@ -310,11 +307,29 @@ public class Window {
                     coordinates.get(sizeStackCoordinates).add(auxCoordinates[1]);
                     sizeStackCoordinates++;
 
-                    coordinates.add(new ArrayList<Integer>());
-                    auxCoordinates = dbListener.getCoordinatesFromDataBase("specialchar");
-                    coordinates.get(sizeStackCoordinates).add(auxCoordinates[0]);
-                    coordinates.get(sizeStackCoordinates).add(auxCoordinates[1]);
-                    sizeStackCoordinates++;
+                    if(i + 1 < sizeMessage){  //check if next key not is a special char
+                        char auxKey = message.charAt(i + 1);
+                        auxCoordinates = dbListener.getCoordinatesFromDataBase(Character.toString(auxKey));
+                        if(auxCoordinates == null || Character.isLetter(auxKey) || auxKey == '\n' || auxKey == ' '){
+                            coordinates.add(new ArrayList<Integer>());
+                            auxCoordinates = dbListener.getCoordinatesFromDataBase("specialchar");
+                            coordinates.get(sizeStackCoordinates).add(auxCoordinates[0]);
+                            coordinates.get(sizeStackCoordinates).add(auxCoordinates[1]);
+                            sizeStackCoordinates++;
+                            lastKeyIsASpecialChar = false; //next key not is a special char
+                        }
+                        else{
+                            lastKeyIsASpecialChar = true; //next key is a special char
+                        }
+                    }
+                    else{  //end of messages
+                        coordinates.add(new ArrayList<Integer>());
+                        auxCoordinates = dbListener.getCoordinatesFromDataBase("specialchar");
+                        coordinates.get(sizeStackCoordinates).add(auxCoordinates[0]);
+                        coordinates.get(sizeStackCoordinates).add(auxCoordinates[1]);
+                        sizeStackCoordinates++;
+                        lastKeyIsASpecialChar = false; //next key not is a special char
+                    }
                 }
             }
         }
