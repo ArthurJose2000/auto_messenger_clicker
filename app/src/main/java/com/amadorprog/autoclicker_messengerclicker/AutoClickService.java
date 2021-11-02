@@ -13,6 +13,8 @@ public class AutoClickService extends AccessibilityService {
 
     Context context;
     AuxVariables auxVariables;
+    ArrayList<ArrayList<Integer>> defaultCoordinates;
+    ArrayList<ArrayList<Integer>> auxCoordinates;
     public static AutoClickService instance;
 
     @Override
@@ -39,7 +41,19 @@ public class AutoClickService extends AccessibilityService {
     }
 
     public void simpleAutoClick(int startTimeMs, int durationMs, int x, int y) {
-        dispatchGesture(gestureDescription(startTimeMs, durationMs, x, y), null, null);
+        dispatchGesture(gestureDescription(startTimeMs, durationMs, x, y),
+            new GestureResultCallback() {
+                @Override
+                public void onCompleted(GestureDescription gestureDescription) {
+                    super.onCompleted(gestureDescription);
+                }
+                @Override
+                public void onCancelled(GestureDescription gestureDescription) {
+                    super.onCancelled(gestureDescription);
+                    Toast toast = Toast.makeText(context, getString(R.string.generic_error), Toast.LENGTH_LONG);
+                    toast.show();
+                }
+            }, null);
     }
 
     public void chainedAutoClick(int startTimeMs, int durationMs, ArrayList<ArrayList<Integer>> coordinates) {
@@ -53,23 +67,16 @@ public class AutoClickService extends AccessibilityService {
 
                         if(auxVariables.isAutoMessengerRunning()) {
 
-                            if (auxVariables.isTypeFieldWasClicked()) { //type field was clicked
-                                try {
-                                    Thread.currentThread().sleep(2000);
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
+                            if(!auxVariables.isDefaultCoordinatesObtained() && auxVariables.isInfiniteLoop()) {
+                                auxCoordinates = new ArrayList<ArrayList<Integer>>();
+                                defaultCoordinates = new ArrayList<ArrayList<Integer>>();
+                                for(int j = 0; j < coordinates.size(); j++){
+                                    defaultCoordinates.add(new ArrayList<Integer>());
+                                    defaultCoordinates.get(j).add(coordinates.get(j).get(0));
+                                    defaultCoordinates.get(j).add(coordinates.get(j).get(1));
                                 }
-                                auxVariables.setTypeFieldWasClicked(false);
+                                auxVariables.setDefaultCoordinatesObtainedTo(true);
                             }
-//                            else if (coordinates.size() == 2) {
-//                                try {
-//                                    System.out.println(coordinates.get(0).get(0));
-//                                    System.out.println(coordinates.get(0).get(1));
-//                                    Thread.currentThread().sleep(1500);
-//                                } catch (InterruptedException e) {
-//                                    e.printStackTrace();
-//                                }
-//                            }
 
                             coordinates.remove(0);
                             sizeStackCoordinates = coordinates.size();
@@ -78,37 +85,49 @@ public class AutoClickService extends AccessibilityService {
 
                                 boolean newMessage = false;
 
-                                while (coordinates.get(0).get(0) == 0 && coordinates.get(0).get(1) == 0) {  //coordinates.get(0).get(0) == 0 && coordinates.get(0).get(1) == 0 -> '\n'
+                                if (coordinates.get(0).get(0) == 0 && coordinates.get(0).get(1) == 0) {  //coordinates.get(0).get(0) == 0 && coordinates.get(0).get(1) == 0 -> '\n'
 
                                     newMessage = true;
+                                    auxVariables.setTypeFieldWasClicked(true); //type field will be clicked
 
                                     coordinates.remove(0);
-                                    sizeStackCoordinates = coordinates.size();
-                                    if (sizeStackCoordinates == 0)
-                                        break;
-
-                                    auxVariables.setTypeFieldWasClicked(true); //type field will be clicked
                                 }
 
-                                if (sizeStackCoordinates > 0) {
-                                    if(newMessage){
-                                        new java.util.Timer().schedule(
-                                                new java.util.TimerTask() {
-                                                    @Override
-                                                    public void run() {
-                                                        if(auxVariables.isActionBarOpen())
-                                                            chainedAutoClick(randomInt(150, 400), durationMs, coordinates);
-                                                    }
-                                                },
-                                                delayBetweenMessages() * 1000
-                                        );
-                                    }
-                                    else {
-                                        if(auxVariables.isActionBarOpen())
-                                            chainedAutoClick(randomInt(150, 400), durationMs, coordinates);
+                                if(newMessage){
+                                    new java.util.Timer().schedule(
+                                            new java.util.TimerTask() {
+                                                @Override
+                                                public void run() {
+                                                    if(auxVariables.isActionBarOpen())
+                                                        chainedAutoClick(randomInt(90, 350), durationMs, coordinates); //this click will be on typing field
+                                                }
+                                            },
+                                            delayBetweenMessages() * 1000
+                                    );
+                                }
+                                else {
+                                    if(auxVariables.isActionBarOpen()){
+                                        if(auxVariables.isTypeFieldWasClicked()) { //type field was clicked -> wait for the keyboard to open
+                                            chainedAutoClick(2000, durationMs, coordinates);
+                                            auxVariables.setTypeFieldWasClicked(false);
+                                        }
+                                        else{
+                                            chainedAutoClick(randomInt(90, 350), durationMs, coordinates);
+                                        }
                                     }
                                 }
-                                else{
+                            }
+                            else{
+                                if(auxVariables.isInfiniteLoop()){ //Infinite repeat
+                                    for(int j = 0; j < defaultCoordinates.size(); j++){
+                                        auxCoordinates.add(new ArrayList<Integer>());
+                                        auxCoordinates.get(j).add(defaultCoordinates.get(j).get(0));
+                                        auxCoordinates.get(j).add(defaultCoordinates.get(j).get(1));
+                                    }
+                                    auxVariables.setTypeFieldWasClicked(true); //will be clicked
+                                    chainedAutoClick(delayBetweenMessages() * 1000, 100, auxCoordinates);
+                                }
+                                else {
                                     auxVariables.setAutoMessengerRunningTo(false);
                                 }
                             }

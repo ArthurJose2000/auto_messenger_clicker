@@ -7,9 +7,10 @@
     <string name="hint_delay_time_min">10</string>
     <string name="hint_delay_time_max">30</string>
     <string name="check_random_order">Ordem aleatória de envio:</string>
-    <string name="str_delay_time_min">Delay mínimo:</string>
-    <string name="str_delay_time_max">Delay máximo:</string>
+    <string name="str_delay_time_min">Mínimo:</string>
+    <string name="str_delay_time_max">Máximo:</string>
     <string name="check_random_delay">Delay aleatório:</string>
+    <string name="check_infinite_loop">Repetição infinita:</string>
     <string name="str_basic_settings">Configurações básicas</string>
     <string name="str_advanced_settings">Configurações avançadas</string>
     <string name="menu_tutorial">Tutorial</string>
@@ -54,7 +55,7 @@
     <string name="button_disable_clicker">Desabilitar</string>
     <string name="button_tutorials">Tutoriais</string>
     <string name="button_remove_ads">Remover anúncios</string>
-    <string name="str_version">Versão 1.0.9</string>
+    <string name="str_version">Versão 1.1.0</string>
     <string name="accessibility_service_description">Por favor, ative a permissão de acessibilidade para que o
         Auto Messenger execute gestos de clique automatizados.\n\nNenhuma informação pessoal é coletada pelo Auto Messenger.</string>
     <string name="accessibility_service_name">Auto Messenger</string>

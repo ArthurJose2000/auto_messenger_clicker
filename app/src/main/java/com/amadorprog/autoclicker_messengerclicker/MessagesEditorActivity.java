@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -38,6 +39,8 @@ public class MessagesEditorActivity extends AppCompatActivity {
         editMessage = (EditText) findViewById(R.id.text_message);
         editGroupName = (EditText) findViewById(R.id.text_add_group_name);
 
+        setEditMessageField();
+
         bundle = getIntent().getExtras();
         checkBundleContent();
 
@@ -61,6 +64,22 @@ public class MessagesEditorActivity extends AppCompatActivity {
         }
     }
 
+    public void setEditMessageField() {
+        editMessage.setOnTouchListener(new View.OnTouchListener() {
+            public boolean onTouch(View v, MotionEvent event) {
+                if (editMessage.hasFocus()) {
+                    v.getParent().requestDisallowInterceptTouchEvent(true);
+                    switch (event.getAction() & MotionEvent.ACTION_MASK){
+                        case MotionEvent.ACTION_SCROLL:
+                            v.getParent().requestDisallowInterceptTouchEvent(false);
+                            return true;
+                    }
+                }
+                return false;
+            }
+        });
+    }
+
     public void saveMessage(View view){
         String message = editMessage.getText().toString();
         String groupName = editGroupName.getText().toString();
@@ -72,16 +91,27 @@ public class MessagesEditorActivity extends AppCompatActivity {
             groupNameIsEmptyAlert();
         }
         else if(isUpdate(groupName)){
+            message = removeBreakLineFromTheEnd(message);
             dbListener.deleteGroupName(groupName);
             dbListener.insertMessagesToDataBase(message, groupName);
             dbListener = null;
             finish();
         }
         else {
+            message = removeBreakLineFromTheEnd(message);
             dbListener.insertMessagesToDataBase(message, groupName);
             dbListener = null;
             finish();
         }
+    }
+
+    public String removeBreakLineFromTheEnd(String s){
+        while(s.charAt(s.length() - 1) == '\n'){
+            s = s.substring(0, s.length() - 1);
+            if(s.length() < 2)
+                break;
+        }
+        return s;
     }
 
     public void messageIsEmptyAlert(){

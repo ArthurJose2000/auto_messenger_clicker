@@ -1,5 +1,6 @@
 package com.amadorprog.autoclicker_messengerclicker;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -11,6 +12,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -25,11 +27,16 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.FullScreenContentCallback;
+import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
+import com.google.android.gms.ads.interstitial.InterstitialAd;
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -43,10 +50,13 @@ public class MainActivity extends AppCompatActivity {
     AuxVariables auxVariables;
     String groupName;
     EditText delay, maxDelay, minDelay;
-    CheckBox randomOrder, randomDelay;
+    CheckBox randomOrder, randomDelay, infiniteLoop;
     Window window;
     Button startActionBar;
+    public int counterRestarts;
     private AdView mAdView;
+    private InterstitialAd mInterstitialAd;
+    boolean userVisitedAnotherActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,13 +70,17 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        mAdView = findViewById(R.id.adView);
+        loadInterstitialAd();
+
         AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
+        mAdView = findViewById(R.id.adView);
+        mAdView.loadAd(adRequest); //banner
 
         auxVariables = new AuxVariables();
         context = this;
         startActionBar = (Button) findViewById(R.id.button_enable_clicker);
+        counterRestarts = 0;
+        userVisitedAnotherActivity = false;
         setPreviousOptions();
         checkPermissions();
     }
@@ -118,13 +132,69 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onRestart(){
         super.onRestart();
+        counterRestarts++;
+        if(counterRestarts % 6 == 5 && userVisitedAnotherActivity == true)
+            showInterstitialAd();
+
         checkPreviousOptions();
-        checkPermissions();
+        //checkPermissions();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+    }
+
+    public void loadInterstitialAd(){
+        AdRequest adRequest = new AdRequest.Builder().build();
+        InterstitialAd.load(this,"ca-app-pub-8798131674672035/3977598488", adRequest, //interstitial
+                new InterstitialAdLoadCallback() {
+                    @Override
+                    public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
+                        // The mInterstitialAd reference will be null until
+                        // an ad is loaded.
+                        mInterstitialAd = interstitialAd;
+                        //Log.i(TAG, "onAdLoaded");
+                        mInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback(){
+                            @Override
+                            public void onAdDismissedFullScreenContent() {
+                                // Called when fullscreen content is dismissed.
+                                //Log.d("TAG", "The ad was dismissed.");
+                            }
+
+                            @Override
+                            public void onAdFailedToShowFullScreenContent(AdError adError) {
+                                // Called when fullscreen content failed to show.
+                                Log.d("TAG", "The ad failed to show.");
+                            }
+
+                            @Override
+                            public void onAdShowedFullScreenContent() {
+                                // Called when fullscreen content is shown.
+                                // Make sure to set your reference to null so you don't
+                                // show it a second time.
+                                mInterstitialAd = null;
+                                //Log.d("TAG", "The ad was shown.");
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                        // Handle the error
+                        Log.i("TAG", loadAdError.getMessage());
+                        mInterstitialAd = null;
+                    }
+                });
+
+    }
+
+    public void showInterstitialAd(){
+        if (mInterstitialAd != null) {
+            mInterstitialAd.show(MainActivity.this);
+        } else {
+            Log.d("TAG", "The interstitial ad wasn't ready yet.");
+        }
     }
 
     public void setPreviousOptions(){
@@ -153,6 +223,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         timeUnityMaxDelay = (Spinner) findViewById(R.id.spinner_unit_time_2);
+        timeUnityMaxDelay.setEnabled(false);
         timeUnityMaxDelay.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -164,6 +235,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         timeUnityMinDelay = (Spinner) findViewById(R.id.spinner_unit_time_3);
+        timeUnityMinDelay.setEnabled(false);
         timeUnityMinDelay.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -242,6 +314,18 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        infiniteLoop = (CheckBox) findViewById(R.id.checkbox_infinite_loop);
+        infiniteLoop.setChecked(auxVariables.isInfiniteLoop());
+        infiniteLoop.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b)
+                    auxVariables.setInfiniteLoopToTrue();
+                else
+                    auxVariables.setInfiniteLoopToFalse();
+            }
+        });
+
         randomDelay = (CheckBox) findViewById(R.id.checkbox_random_delay);
         randomDelay.setChecked(auxVariables.isRandomDelay());
         randomDelay.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -250,12 +334,18 @@ public class MainActivity extends AppCompatActivity {
                 if(b) {
                     auxVariables.setRandomDelayToTrue();
                     delay.setEnabled(false);
+                    timeUnityDelay.setEnabled(false);
+                    timeUnityMaxDelay.setEnabled(true);
+                    timeUnityMinDelay.setEnabled(true);
                     maxDelay.setEnabled(true);
                     minDelay.setEnabled(true);
                 }
                 else {
                     auxVariables.setRandomDelayToFalse();
                     delay.setEnabled(true);
+                    timeUnityDelay.setEnabled(true);
+                    timeUnityMaxDelay.setEnabled(false);
+                    timeUnityMinDelay.setEnabled(false);
                     maxDelay.setEnabled(false);
                     minDelay.setEnabled(false);
                 }
@@ -273,10 +363,11 @@ public class MainActivity extends AppCompatActivity {
         auxVariables.setTimeUnityMaxDelay(timeUnityMaxDelay.getSelectedItem().toString());
         auxVariables.setTimeUnityMinDelay(timeUnityMinDelay.getSelectedItem().toString());
         delay.setText(Integer.toString(auxVariables.returnDelay()));
-        maxDelay.setText(Integer.toString(auxVariables.returnMaxDelay()));
-        minDelay.setText(Integer.toString(auxVariables.returnMinDelay()));
         randomOrder.setChecked(auxVariables.isRandomOrder());
         randomDelay.setChecked(auxVariables.isRandomDelay());
+        infiniteLoop.setChecked(auxVariables.isInfiniteLoop());
+        maxDelay.setText(Integer.toString(auxVariables.returnMaxDelay()));
+        minDelay.setText(Integer.toString(auxVariables.returnMinDelay()));
     }
 
     public void completeGroupNamesSpinner(){
@@ -307,11 +398,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void openActivityListMessagesGroup(View view){
+        userVisitedAnotherActivity = true;
         Intent intent = new Intent(this, ListMessagesGroupActivity.class);
         startActivity(intent);
     }
 
     public void openActivityConfigCoordinates(View view) {
+        userVisitedAnotherActivity = true;
         Intent intent = new Intent(this, ConfigCoordinates.class);
         startActivity(intent);
     }
@@ -324,6 +417,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void openYouTubeTutorial(View view){
+        userVisitedAnotherActivity = true;
         Intent viewIntent =
                 new Intent("android.intent.action.VIEW",
                         Uri.parse("https://www.youtube.com/watch?v=-Ykr-FV1-s8"));
@@ -331,6 +425,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void goToDesktopVersion(View view){
+        userVisitedAnotherActivity = true;
         Intent goToDesktopVersion =
                 new Intent("android.intent.action.VIEW",
                         Uri.parse("https://amadorprog.com/"));
@@ -447,6 +542,16 @@ public class MainActivity extends AppCompatActivity {
                         window = new Window(context);
                         window.open();
                         auxVariables.setActionBarIsOpen(true);
+
+//                        delay.setEnabled(false);
+//                        randomOrder.setEnabled(false);
+//                        randomDelay.setEnabled(false);
+//                        infiniteLoop.setEnabled(false);
+//                        maxDelay.setEnabled(false);
+//                        minDelay.setEnabled(false);
+//                        timeUnityDelay.setEnabled(false);
+//                        timeUnityMaxDelay.setEnabled(false);
+//                        timeUnityMinDelay.setEnabled(false);
                     }
                 })
                 .show();
@@ -523,7 +628,7 @@ public class MainActivity extends AppCompatActivity {
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             Intent myIntent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
-                            //myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(myIntent);
                         }
                     })

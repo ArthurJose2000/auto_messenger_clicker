@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.EditText;
 
 import static android.content.Context.WINDOW_SERVICE;
 
@@ -25,13 +26,12 @@ public class Window {
     private WindowManager mWindowManager;
     private LayoutInflater layoutInflater;
     AuxVariables auxVariables;
-    Target target;
     Target targetSendMessage;
     Target targetTypeField;
     DataBase dbListener;
-    //String groupName;
-    int delay, maxDelay, minDelay;
-    boolean randomOrder, randomDelay;
+
+    //views of main activity
+    EditText delay;
 
     public Window(Context context){
         this.context = context;
@@ -186,6 +186,7 @@ public class Window {
     }
 
     public void runAlgorithm() {
+        auxVariables.setDefaultCoordinatesObtainedTo(false); //used to infinite loop
         auxVariables.setAutoMessengerRunningTo(true);
         auxVariables.setTypeFieldWasClicked(true); //will be clicked
         dbListener = new DataBase(context, "messages");
@@ -204,6 +205,7 @@ public class Window {
                 randomMessages += messagesStack.get(randomIndex);
                 messagesStack.remove(randomIndex);
             }
+            randomMessages = randomMessages.substring(0, randomMessages.length() - 1); //remove last '\n' because is unnecessary
             typeMessages(randomMessages);
         } else {
             typeMessages(messages);

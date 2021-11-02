@@ -12,6 +12,7 @@ public class AuxVariables {
     public static volatile int minDelay = 20;
     public static volatile boolean randomOrder = false;
     public static volatile boolean randomDelay = false;
+    public static volatile boolean infiniteLoop = false;
 
     public void setTimeUnityDelay(String un){ timeUnityDelay = un; }
     public String returnTimeUnityDelay(){ return timeUnityDelay; };
@@ -53,6 +54,14 @@ public class AuxVariables {
         randomOrder = false;
     }
     public boolean isRandomOrder(){ return randomOrder; }
+
+    public void setInfiniteLoopToTrue(){
+        infiniteLoop = true;
+    }
+    public void setInfiniteLoopToFalse(){
+        infiniteLoop = false;
+    }
+    public boolean isInfiniteLoop(){ return infiniteLoop; }
 
     public void setRandomDelayToTrue(){
         randomDelay = true;
@@ -111,21 +120,6 @@ public class AuxVariables {
 
     public boolean isArtificialTouch() {
         return artificialTouch;
-    }
-
-    //////////Finished gesture////////////////////////
-    public static volatile boolean finishedGesture = false;
-
-    public void setFinishedGestureToTrue(){
-        finishedGesture = true;
-    }
-
-    public void setFinishedGestureToFalse(){
-        finishedGesture = false;
-    }
-
-    public boolean isFinishedGesture() {
-        return finishedGesture;
     }
 
     //////////Check Caps Lock////////////////////////
@@ -236,4 +230,15 @@ public class AuxVariables {
 
     public static final int CONFIGTYPEFIELDCOORDINATE = 3; //update type field coordinate
 
+
+    //////////Boolean for check if default coordinates (messages) was obtained////////////////////////
+    public static volatile boolean defaultCoordinatesObtained = false;
+
+    public void setDefaultCoordinatesObtainedTo(boolean b){
+        defaultCoordinatesObtained = b;
+    }
+
+    public boolean isDefaultCoordinatesObtained() {
+        return defaultCoordinatesObtained;
+    }
 }
