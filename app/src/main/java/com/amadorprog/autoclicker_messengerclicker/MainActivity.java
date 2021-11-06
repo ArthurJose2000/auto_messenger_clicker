@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
     private AdView mAdView;
     private InterstitialAd mInterstitialAd;
     boolean userVisitedAnotherActivity;
+    boolean accessibilityServiceDialogIsOpen, canDrawOverOtherAppsDialogIsOpen;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +82,8 @@ public class MainActivity extends AppCompatActivity {
         startActionBar = (Button) findViewById(R.id.button_enable_clicker);
         counterRestarts = 0;
         userVisitedAnotherActivity = false;
+        accessibilityServiceDialogIsOpen = false;
+        canDrawOverOtherAppsDialogIsOpen = false;
         setPreviousOptions();
         checkPermissions();
     }
@@ -133,11 +136,16 @@ public class MainActivity extends AppCompatActivity {
     public void onRestart(){
         super.onRestart();
         counterRestarts++;
-        if(counterRestarts % 6 == 5 && userVisitedAnotherActivity == true)
+        if(counterRestarts % 5 == 4 && userVisitedAnotherActivity == true)
             showInterstitialAd();
 
         checkPreviousOptions();
-        //checkPermissions();
+
+        if(!accessibilityServiceDialogIsOpen)
+            checkAccessibilityPermission();
+
+        if(!canDrawOverOtherAppsDialogIsOpen)
+            checkOverlayPermission();
     }
 
     @Override
@@ -618,7 +626,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void checkPermissions(){
-        if(!isAccessibilitySettingsOn()){
+        if(!checkAccessibilitySettings()){
+            accessibilityServiceDialogIsOpen = true;
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
             String instruction_title = getString(R.string.str_warning);
             String instruction = getString(R.string.str_enable_accessibility_service);
@@ -627,6 +636,7 @@ public class MainActivity extends AppCompatActivity {
                     .setMessage(instruction)
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
+                            accessibilityServiceDialogIsOpen = false;
                             Intent myIntent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
                             myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(myIntent);
@@ -636,13 +646,14 @@ public class MainActivity extends AppCompatActivity {
                     .show();
         }
         else{
-            isOverlayPermissionOn();
+            checkOverlayPermission();
         }
     }
 
-    public void isOverlayPermissionOn(){
+    public void checkOverlayPermission(){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (!Settings.canDrawOverlays(this)) {
+                canDrawOverOtherAppsDialogIsOpen = true;
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                 String instruction_title = getString(R.string.str_warning);
                 String instruction = getString(R.string.str_enable_overlay_permission);
@@ -651,6 +662,7 @@ public class MainActivity extends AppCompatActivity {
                         .setMessage(instruction)
                         .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
+                                canDrawOverOtherAppsDialogIsOpen = false;
                                 Intent myIntent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + getPackageName()));
                                 startActivity(myIntent);
                             }
@@ -661,7 +673,29 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public boolean isAccessibilitySettingsOn() {
+    public void checkAccessibilityPermission(){
+        if(!checkAccessibilitySettings()){
+            accessibilityServiceDialogIsOpen = true;
+            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+            String instruction_title = getString(R.string.str_warning);
+            String instruction = getString(R.string.str_enable_accessibility_service);
+            builder
+                    .setTitle(instruction_title)
+                    .setMessage(instruction)
+                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            accessibilityServiceDialogIsOpen = false;
+                            Intent myIntent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
+                            myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(myIntent);
+                        }
+                    })
+                    .setCancelable(false)
+                    .show();
+        }
+    }
+
+    public boolean checkAccessibilitySettings() {
         int accessibilityEnabled = 0;
         final String service = getPackageName() + "/" + AutoClickService.class.getCanonicalName();
         try {
@@ -671,7 +705,7 @@ public class MainActivity extends AppCompatActivity {
             //System.out.println("accessibilityEnabled = " + accessibilityEnabled);
         } catch (Settings.SettingNotFoundException e) {
             //System.out.println("Error finding setting, default accessibility to not found: "
-                    //+ e.getMessage());
+            //+ e.getMessage());
         }
         TextUtils.SimpleStringSplitter mStringColonSplitter = new TextUtils.SimpleStringSplitter(':');
 
@@ -693,7 +727,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         } //else {
-            //System.out.println("***ACCESSIBILITY IS DISABLED***");
+        //System.out.println("***ACCESSIBILITY IS DISABLED***");
         //}
         //System.out.println("ganhamo");
         return false;

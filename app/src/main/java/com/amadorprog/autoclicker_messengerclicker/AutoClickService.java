@@ -20,9 +20,6 @@ public class AutoClickService extends AccessibilityService {
     @Override
     public void onCreate() {
         super.onCreate();
-        instance = this;
-        context = this;
-        auxVariables = new AuxVariables();
     }
 
     @Override
@@ -33,6 +30,9 @@ public class AutoClickService extends AccessibilityService {
     @Override
     public void onServiceConnected() {
         super.onServiceConnected();
+        instance = this;
+        context = this;
+        auxVariables = new AuxVariables();
     }
 
     @Override
