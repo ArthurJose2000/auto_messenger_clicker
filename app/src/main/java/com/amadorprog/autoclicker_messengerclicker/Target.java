@@ -16,7 +16,13 @@ import java.util.ArrayList;
 
 public class Target{
 
-    // declaring required variables
+    final int CONFIGCOORDINATES = 1; //config all coordinates
+    final int CONFIGSENDMESSAGECOORDINATE = 2; //update send message coordinate
+    final int CONFIGTYPINGFIELDCOORDINATE = 3; //update type field coordinate
+    int coordX, coordY;
+    boolean artificialTouch = false;
+    boolean isTimeToCheckCapsLock = false;
+    boolean isTimeToCheckSpecialChar = false;
     private Context context;
     private View mView;
     private WindowManager.LayoutParams mParams;
@@ -24,24 +30,14 @@ public class Target{
     private LayoutInflater layoutInflater;
     DataBase dbListener;
 
-    AuxVariables auxVariables;
-
-    public Target(Context context, int situationType) {
+    public Target(Context context, int situation) {
         this.context = context;
-        auxVariables = new AuxVariables();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            // set the layout parameters of the window
             mParams = new WindowManager.LayoutParams(
-                    // Shrink the window to wrap the content rather
-                    // than filling the screen
                     WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT,
-                    // Display it on top of other application windows
                     WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
-                    // Don't let it grab the input focus
                     WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
-                    // Make the underlying application window visible
-                    // through any transparent parts
                     PixelFormat.TRANSLUCENT);
         }
         else{
@@ -52,16 +48,11 @@ public class Target{
                     PixelFormat.TRANSLUCENT);
         }
 
-        // getting a LayoutInflater
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        // inflating the view with the custom layout we created
         mView = layoutInflater.inflate(R.layout.action_target, null);
-        // set onClickListener on the remove button, which removes
-        // the view from the window
-
 
         mView.findViewById(R.id.target).setOnTouchListener(new View.OnTouchListener(){
-            int initX, initY, coordX, coordY;
+            int initX, initY;
             float initTouchX, initTouchY;
 
             @Override
@@ -74,59 +65,48 @@ public class Target{
                         initTouchY = motionEvent.getRawY();
                         return true;
                     case MotionEvent.ACTION_UP:
+                        artificialTouch = true;
                         coordX = (int) motionEvent.getRawX();
                         coordY = (int) motionEvent.getRawY();
                         mParams.x = initX + (coordX - (int) initTouchX);
                         mParams.y = initY + (coordY - (int) initTouchY);
-                        if(situationType == auxVariables.CONFIGCOORDINATES) {
-                            if(auxVariables.isTimeToCheckCapsLock() || auxVariables.isTimeToCheckSpecialChar()){
-                                auxVariables.setArtificialTouchToTrue();
+                        if(situation == CONFIGCOORDINATES) {
+                            if(isTimeToCheckCapsLock || isTimeToCheckSpecialChar){
                                 ArrayList<ArrayList<Integer>> coordinates = new ArrayList<ArrayList<Integer>>();
                                 coordinates.add(new ArrayList<Integer>());
                                 coordinates.get(0).add(coordX);
                                 coordinates.get(0).add(coordY);
                                 coordinates.add(new ArrayList<Integer>());
-                                coordinates.get(1).add(auxVariables.returnTestCoordinateX());
-                                coordinates.get(1).add(auxVariables.returnTestCoordinateY());
-                                auxVariables.setCoordinates(coordX, coordY);
-                                AutoClickService.instance.chainedAutoClick(150, 100, coordinates); //teste correspondente à letra 'a'. Verifica se 'a' maiúsculo é digitado.
-                                mParams.x = 0;
-                                mParams.y = 0;
-                                mWindowManager.updateViewLayout(mView, mParams);
+                                dbListener = new DataBase(context, "coordinates");
+                                int[] testCoordinates =  dbListener.getCoordinatesFromDataBase("a");
+                                coordinates.get(1).add(testCoordinates[0]);
+                                coordinates.get(1).add(testCoordinates[1]);
+                                dbListener = null;
+                                AutoClickService.instance.doubleAutoClick(150, 100, coordinates); //teste correspondente à letra 'a'. Verifica se 'a' maiúsculo é digitado.
                             }
                             else{
-                                auxVariables.setArtificialTouchToTrue();
                                 AutoClickService.instance.simpleAutoClick(150, 100, coordX, coordY);
-                                auxVariables.setCoordinates(coordX, coordY);
-                                mParams.x = 0;
-                                mParams.y = 0;
-                                mWindowManager.updateViewLayout(mView, mParams);
                             }
                         }
-                        else if(situationType == auxVariables.CONFIGSENDMESSAGECOORDINATE) {
+                        else if(situation == CONFIGSENDMESSAGECOORDINATE) {
                             dbListener = new DataBase(context, "coordinates");
                             dbListener.updateKeyCoordinate("sendfield", coordX, coordY);
-                            mParams.x = 0;
-                            mParams.y = 0;
-                            mWindowManager.updateViewLayout(mView, mParams);
-                            auxVariables.setSendMessageRegister(true);
                             Toast toast = Toast.makeText(context, context.getResources().getString(R.string.toast_coordinate_registered), Toast.LENGTH_LONG);
                             toast.show();
                             hide();
                             dbListener = null;
                         }
-                        else if(situationType == auxVariables.CONFIGTYPEFIELDCOORDINATE) {
+                        else if(situation == CONFIGTYPINGFIELDCOORDINATE) {
                             dbListener = new DataBase(context, "coordinates");
-                            dbListener.updateKeyCoordinate("typefield", coordX, coordY);
-                            mParams.x = 0;
-                            mParams.y = 0;
-                            mWindowManager.updateViewLayout(mView, mParams);
-                            auxVariables.setTypeFieldRegister(true);
+                            dbListener.updateKeyCoordinate("typingfield", coordX, coordY);
                             Toast toast = Toast.makeText(context, context.getResources().getString(R.string.toast_coordinate_registered), Toast.LENGTH_LONG);
                             toast.show();
                             hide();
                             dbListener = null;
                         }
+                        mParams.x = 0;
+                        mParams.y = 0;
+                        mWindowManager.updateViewLayout(mView, mParams);
                         return true;
                     case MotionEvent.ACTION_MOVE:
                         mParams.x = initX + (int) (motionEvent.getRawX() - initTouchX);
@@ -148,7 +128,6 @@ public class Target{
     }
 
     public void open() {
-
         try {
             // check if the view is already
             // inflated or present in the window
@@ -164,7 +143,6 @@ public class Target{
     }
 
     public void close() {
-
         try {
             // remove the view from the window
             ((WindowManager)context.getSystemService(WINDOW_SERVICE)).removeView(mView);
@@ -196,6 +174,28 @@ public class Target{
         } catch (Exception e) {
             Log.d("Error2",e.toString());
         }
+    }
+
+    public void insertCoordinateToDataBase(String string){
+        dbListener = new DataBase(context, "coordinates");
+        dbListener.insertCoordinatesToDataBase(string, coordX, coordY);
+        dbListener = null;
+    }
+
+    public boolean isArtificialTouch(){
+        return artificialTouch;
+    }
+
+    public void setArtificialTouchToFalse(){
+        artificialTouch = false;
+    }
+
+    public void setIsTimeToCheckCapsLock(boolean b){
+        isTimeToCheckCapsLock = b;
+    }
+
+    public void setIsTimeToCheckSpecialChar(boolean b){
+        isTimeToCheckSpecialChar = b;
     }
 
 }

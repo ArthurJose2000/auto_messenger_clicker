@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.EditText;
 
 import static android.content.Context.WINDOW_SERVICE;
 
@@ -25,21 +24,27 @@ public class Window {
     private WindowManager.LayoutParams mParams;
     private WindowManager mWindowManager;
     private LayoutInflater layoutInflater;
-    AuxVariables auxVariables;
     Target targetSendMessage;
     Target targetTypeField;
     DataBase dbListener;
+    final int CONFIGSENDMESSAGECOORDINATE = 2; //update send message coordinate
+    final int CONFIGTYPINGFIELDCOORDINATE = 3; //update type field coordinate
 
-    //views of main activity
-    EditText delay;
+    boolean isRandomDelay;
+    int delay;
+    int maxDelay;
+    int minDelay;
+    boolean isInfiniteLoop;
+    boolean isRandomOrder;
+    String groupName;
+
 
     public Window(Context context){
         this.context = context;
-        auxVariables = new AuxVariables();
-        targetSendMessage = new Target(context, auxVariables.CONFIGSENDMESSAGECOORDINATE);
+        targetSendMessage = new Target(context, CONFIGSENDMESSAGECOORDINATE);
         targetSendMessage.open();
         targetSendMessage.hide();
-        targetTypeField = new Target(context, auxVariables.CONFIGTYPEFIELDCOORDINATE);
+        targetTypeField = new Target(context, CONFIGTYPINGFIELDCOORDINATE);
         targetTypeField.open();
         targetTypeField.hide();
 
@@ -74,7 +79,7 @@ public class Window {
         mView.findViewById(R.id.button_play_clicker).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(auxVariables.isSendMessageRegistered() && auxVariables.isTypeFieldRegistered())
+                if(isSendingCoordinatesRegistered())
                     runAlgorithm();
             }
         });
@@ -145,7 +150,7 @@ public class Window {
 
     }
 
-    public void open() {
+    public void open(boolean random_delay, int delay_s, int maxDelay_s, int minDelay_s, boolean infiniteLoop, boolean random_order, String group) {
 
         try {
             // check if the view is already
@@ -155,10 +160,29 @@ public class Window {
                     mWindowManager.addView(mView, mParams);
                 }
             }
+            AutoClickService.instance.setActionBarStatus(true);
+            isRandomDelay = random_delay;
+            delay = delay_s;
+            maxDelay = maxDelay_s;
+            minDelay = minDelay_s;
+            isInfiniteLoop = infiniteLoop;
+            isRandomOrder = random_order;
+            groupName = group;
         } catch (Exception e) {
             Log.d("Error1",e.toString());
         }
 
+    }
+
+    public boolean isOpen(){
+        boolean open = false;
+        try {
+            if(mView.getWindowToken() != null && mView.getParent() != null)
+                open = true;
+        } catch (Exception e){
+            Log.d("Error1",e.toString());
+        }
+        return open;
     }
 
     public void close() {
@@ -172,7 +196,7 @@ public class Window {
             //((ViewGroup)mView.getParent()).removeAllViews();
 
             //new target are created very time the enable action bar button is clicked (if action bar is closed)
-            auxVariables.setActionBarIsOpen(false);
+            AutoClickService.instance.setActionBarStatus(false);
             targetSendMessage.close();
             targetSendMessage = null;
             targetTypeField.close();
@@ -186,13 +210,12 @@ public class Window {
     }
 
     public void runAlgorithm() {
-        auxVariables.setDefaultCoordinatesObtainedTo(false); //used to infinite loop
-        auxVariables.setAutoMessengerRunningTo(true);
-        auxVariables.setTypeFieldWasClicked(true); //will be clicked
+        AutoClickService.instance.setDefaultCoordinatesObtained(false); //used to infinite loop
+        AutoClickService.instance.setTypingFieldClickStatus(true); //will be clicked
         dbListener = new DataBase(context, "messages");
-        String messages = dbListener.getMessageFromDataBase(auxVariables.returnGroupName());
+        String messages = dbListener.getMessageFromDataBase(groupName);
         dbListener = null;
-        if (auxVariables.isRandomOrder()) {
+        if (isRandomOrder) {
             String randomMessages = "";
             Scanner scanner = new Scanner(messages);
             ArrayList<String> messagesStack = new ArrayList<String>();
@@ -220,7 +243,7 @@ public class Window {
         boolean lastKeyIsASpecialChar = false;
 
         coordinates.add(new ArrayList<Integer>());
-        auxCoordinates = dbListener.getCoordinatesFromDataBase("typefield");
+        auxCoordinates = dbListener.getCoordinatesFromDataBase("typingfield");
         coordinates.get(sizeStackCoordinates).add(auxCoordinates[0]);
         coordinates.get(sizeStackCoordinates).add(auxCoordinates[1]);
         sizeStackCoordinates++;
@@ -280,7 +303,7 @@ public class Window {
                 sizeStackCoordinates++; // a quantidade de cliques é igual à sizeStackCoordinates - (as ocorrências nesse if)
 
                 coordinates.add(new ArrayList<Integer>());
-                auxCoordinates = dbListener.getCoordinatesFromDataBase("typefield");
+                auxCoordinates = dbListener.getCoordinatesFromDataBase("typingfield");
                 coordinates.get(sizeStackCoordinates).add(auxCoordinates[0]);
                 coordinates.get(sizeStackCoordinates).add(auxCoordinates[1]);
                 sizeStackCoordinates++;
@@ -343,7 +366,22 @@ public class Window {
         sizeStackCoordinates++;
 
         dbListener = null;
-        AutoClickService.instance.chainedAutoClick(500, 100, coordinates);
+        AutoClickService.instance.chainedAutoClick(500, 100, coordinates, isRandomDelay, delay, maxDelay, minDelay, isInfiniteLoop);
+    }
+
+    public boolean isSendingCoordinatesRegistered(){
+        //Check if send message button and typing field are registered
+        dbListener = new DataBase(context, "coordinates");
+
+        int[] coordinates = dbListener.getCoordinatesFromDataBase("sendfield");
+        if(coordinates[0] == 0 || coordinates[1] == 0)
+            return false;
+
+        coordinates = dbListener.getCoordinatesFromDataBase("typingfield");
+        if(coordinates[0] == 0 || coordinates[1] == 0)
+            return false;
+
+        return true;
     }
 
 }

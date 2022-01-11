@@ -26,7 +26,6 @@ public class ConfigCoordinates extends AppCompatActivity {
     EditText typingField;
     TextView requiredCharacter;
     Button startButton;
-    AuxVariables auxVariables;
     Target target;
     DataBase dbListener;
     String characters = "qwertyuiopasdfghjklzxcvbnm1234567890+/_!@#$%*()-'\":,?.XYZ"; //X -> relacionado ao Caps Lock, Y -> relacionado ao Special Char, Z -> relacionado ao Space Bar
@@ -38,6 +37,10 @@ public class ConfigCoordinates extends AppCompatActivity {
     boolean enableAbortOperation = false;
     boolean enableListener = false;
     boolean isTimeToCheckThreeLastKeys = false;
+    boolean isTimeToCheckCapsLock = false;
+    boolean isTimeToCheckSpecialChar = false;
+    boolean isTimeToCheckSpaceBar = false;
+    final int CONFIGCOORDINATES = 1; //config all coordinates
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +53,6 @@ public class ConfigCoordinates extends AppCompatActivity {
         typingField = (EditText) findViewById(R.id.text_edit_config_coordinate);
         requiredCharacter = (TextView) findViewById(R.id.str_view_key_config);
 
-        auxVariables = new AuxVariables();
         context = this;
     }
 
@@ -99,7 +101,7 @@ public class ConfigCoordinates extends AppCompatActivity {
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             count = 0;
-                            target = new Target(context, auxVariables.CONFIGCOORDINATES);
+                            target = new Target(context, CONFIGCOORDINATES);
                             dbListener = new DataBase(context, "coordinates");
                             dbListener.deleteAllCoordinates();
                             target.open();
@@ -125,10 +127,9 @@ public class ConfigCoordinates extends AppCompatActivity {
             enableListener = false;
             enableAbortOperation = false;
             target.close();
-            target = null;
-            auxVariables.setCheckCapsLockToFalse();
-            auxVariables.setCheckSpecialCharToFalse();
-            auxVariables.setCheckSpaceBarToFalse();
+            isTimeToCheckCapsLock = false;
+            isTimeToCheckSpecialChar = false;
+            isTimeToCheckSpaceBar = false;
             typingField.setText("");
             dbListener = null;
         }
@@ -139,8 +140,8 @@ public class ConfigCoordinates extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable text) {
-                if(text.length() != 0 & enableListener & auxVariables.isArtificialTouch()) { //check if user clean totally field text and if listener is enable
-                    auxVariables.setArtificialTouchToFalse();
+                if(text.length() != 0 & enableListener & target.isArtificialTouch()) { //check if user clean totally field text and if listener is enable and if is artificial touch
+                    target.setArtificialTouchToFalse();
                     String stringText = text.toString();
                     char lastCharacter = stringText.charAt(stringText.length() - 1);
                     char required = requiredCharacter.getText().charAt(0);
@@ -149,59 +150,61 @@ public class ConfigCoordinates extends AppCompatActivity {
                         enableToListen = stringText.length();
 
                         if (lastCharacter == required && !isTimeToCheckThreeLastKeys) { //isTimeToCheckThreeLastKeys check if user click on '.', because requiredCharacter is set to "..." and algorithm check last char. This boolean is a "gambiarra"
-                            dbListener.insertCoordinatesToDataBase(Character.toString(lastCharacter), auxVariables.returnCoordinateX(), auxVariables.returnCoordinateY());
+                            target.insertCoordinateToDataBase(Character.toString(lastCharacter));
                             count += 1;
                             char nextCharacter = characters.charAt(count);
                             requiredCharacter.setText(Character.toString(nextCharacter));
                             requiredCharacter.setTextColor(Color.BLACK);
                             if(count == sizeCharacters - 3){ //time to check capslock
                                 clickOnCapsLockButton();
-                                auxVariables.setCheckCapsLockToTrue();
+                                isTimeToCheckCapsLock = true;
+                                target.setIsTimeToCheckCapsLock(true);
                                 requiredCharacter.setText("...");
-                                int[] testCoordinates =  dbListener.getCoordinatesFromDataBase("a");
-                                auxVariables.setTestCoordinates(testCoordinates[0], testCoordinates[1]);
                                 isTimeToCheckThreeLastKeys = true;
                             }
                         }
-                        else if(lastCharacter == 'A' && auxVariables.isTimeToCheckCapsLock()){
+                        else if(lastCharacter == 'A' && isTimeToCheckCapsLock){
                             typingField.setText("");
-                            dbListener.insertCoordinatesToDataBase("capslock", auxVariables.returnCoordinateX(), auxVariables.returnCoordinateY());
-                            auxVariables.setCheckCapsLockToFalse();
-                            auxVariables.setCheckSpecialCharToTrue();
+                            target.insertCoordinateToDataBase("capslock");
+                            isTimeToCheckCapsLock = false;
+                            target.setIsTimeToCheckCapsLock(false);
+                            isTimeToCheckSpecialChar = true;
+                            target.setIsTimeToCheckSpecialChar(true);
                             clickOnSpecialCharButton();
                         }
-                        else if(!Character.isLetter(lastCharacter) && auxVariables.isTimeToCheckSpecialChar()){
+                        else if(!Character.isLetter(lastCharacter) && isTimeToCheckSpecialChar){
                             typingField.setText("");
-                            dbListener.insertCoordinatesToDataBase("specialchar", auxVariables.returnCoordinateX(), auxVariables.returnCoordinateY());
-                            auxVariables.setCheckSpecialCharToFalse();
-                            auxVariables.setCheckSpaceBarToTrue();
+                            target.insertCoordinateToDataBase("specialchar");
+                            isTimeToCheckSpecialChar = false;
+                            target.setIsTimeToCheckSpecialChar(false);
+                            isTimeToCheckSpaceBar = true;
                             clickOnSpaceBarButton();
                         }
-                        else if(lastCharacter == ' ' && auxVariables.isTimeToCheckSpaceBar()){
+                        else if(lastCharacter == ' ' && isTimeToCheckSpaceBar){
                             typingField.setText("");
-                            dbListener.insertCoordinatesToDataBase("spacebar", auxVariables.returnCoordinateX(), auxVariables.returnCoordinateY());
-                            auxVariables.setCheckSpaceBarToFalse();
+                            target.insertCoordinateToDataBase("spacebar");
+                            isTimeToCheckSpaceBar = false;
                             requiredCharacter.setText("OK!");
                             requiredCharacter.setTextColor(Color.BLACK);
                             startButton.setText(R.string.str_start_config_coordinates);
                             startButton.setBackgroundColor(Color.parseColor("#FF03DAC5"));
                             dbListener.insertCoordinatesToDataBase("sendfield", 0, 0); //pré-configuração das coordenadas da tecla de envio
-                            dbListener.insertCoordinatesToDataBase("typefield", 0, 0); //pré-configuração das coordenadas do campo de escrita
+                            dbListener.insertCoordinatesToDataBase("typingfield", 0, 0); //pré-configuração das coordenadas do campo de escrita
                             dbListener.insertCoordinatesToDataBase("breakline", 0, 0); //configuração da coordenada que representa a quebra de linha
                             successRegister();
                         }
                         else {
-                            if(auxVariables.isTimeToCheckCapsLock()){
+                            if(isTimeToCheckCapsLock){
                                 typingField.setText("");
                                 Toast toast = Toast.makeText(context, context.getResources().getString(R.string.toast_error_register_capslock), Toast.LENGTH_LONG);
                                 toast.show();
                             }
-                            else if(auxVariables.isTimeToCheckSpecialChar()){
+                            else if(isTimeToCheckSpecialChar){
                                 typingField.setText("");
                                 Toast toast = Toast.makeText(context, context.getResources().getString(R.string.toast_error_register_special_char), Toast.LENGTH_LONG);
                                 toast.show();
                             }
-                            else if(auxVariables.isTimeToCheckSpaceBar()){
+                            else if(isTimeToCheckSpaceBar){
                                 typingField.setText("");
                                 Toast toast = Toast.makeText(context, context.getResources().getString(R.string.toast_error_register_space_bar), Toast.LENGTH_LONG);
                                 toast.show();

@@ -55,7 +55,7 @@
     <string name="button_disable_clicker">Desabilitar</string>
     <string name="button_tutorials">Tutoriais</string>
     <string name="button_remove_ads">Remover anúncios</string>
-    <string name="str_version">Versão 1.1.5</string>
+    <string name="str_version">Versão 1.1.6</string>
     <string name="accessibility_service_description">Por favor, ative a permissão de acessibilidade para que o
         Auto Messenger execute gestos de clique automatizados.\n\nNenhuma informação pessoal é coletada pelo Auto Messenger.</string>
     <string name="accessibility_service_name">Auto Messenger</string>
@@ -85,4 +85,14 @@
         <item>s</item>
         <item>min</item>
     </string-array>
+
+    <!--prominent disclosure-->
+    <string name="srt_prominent_disclosure">Accessibility Service</string>
+    <string name="srt_prominent_disclosure_message">A principal funcionalidade deste app utiliza a API Accessibility Service para simular cliques.
+    \n\n1. Por que este app necessita utilizar esta ferramenta?\nNós utilizamos este método para simular cliques.\n\n
+    2. Este app coleta alguma informação pessoal ou outros dados sensíveis utilizando esta API?
+    \nNenhuma informação pessoal do usuário ou outra informação sensível é coletada.\n\nSe você concorda em utilizá-la, clique em Concordo.</string>
+    <string name="srt_prominent_disclosure_positive_button_title">Concordo</string>
+    <string name="srt_prominent_disclosure_negative_button_title">Discordo</string>
+
 </resources>

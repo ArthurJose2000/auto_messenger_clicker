@@ -47,8 +47,6 @@ public class MainActivity extends AppCompatActivity {
     Spinner groupNames, timeUnityDelay, timeUnityMaxDelay, timeUnityMinDelay;
     DataBase dbListener;
     Context context;
-    AuxVariables auxVariables;
-    String groupName;
     EditText delay, maxDelay, minDelay;
     CheckBox randomOrder, randomDelay, infiniteLoop;
     Window window;
@@ -58,6 +56,18 @@ public class MainActivity extends AppCompatActivity {
     private InterstitialAd mInterstitialAd;
     boolean userVisitedAnotherActivity;
     boolean accessibilityServiceDialogIsOpen, canDrawOverOtherAppsDialogIsOpen;
+    String timeUnityDelay_s = "s";
+    String timeUnityMaxDelay_s = "s";
+    String timeUnityMinDelay_s = "s";
+
+    //this variables will be send to auto click service
+    boolean isRandomDelay = false;
+    int delay_s = 20;
+    int maxDelay_s = 30;
+    int minDelay_s = 20;
+    boolean isInfiniteLoop = false;
+    boolean isRandomOrder = false;
+    String groupName = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +87,6 @@ public class MainActivity extends AppCompatActivity {
         mAdView = findViewById(R.id.adView);
         mAdView.loadAd(adRequest); //banner
 
-        auxVariables = new AuxVariables();
         context = this;
         startActionBar = (Button) findViewById(R.id.button_enable_clicker);
         counterRestarts = 0;
@@ -85,7 +94,10 @@ public class MainActivity extends AppCompatActivity {
         accessibilityServiceDialogIsOpen = false;
         canDrawOverOtherAppsDialogIsOpen = false;
         setPreviousOptions();
-        checkPermissions();
+        //checkPermissions();
+        prominentDisclosure();
+
+        window = new Window(context);
     }
 
     @Override
@@ -212,7 +224,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 groupName = groupNames.getItemAtPosition(i).toString();
-                auxVariables.setGroupName(groupName);
             }
 
             @Override
@@ -223,7 +234,7 @@ public class MainActivity extends AppCompatActivity {
         timeUnityDelay.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                auxVariables.setTimeUnityDelay(timeUnityDelay.getSelectedItem().toString());
+                timeUnityDelay_s = timeUnityDelay.getSelectedItem().toString();
             }
 
             @Override
@@ -235,7 +246,7 @@ public class MainActivity extends AppCompatActivity {
         timeUnityMaxDelay.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                auxVariables.setTimeUnityMaxDelay(timeUnityMaxDelay.getSelectedItem().toString());
+                timeUnityMaxDelay_s = timeUnityMaxDelay.getSelectedItem().toString();
             }
 
             @Override
@@ -247,7 +258,7 @@ public class MainActivity extends AppCompatActivity {
         timeUnityMinDelay.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                auxVariables.setTimeUnityMinDelay(timeUnityMinDelay.getSelectedItem().toString());
+                timeUnityMinDelay_s = timeUnityMinDelay.getSelectedItem().toString();
             }
 
             @Override
@@ -255,7 +266,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         delay = (EditText) findViewById(R.id.num_delay_time_simple);
-        delay.setText(Integer.toString(auxVariables.returnDelay()));
+        delay.setText(Integer.toString(delay_s));
         delay.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
@@ -266,14 +277,14 @@ public class MainActivity extends AppCompatActivity {
             public void afterTextChanged(Editable editable) {
                 String s = editable.toString();
                 if(s.length() > 0 && s.length() < 10)
-                    auxVariables.setDelay(Integer.parseInt(editable.toString()));
+                    delay_s = Integer.parseInt(editable.toString());
                 else
-                    auxVariables.setDelay(0);
+                    delay_s = 0;
             }
         });
 
         maxDelay = (EditText) findViewById(R.id.num_delay_time_max);
-        maxDelay.setText(Integer.toString(auxVariables.returnMaxDelay()));
+        maxDelay.setText(Integer.toString(maxDelay_s));
         maxDelay.setEnabled(false);
         maxDelay.addTextChangedListener(new TextWatcher() {
             @Override
@@ -285,14 +296,14 @@ public class MainActivity extends AppCompatActivity {
             public void afterTextChanged(Editable editable) {
                 String s = editable.toString();
                 if(s.length() > 0 && s.length() < 10)
-                    auxVariables.setMaxDelay(Integer.parseInt(editable.toString()));
+                    maxDelay_s = Integer.parseInt(editable.toString());
                 else
-                    auxVariables.setMaxDelay(0);
+                    maxDelay_s = 0;
             }
         });
 
         minDelay = (EditText) findViewById(R.id.num_delay_time_min);
-        minDelay.setText(Integer.toString(auxVariables.returnMinDelay()));
+        minDelay.setText(Integer.toString(minDelay_s));
         minDelay.setEnabled(false);
         minDelay.addTextChangedListener(new TextWatcher() {
             @Override
@@ -304,43 +315,43 @@ public class MainActivity extends AppCompatActivity {
             public void afterTextChanged(Editable editable) {
                 String s = editable.toString();
                 if(s.length() > 0 && s.length() < 10)
-                    auxVariables.setMinDelay(Integer.parseInt(editable.toString()));
+                    minDelay_s = Integer.parseInt(editable.toString());
                 else
-                    auxVariables.setMinDelay(0);
+                    minDelay_s = 0;
             }
         });
 
         randomOrder = (CheckBox) findViewById(R.id.checkbox_random_order);
-        randomOrder.setChecked(auxVariables.isRandomOrder());
+        randomOrder.setChecked(isRandomOrder);
         randomOrder.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if(b)
-                    auxVariables.setRandomOrderToTrue();
+                    isRandomOrder = true;
                 else
-                    auxVariables.setRandomOrderToFalse();
+                    isRandomOrder = false;
             }
         });
 
         infiniteLoop = (CheckBox) findViewById(R.id.checkbox_infinite_loop);
-        infiniteLoop.setChecked(auxVariables.isInfiniteLoop());
+        infiniteLoop.setChecked(isInfiniteLoop);
         infiniteLoop.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if(b)
-                    auxVariables.setInfiniteLoopToTrue();
+                    isInfiniteLoop = true;
                 else
-                    auxVariables.setInfiniteLoopToFalse();
+                    isInfiniteLoop = false;
             }
         });
 
         randomDelay = (CheckBox) findViewById(R.id.checkbox_random_delay);
-        randomDelay.setChecked(auxVariables.isRandomDelay());
+        randomDelay.setChecked(isRandomDelay);
         randomDelay.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if(b) {
-                    auxVariables.setRandomDelayToTrue();
+                    isRandomDelay = true;
                     delay.setEnabled(false);
                     timeUnityDelay.setEnabled(false);
                     timeUnityMaxDelay.setEnabled(true);
@@ -349,7 +360,7 @@ public class MainActivity extends AppCompatActivity {
                     minDelay.setEnabled(true);
                 }
                 else {
-                    auxVariables.setRandomDelayToFalse();
+                    isRandomDelay = false;
                     delay.setEnabled(true);
                     timeUnityDelay.setEnabled(true);
                     timeUnityMaxDelay.setEnabled(false);
@@ -364,27 +375,28 @@ public class MainActivity extends AppCompatActivity {
     public void checkPreviousOptions(){
         completeGroupNamesSpinner();
         if(groupNames.getSelectedItem() != null)
-            auxVariables.setGroupName(groupNames.getSelectedItem().toString());
+            groupName = groupNames.getSelectedItem().toString();
         else
-            auxVariables.setGroupName("");
-        auxVariables.setTimeUnityDelay(timeUnityDelay.getSelectedItem().toString());
-        auxVariables.setTimeUnityMaxDelay(timeUnityMaxDelay.getSelectedItem().toString());
-        auxVariables.setTimeUnityMinDelay(timeUnityMinDelay.getSelectedItem().toString());
-        delay.setText(Integer.toString(auxVariables.returnDelay()));
-        randomOrder.setChecked(auxVariables.isRandomOrder());
-        randomDelay.setChecked(auxVariables.isRandomDelay());
-        infiniteLoop.setChecked(auxVariables.isInfiniteLoop());
-        maxDelay.setText(Integer.toString(auxVariables.returnMaxDelay()));
-        minDelay.setText(Integer.toString(auxVariables.returnMinDelay()));
+            groupName = "";
+
+//        auxVariables.setTimeUnityDelay(timeUnityDelay.getSelectedItem().toString());
+//        auxVariables.setTimeUnityMaxDelay(timeUnityMaxDelay.getSelectedItem().toString());
+//        auxVariables.setTimeUnityMinDelay(timeUnityMinDelay.getSelectedItem().toString());
+//        delay.setText(Integer.toString(auxVariables.returnDelay()));
+//        randomOrder.setChecked(auxVariables.isRandomOrder());
+//        randomDelay.setChecked(auxVariables.isRandomDelay());
+//        infiniteLoop.setChecked(AutoClickService.instance.isInfiniteLoop());
+//        maxDelay.setText(Integer.toString(auxVariables.returnMaxDelay()));
+//        minDelay.setText(Integer.toString(auxVariables.returnMinDelay()));
     }
 
     public void completeGroupNamesSpinner(){
         dbListener = new DataBase(context, "messages");
         ArrayList<String> aux = dbListener.getGroupNamesFromDataBase();
         ArrayList<String> groups = new ArrayList<>();
-        //verifica se há a necessidade de se reorganizar o spinner colocando o grupo previamente escolhido como o primeiro da lista
+        //check if need reorganize the spinner
         for(int i = 0; i < aux.size(); i++){ //seek for previous group name and put it on first
-            String previousGroup = auxVariables.returnGroupName();
+            String previousGroup = groupName;
             if(aux.get(i).equals(previousGroup)){
                 groups.add(previousGroup);
                 aux.remove(i);
@@ -418,7 +430,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void openActionBar(View view) throws IOException, InterruptedException {
-        if(!auxVariables.isActionBarOpen()) {
+        if(!window.isOpen()) {
             if (enableToPlay())
                 backlightAlert();
         }
@@ -462,20 +474,20 @@ public class MainActivity extends AppCompatActivity {
         dbListener = null;
 
         //Check delay situation
-        if(auxVariables.isRandomDelay()){
+        if(isRandomDelay){
             int timeSecondMaxDelay, timeSecondMinDelay;
-            if(auxVariables.returnTimeUnityMaxDelay().equals("s")){
-                timeSecondMaxDelay = auxVariables.returnMaxDelay();
+            if(timeUnityMaxDelay_s.equals("s")){
+                timeSecondMaxDelay = maxDelay_s;
             }
             else{
-                timeSecondMaxDelay = auxVariables.returnMaxDelay() * 60;
+                timeSecondMaxDelay = maxDelay_s * 60;
             }
 
-            if(auxVariables.returnTimeUnityMinDelay().equals("s")){
-                timeSecondMinDelay = auxVariables.returnMinDelay();
+            if(timeUnityMinDelay_s.equals("s")){
+                timeSecondMinDelay = minDelay_s;
             }
             else{
-                timeSecondMinDelay = auxVariables.returnMinDelay() * 60;
+                timeSecondMinDelay = minDelay_s * 60;
             }
 
 
@@ -488,17 +500,17 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
             else{
-                auxVariables.setMinDelay(timeSecondMinDelay);
-                auxVariables.setMaxDelay(timeSecondMaxDelay);
+                minDelay_s = timeSecondMinDelay;
+                maxDelay_s = timeSecondMaxDelay;
             }
         }
         else{
             int timeSecondDelay;
-            if(auxVariables.returnTimeUnityDelay().equals("s")){
-                timeSecondDelay = auxVariables.returnDelay();
+            if(timeUnityDelay_s.equals("s")){
+                timeSecondDelay = delay_s;
             }
             else{
-                timeSecondDelay = auxVariables.returnDelay() * 60;
+                timeSecondDelay = delay_s * 60;
             }
 
             if(timeSecondDelay < 1 || timeSecondDelay > 300){
@@ -506,19 +518,9 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
             else{
-                auxVariables.setDelay(timeSecondDelay);
+                delay_s = timeSecondDelay;
             }
         }
-
-        //Check if send message button and type field are registered
-        dbListener = new DataBase(context, "coordinates");
-        int[] coordinates = dbListener.getCoordinatesFromDataBase("sendfield");
-        if(coordinates[0] != 0 && coordinates[1] != 0)
-            auxVariables.setSendMessageRegister(true);
-        coordinates = dbListener.getCoordinatesFromDataBase("typefield");
-        if(coordinates[0] != 0 && coordinates[1] != 0)
-            auxVariables.setTypeFieldRegister(true);
-        dbListener = null;
 
         return true;
     }
@@ -547,9 +549,7 @@ public class MainActivity extends AppCompatActivity {
                 .setMessage(instruction)
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        window = new Window(context);
-                        window.open();
-                        auxVariables.setActionBarIsOpen(true);
+                        window.open(isRandomDelay, delay_s, maxDelay_s, minDelay_s, isInfiniteLoop, isRandomOrder, groupName);
 
 //                        delay.setEnabled(false);
 //                        randomOrder.setEnabled(false);
@@ -650,6 +650,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
+
     public void checkOverlayPermission(){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (!Settings.canDrawOverlays(this)) {
@@ -693,6 +695,29 @@ public class MainActivity extends AppCompatActivity {
                     .setCancelable(false)
                     .show();
         }
+    }
+
+    public void prominentDisclosure(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        String instruction_title = getString(R.string.srt_prominent_disclosure);
+        String instruction = getString(R.string.srt_prominent_disclosure_message);
+        String positive_button = getString(R.string.srt_prominent_disclosure_positive_button_title);
+        String negative_button = getString(R.string.srt_prominent_disclosure_negative_button_title);
+        builder
+                .setTitle(instruction_title)
+                .setMessage(instruction)
+                .setPositiveButton(positive_button, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        checkPermissions();
+                    }
+                })
+                .setNegativeButton(negative_button, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                })
+                .setCancelable(false)
+                .show();
     }
 
     public boolean checkAccessibilitySettings() {
