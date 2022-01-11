@@ -1,5 +1,6 @@
 package com.amadorprog.autoclicker_messengerclicker;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.PixelFormat;
 import android.os.Build;
@@ -49,17 +50,10 @@ public class Window {
         targetTypeField.hide();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            // set the layout parameters of the window
             mParams = new WindowManager.LayoutParams(
-                    // Shrink the window to wrap the content rather
-                    // than filling the screen
                     WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT,
-                    // Display it on top of other application windows
                     WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
-                    // Don't let it grab the input focus
                     WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
-                    // Make the underlying application window visible
-                    // through any transparent parts
                     PixelFormat.TRANSLUCENT);
         }
         else{
@@ -69,12 +63,9 @@ public class Window {
                     WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
                     PixelFormat.TRANSLUCENT);
         }
-        // getting a LayoutInflater
+
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        // inflating the view with the custom layout we created
         mView = layoutInflater.inflate(R.layout.action_bar, null);
-        // set onClickListener on the remove button, which removes
-        // the view from the window
 
         mView.findViewById(R.id.button_play_clicker).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -168,6 +159,7 @@ public class Window {
             isInfiniteLoop = infiniteLoop;
             isRandomOrder = random_order;
             groupName = group;
+            setInputsOfMainActivity(this.context, false);
         } catch (Exception e) {
             Log.d("Error1",e.toString());
         }
@@ -201,6 +193,7 @@ public class Window {
             targetSendMessage = null;
             targetTypeField.close();
             targetTypeField = null;
+            setInputsOfMainActivity(this.context, true);
 
             // the above steps are necessary when you are adding and removing
             // the view simultaneously, it might give some exceptions
@@ -382,6 +375,43 @@ public class Window {
             return false;
 
         return true;
+    }
+
+    public void setInputsOfMainActivity(Context context, boolean b){
+        if(b){
+            ((Activity) context).findViewById(R.id.db_msg_group).setEnabled(true);
+            ((Activity) context).findViewById(R.id.checkbox_random_order).setEnabled(true);
+            ((Activity) context).findViewById(R.id.checkbox_infinite_loop).setEnabled(true);
+            ((Activity) context).findViewById(R.id.checkbox_random_delay).setEnabled(true);
+            if(isRandomDelay){
+                ((Activity) context).findViewById(R.id.spinner_unit_time_1).setEnabled(false);
+                ((Activity) context).findViewById(R.id.num_delay_time_simple).setEnabled(false);
+                ((Activity) context).findViewById(R.id.spinner_unit_time_2).setEnabled(true);
+                ((Activity) context).findViewById(R.id.spinner_unit_time_3).setEnabled(true);
+                ((Activity) context).findViewById(R.id.num_delay_time_max).setEnabled(true);
+                ((Activity) context).findViewById(R.id.num_delay_time_min).setEnabled(true);
+            }
+            else{
+                ((Activity) context).findViewById(R.id.spinner_unit_time_1).setEnabled(true);
+                ((Activity) context).findViewById(R.id.num_delay_time_simple).setEnabled(true);
+                ((Activity) context).findViewById(R.id.spinner_unit_time_2).setEnabled(false);
+                ((Activity) context).findViewById(R.id.spinner_unit_time_3).setEnabled(false);
+                ((Activity) context).findViewById(R.id.num_delay_time_max).setEnabled(false);
+                ((Activity) context).findViewById(R.id.num_delay_time_min).setEnabled(false);
+            }
+        }
+        else {
+            ((Activity) context).findViewById(R.id.db_msg_group).setEnabled(false);
+            ((Activity) context).findViewById(R.id.spinner_unit_time_1).setEnabled(false);
+            ((Activity) context).findViewById(R.id.spinner_unit_time_2).setEnabled(false);
+            ((Activity) context).findViewById(R.id.spinner_unit_time_3).setEnabled(false);
+            ((Activity) context).findViewById(R.id.num_delay_time_simple).setEnabled(false);
+            ((Activity) context).findViewById(R.id.num_delay_time_max).setEnabled(false);
+            ((Activity) context).findViewById(R.id.num_delay_time_min).setEnabled(false);
+            ((Activity) context).findViewById(R.id.checkbox_random_order).setEnabled(false);
+            ((Activity) context).findViewById(R.id.checkbox_infinite_loop).setEnabled(false);
+            ((Activity) context).findViewById(R.id.checkbox_random_delay).setEnabled(false);
+        }
     }
 
 }
