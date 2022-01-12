@@ -45,7 +45,8 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     Spinner groupNames, timeUnityDelay, timeUnityMaxDelay, timeUnityMinDelay;
-    DataBase dbListener;
+    DataBase dbListenerCoordinates;
+    DataBase dbListenerMessages;
     Context context;
     EditText delay, maxDelay, minDelay;
     CheckBox randomOrder, randomDelay, infiniteLoop;
@@ -55,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
     private AdView mAdView;
     private InterstitialAd mInterstitialAd;
     boolean userVisitedAnotherActivity;
-    boolean accessibilityServiceDialogIsOpen, canDrawOverOtherAppsDialogIsOpen;
+    boolean accessibilityServiceDialogIsOpen, canDrawOverOtherAppsDialogIsOpen, prominentDisclosureDialogIsOpen;
     String timeUnityDelay_s = "s";
     String timeUnityMaxDelay_s = "s";
     String timeUnityMinDelay_s = "s";
@@ -74,6 +75,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        context = this;
+
         MobileAds.initialize(this, new OnInitializationCompleteListener() {
             @Override
             public void onInitializationComplete(InitializationStatus initializationStatus) {
@@ -83,21 +86,31 @@ public class MainActivity extends AppCompatActivity {
 
         loadInterstitialAd();
 
+        dbListenerCoordinates = new DataBase(context, "coordinates");
+        dbListenerMessages = new DataBase(context, "messages");
+
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView = findViewById(R.id.adView);
         mAdView.loadAd(adRequest); //banner
 
-        context = this;
         startActionBar = (Button) findViewById(R.id.button_enable_clicker);
         counterRestarts = 0;
         userVisitedAnotherActivity = false;
         accessibilityServiceDialogIsOpen = false;
         canDrawOverOtherAppsDialogIsOpen = false;
+        prominentDisclosureDialogIsOpen = false;
         setPreviousOptions();
-        //checkPermissions();
         prominentDisclosure();
 
         window = new Window(context);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        dbListenerCoordinates.closeDataBase(context, "coordinates");
+        dbListenerMessages.closeDataBase(context, "messages");
     }
 
     @Override
@@ -151,13 +164,16 @@ public class MainActivity extends AppCompatActivity {
         if(counterRestarts % 5 == 4 && userVisitedAnotherActivity == true)
             showInterstitialAd();
 
-        checkPreviousOptions();
+        if(!prominentDisclosureDialogIsOpen) {
 
-        if(!accessibilityServiceDialogIsOpen)
-            checkAccessibilityPermission();
+            if (!accessibilityServiceDialogIsOpen)
+                checkAccessibilityPermission();
 
-        if(!canDrawOverOtherAppsDialogIsOpen)
-            checkOverlayPermission();
+            if (!canDrawOverOtherAppsDialogIsOpen && !accessibilityServiceDialogIsOpen)
+                checkOverlayPermission();
+        }
+
+        completeGroupNamesSpinner();
     }
 
     @Override
@@ -372,27 +388,8 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void checkPreviousOptions(){
-        completeGroupNamesSpinner();
-        if(groupNames.getSelectedItem() != null)
-            groupName = groupNames.getSelectedItem().toString();
-        else
-            groupName = "";
-
-//        auxVariables.setTimeUnityDelay(timeUnityDelay.getSelectedItem().toString());
-//        auxVariables.setTimeUnityMaxDelay(timeUnityMaxDelay.getSelectedItem().toString());
-//        auxVariables.setTimeUnityMinDelay(timeUnityMinDelay.getSelectedItem().toString());
-//        delay.setText(Integer.toString(auxVariables.returnDelay()));
-//        randomOrder.setChecked(auxVariables.isRandomOrder());
-//        randomDelay.setChecked(auxVariables.isRandomDelay());
-//        infiniteLoop.setChecked(AutoClickService.instance.isInfiniteLoop());
-//        maxDelay.setText(Integer.toString(auxVariables.returnMaxDelay()));
-//        minDelay.setText(Integer.toString(auxVariables.returnMinDelay()));
-    }
-
     public void completeGroupNamesSpinner(){
-        dbListener = new DataBase(context, "messages");
-        ArrayList<String> aux = dbListener.getGroupNamesFromDataBase();
+        ArrayList<String> aux = dbListenerMessages.getGroupNamesFromDataBase();
         ArrayList<String> groups = new ArrayList<>();
         //check if need reorganize the spinner
         for(int i = 0; i < aux.size(); i++){ //seek for previous group name and put it on first
@@ -414,7 +411,11 @@ public class MainActivity extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, groups);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         groupNames.setAdapter(adapter);
-        dbListener = null;
+
+        if(groupNames.getSelectedItem() != null)
+            groupName = groupNames.getSelectedItem().toString();
+        else
+            groupName = "";
     }
 
     public void openActivityListMessagesGroup(View view){
@@ -454,24 +455,18 @@ public class MainActivity extends AppCompatActivity {
 
     public boolean enableToPlay(){
         //Check if messages db is empty
-        dbListener = new DataBase(context, "messages");
-        ArrayList<String> groupNames = dbListener.getGroupNamesFromDataBase();
+        ArrayList<String> groupNames = dbListenerMessages.getGroupNamesFromDataBase();
         if(groupNames.size() == 0) {
             configureMessagesDb();
-            dbListener = null;
             return false;
         }
-        dbListener = null;
 
         //Check if coordinates db is empty
-        dbListener = new DataBase(context, "coordinates");
-        int amountOfRows = dbListener.getAmountOfRowsFromCoordinatesDataBase();
+        int amountOfRows = dbListenerCoordinates.getAmountOfRowsFromCoordinatesDataBase();
         if(amountOfRows != 60) {
             configureCoordinatesDb();
-            dbListener = null;
             return false;
         }
-        dbListener = null;
 
         //Check delay situation
         if(isRandomDelay){
@@ -698,6 +693,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void prominentDisclosure(){
+        prominentDisclosureDialogIsOpen = true;
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
         String instruction_title = getString(R.string.srt_prominent_disclosure);
         String instruction = getString(R.string.srt_prominent_disclosure_message);
@@ -708,6 +704,7 @@ public class MainActivity extends AppCompatActivity {
                 .setMessage(instruction)
                 .setPositiveButton(positive_button, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
+                        prominentDisclosureDialogIsOpen = false;
                         checkPermissions();
                     }
                 })

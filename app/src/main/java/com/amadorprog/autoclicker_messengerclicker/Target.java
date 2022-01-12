@@ -32,6 +32,7 @@ public class Target{
 
     public Target(Context context, int situation) {
         this.context = context;
+        dbListener = new DataBase(context, "coordinates");
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             mParams = new WindowManager.LayoutParams(
@@ -77,11 +78,9 @@ public class Target{
                                 coordinates.get(0).add(coordX);
                                 coordinates.get(0).add(coordY);
                                 coordinates.add(new ArrayList<Integer>());
-                                dbListener = new DataBase(context, "coordinates");
                                 int[] testCoordinates =  dbListener.getCoordinatesFromDataBase("a");
                                 coordinates.get(1).add(testCoordinates[0]);
                                 coordinates.get(1).add(testCoordinates[1]);
-                                dbListener = null;
                                 AutoClickService.instance.doubleAutoClick(150, 100, coordinates); //teste correspondente à letra 'a'. Verifica se 'a' maiúsculo é digitado.
                             }
                             else{
@@ -89,20 +88,16 @@ public class Target{
                             }
                         }
                         else if(situation == CONFIGSENDMESSAGECOORDINATE) {
-                            dbListener = new DataBase(context, "coordinates");
                             dbListener.updateKeyCoordinate("sendfield", coordX, coordY);
                             Toast toast = Toast.makeText(context, context.getResources().getString(R.string.toast_coordinate_registered), Toast.LENGTH_LONG);
                             toast.show();
                             hide();
-                            dbListener = null;
                         }
                         else if(situation == CONFIGTYPINGFIELDCOORDINATE) {
-                            dbListener = new DataBase(context, "coordinates");
                             dbListener.updateKeyCoordinate("typingfield", coordX, coordY);
                             Toast toast = Toast.makeText(context, context.getResources().getString(R.string.toast_coordinate_registered), Toast.LENGTH_LONG);
                             toast.show();
                             hide();
-                            dbListener = null;
                         }
                         mParams.x = 0;
                         mParams.y = 0;
@@ -153,6 +148,9 @@ public class Target{
 
             // the above steps are necessary when you are adding and removing
             // the view simultaneously, it might give some exceptions
+
+            dbListener.closeDataBase(context, "coordinates");
+
         } catch (Exception e) {
             Log.d("Error2",e.toString());
         }
@@ -177,9 +175,7 @@ public class Target{
     }
 
     public void insertCoordinateToDataBase(String string){
-        dbListener = new DataBase(context, "coordinates");
         dbListener.insertCoordinatesToDataBase(string, coordX, coordY);
-        dbListener = null;
     }
 
     public boolean isArtificialTouch(){

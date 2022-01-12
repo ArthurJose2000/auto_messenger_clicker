@@ -44,6 +44,9 @@
     <string name="toast_error_register_capslock">Click CAPS LOCK.</string>
     <string name="toast_error_register_special_char">Click !#1 or ?123</string>
     <string name="toast_error_register_space_bar">Click spacebar</string>
+    <string name="string_display_capslock">Caps Lock</string>
+    <string name="string_display_special_char">!#1 or ?123</string>
+    <string name="string_display_space_bar">Space Bar</string>
     <string name="str_register_send_message_key_and_type_field">Register the coordinate corresponding to the sending of messages and the coordinate
         corresponding to the writing field. Auto Messenger will only work if these coordinates are registered. It is recommended to watch the tutorial. Click OK to continue.</string>
     <string name="str_register_send_message">Drag the target to the coordinate corresponding to sending messages. she is at the keyboard.</string>
@@ -65,7 +68,7 @@
     <string name="str_warning">Warning</string>
     <string name="str_enable_accessibility_service">Enable accessibility permission for the
         Auto Messenger perform automated click gestures.</string>
-    <string name="str_enable_overlay_permission">Also enable draw over other apps permission so that Auto Messenger can act.</string>
+    <string name="str_enable_overlay_permission">Enable draw over other apps permission so that Auto Messenger can act.</string>
 
     <string name="error_alert_title">Almost there!</string>
     <string name="error_messages_db">Your messages are not set up yet!</string>
@@ -85,7 +88,7 @@
     </string-array>
 
     <!--prominent disclosure-->
-    <string name="srt_prominent_disclosure">Accessibility Service</string>
+    <string name="srt_prominent_disclosure">AccessibilityService</string>
     <string name="srt_prominent_disclosure_message">The main feature of this app use the Accessibility Service API to simulate clicks.
     \n\n1. Why does this app need to use the Accessibility Services API?\nWe use this method to simulate click.\n\n
     2. Does this app collect and/or share personal or sensitive data using the accessibility capabilities?\nNo user\'s personal information is collected.\n\n

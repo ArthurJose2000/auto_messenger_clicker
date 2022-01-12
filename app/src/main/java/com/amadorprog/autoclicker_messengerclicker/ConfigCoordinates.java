@@ -47,13 +47,15 @@ public class ConfigCoordinates extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_config_coordinates);
 
+        context = this;
+
         checkPermissions();
+
+        dbListener = new DataBase(context, "coordinates");
 
         startButton = (Button) findViewById(R.id.button_start_config_coordinate);
         typingField = (EditText) findViewById(R.id.text_edit_config_coordinate);
         requiredCharacter = (TextView) findViewById(R.id.str_view_key_config);
-
-        context = this;
     }
 
     @Override
@@ -64,6 +66,8 @@ public class ConfigCoordinates extends AppCompatActivity {
             target.close();
             target = null;
         }
+
+        dbListener.closeDataBase(context, "coordinates");
     }
 
     @Override
@@ -102,7 +106,6 @@ public class ConfigCoordinates extends AppCompatActivity {
                         public void onClick(DialogInterface dialog, int which) {
                             count = 0;
                             target = new Target(context, CONFIGCOORDINATES);
-                            dbListener = new DataBase(context, "coordinates");
                             dbListener.deleteAllCoordinates();
                             target.open();
                             enableAbortOperation = true;
@@ -131,7 +134,6 @@ public class ConfigCoordinates extends AppCompatActivity {
             isTimeToCheckSpecialChar = false;
             isTimeToCheckSpaceBar = false;
             typingField.setText("");
-            dbListener = null;
         }
     }
 
@@ -159,12 +161,13 @@ public class ConfigCoordinates extends AppCompatActivity {
                                 clickOnCapsLockButton();
                                 isTimeToCheckCapsLock = true;
                                 target.setIsTimeToCheckCapsLock(true);
-                                requiredCharacter.setText("...");
+                                requiredCharacter.setText(context.getResources().getString(R.string.string_display_capslock));
                                 isTimeToCheckThreeLastKeys = true;
                             }
                         }
                         else if(lastCharacter == 'A' && isTimeToCheckCapsLock){
                             typingField.setText("");
+                            requiredCharacter.setText(context.getResources().getString(R.string.string_display_special_char));
                             target.insertCoordinateToDataBase("capslock");
                             isTimeToCheckCapsLock = false;
                             target.setIsTimeToCheckCapsLock(false);
@@ -174,6 +177,7 @@ public class ConfigCoordinates extends AppCompatActivity {
                         }
                         else if(!Character.isLetter(lastCharacter) && isTimeToCheckSpecialChar){
                             typingField.setText("");
+                            requiredCharacter.setText(context.getResources().getString(R.string.string_display_space_bar));
                             target.insertCoordinateToDataBase("specialchar");
                             isTimeToCheckSpecialChar = false;
                             target.setIsTimeToCheckSpecialChar(false);

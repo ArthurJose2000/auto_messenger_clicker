@@ -249,4 +249,13 @@ public final class DataBase {
         cursor.close();
         return groups;
     }
+
+    public void closeDataBase(Context context, String table) {
+        if(table == Coordinates.TABLE_NAME)
+            if(coordinatesDbHelper != null)
+                coordinatesDbHelper.close();
+        else if (table == Messages.TABLE_NAME)
+            if(messagesDbHelper != null)
+                messagesDbHelper.close();
+    }
 }

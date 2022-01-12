@@ -18,13 +18,15 @@ public class ListMessagesGroupActivity extends AppCompatActivity {
     ListView list;
     ArrayList<String> groups;
     ArrayAdapter<String> arrayAdapter;
+    Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_messages_group);
 
-        dbListener = new DataBase(this, "messages");
+        context = this;
+        dbListener = new DataBase(context, "messages");
         list = (ListView) findViewById(R.id.list_view_group_messages);
         groups = getAllGroupName();
         arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, groups);
@@ -65,6 +67,12 @@ public class ListMessagesGroupActivity extends AppCompatActivity {
         arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, groups);
         list.setAdapter(arrayAdapter);
         list.setOnItemClickListener(getMessagesAndOpenEditor(this));
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        dbListener.closeDataBase(context, "messages");
     }
 
 }

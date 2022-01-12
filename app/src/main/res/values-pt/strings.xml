@@ -45,6 +45,9 @@
     <string name="toast_error_register_capslock">Clique em CAPS LOCK.</string>
     <string name="toast_error_register_special_char">Clique na chave !#1 ou ?123</string>
     <string name="toast_error_register_space_bar">Clique na barra de espaços</string>
+    <string name="string_display_capslock">Caps Lock</string>
+    <string name="string_display_special_char">!#1 ou ?123</string>
+    <string name="string_display_space_bar">Barra de espaço</string>
     <string name="str_register_send_message_key_and_type_field">Registre a coordenada correspondente ao envio de mensagens e a coordenada
         correspondente ao campo de escrita. O Auto Messenger só funcionará se estas coordenadas estiverem registradas. Clique em OK para continuar.</string>
     <string name="str_register_send_message">Arraste o alvo para a coordenada correspondente ao envio de mensagens. Ela se encontra no teclado.</string>
@@ -66,7 +69,7 @@
     <string name="str_warning">Aviso</string>
     <string name="str_enable_accessibility_service">Ative a permissão de acessibilidade para que o
         Auto Messenger execute gestos de clique automatizados.</string>
-    <string name="str_enable_overlay_permission">Ative também a permissão de navegabilidade sobre outros apps para que o Auto Messenger possa atuar.</string>
+    <string name="str_enable_overlay_permission">Ative a permissão de navegabilidade sobre outros apps para que o Auto Messenger possa atuar.</string>
 
     <string name="error_alert_title">Quase lá!</string>
     <string name="error_messages_db">Suas mensagens ainda não estão configuradas!</string>
@@ -87,7 +90,7 @@
     </string-array>
 
     <!--prominent disclosure-->
-    <string name="srt_prominent_disclosure">Accessibility Service</string>
+    <string name="srt_prominent_disclosure">AccessibilityService</string>
     <string name="srt_prominent_disclosure_message">A principal funcionalidade deste app utiliza a API Accessibility Service para simular cliques.
     \n\n1. Por que este app necessita utilizar esta ferramenta?\nNós utilizamos este método para simular cliques.\n\n
     2. Este app coleta alguma informação pessoal ou outros dados sensíveis utilizando esta API?

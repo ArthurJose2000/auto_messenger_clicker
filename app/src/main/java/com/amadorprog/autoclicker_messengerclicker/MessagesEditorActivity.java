@@ -3,6 +3,7 @@ package com.amadorprog.autoclicker_messengerclicker;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.MotionEvent;
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 
 public class MessagesEditorActivity extends AppCompatActivity {
 
+    Context context;
     Button save;
     EditText editMessage;
     EditText editGroupName;
@@ -33,7 +35,9 @@ public class MessagesEditorActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_messages_editor);
 
-        dbListener = new DataBase(this, "messages");
+        context = this;
+
+        dbListener = new DataBase(context, "messages");
 
         save = (Button) findViewById(R.id.button_save_message);
         editMessage = (EditText) findViewById(R.id.text_message);
@@ -54,6 +58,13 @@ public class MessagesEditorActivity extends AppCompatActivity {
         mAdView = findViewById(R.id.adView2);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        dbListener.closeDataBase(context, "messages");
     }
 
     public void checkBundleContent(){
@@ -94,13 +105,11 @@ public class MessagesEditorActivity extends AppCompatActivity {
             message = removeBreakLineFromTheEnd(message);
             dbListener.deleteGroupName(groupName);
             dbListener.insertMessagesToDataBase(message, groupName);
-            dbListener = null;
             finish();
         }
         else {
             message = removeBreakLineFromTheEnd(message);
             dbListener.insertMessagesToDataBase(message, groupName);
-            dbListener = null;
             finish();
         }
     }
@@ -192,7 +201,6 @@ public class MessagesEditorActivity extends AppCompatActivity {
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             dbListener.deleteGroupName(previousGroupName);
-                            dbListener = null;
                             finish();
                         }
                     })
