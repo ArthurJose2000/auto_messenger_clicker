@@ -65,7 +65,7 @@
     <string name="button_config_coordinates">Coordenadas</string>
     <string name="str_enable_clicker">Habilitar Auto Messenger</string>
     <string name="str_start_config_coordinates">Iniciar</string>
-    <string name="str_abort_config_coordinates">Abortar</string>
+    <string name="str_abort_config_coordinates">Cancelar</string>
     <string name="str_warning">Aviso</string>
     <string name="str_enable_accessibility_service">Ative a permissão de acessibilidade para que o
         Auto Messenger execute gestos de clique automatizados.</string>
