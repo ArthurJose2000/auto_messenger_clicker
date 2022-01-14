@@ -200,8 +200,8 @@ public class Window {
             // the above steps are necessary when you are adding and removing
             // the view simultaneously, it might give some exceptions
 
-            dbListenerCoordinates.closeDataBase(context, "coordinates");
-            dbListenerMessages.closeDataBase(context, "messages");
+            //dbListenerCoordinates.closeDataBase(context, "coordinates");
+            //dbListenerMessages.closeDataBase(context, "messages");
         } catch (Exception e) {
             Log.d("Error2",e.toString());
         }
@@ -367,11 +367,15 @@ public class Window {
         //Check if send message button and typing field are registered
 
         int[] coordinates = dbListenerCoordinates.getCoordinatesFromDataBase("sendfield");
-        if(coordinates[0] == 0 || coordinates[1] == 0)
+        if(coordinates == null) //remove
+            return false;
+        else if(coordinates[0] == 0 || coordinates[1] == 0)
             return false;
 
         coordinates = dbListenerCoordinates.getCoordinatesFromDataBase("typingfield");
-        if(coordinates[0] == 0 || coordinates[1] == 0)
+        if(coordinates == null) //remove
+            return false;
+        else if(coordinates[0] == 0 || coordinates[1] == 0)
             return false;
 
         return true;

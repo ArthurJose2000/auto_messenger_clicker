@@ -111,6 +111,7 @@ public class MainActivity extends AppCompatActivity {
 
         dbListenerCoordinates.closeDataBase(context, "coordinates");
         dbListenerMessages.closeDataBase(context, "messages");
+        window.close();
     }
 
     @Override
