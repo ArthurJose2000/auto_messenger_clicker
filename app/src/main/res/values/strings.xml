@@ -57,7 +57,7 @@
     <string name="button_disable_clicker">Disable</string>
     <string name="button_tutorials">Tutorials</string>
     <string name="button_remove_ads">Remove adds</string>
-    <string name="str_version">Version 2.0.3</string>
+    <string name="str_version">Version 2.0.4</string>
     <string name="accessibility_service_description">Please enable accessibility permission for the
         Auto Messenger perform automated click gestures.\n\nNo personal information is collected by Auto Messenger.</string>
     <string name="accessibility_service_name">Auto Messenger</string>

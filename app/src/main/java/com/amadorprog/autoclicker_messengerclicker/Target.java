@@ -149,7 +149,7 @@ public class Target{
             // the above steps are necessary when you are adding and removing
             // the view simultaneously, it might give some exceptions
 
-            dbListener.closeDataBase(context, "coordinates");
+            //dbListener.closeDataBase(context, "coordinates");
 
         } catch (Exception e) {
             Log.d("Error2",e.toString());

@@ -139,7 +139,7 @@ public class Window {
 
         // Define the position of the
         // window within the screen
-        mParams.gravity = Gravity.CENTER;
+        mParams.gravity = Gravity.TOP;
         mWindowManager = (WindowManager)context.getSystemService(WINDOW_SERVICE);
         //mWindowManager.addView(mView, mParams);
 
@@ -367,15 +367,11 @@ public class Window {
         //Check if send message button and typing field are registered
 
         int[] coordinates = dbListenerCoordinates.getCoordinatesFromDataBase("sendfield");
-        if(coordinates == null) //remove
-            return false;
-        else if(coordinates[0] == 0 || coordinates[1] == 0)
+        if(coordinates[0] == 0 || coordinates[1] == 0)
             return false;
 
         coordinates = dbListenerCoordinates.getCoordinatesFromDataBase("typingfield");
-        if(coordinates == null) //remove
-            return false;
-        else if(coordinates[0] == 0 || coordinates[1] == 0)
+        if(coordinates[0] == 0 || coordinates[1] == 0)
             return false;
 
         return true;
