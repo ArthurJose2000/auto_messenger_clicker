@@ -43,15 +43,6 @@ public class Window {
 
     public Window(Context context){
         this.context = context;
-        targetSendMessage = new Target(context, CONFIGSENDMESSAGECOORDINATE);
-        targetSendMessage.open();
-        targetSendMessage.hide();
-        targetTypeField = new Target(context, CONFIGTYPINGFIELDCOORDINATE);
-        targetTypeField.open();
-        targetTypeField.hide();
-
-        dbListenerCoordinates = new DataBase(context, "coordinates");
-        dbListenerMessages = new DataBase(context, "messages");
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             mParams = new WindowManager.LayoutParams(
@@ -153,17 +144,28 @@ public class Window {
             if(mView.getWindowToken()==null) {
                 if(mView.getParent()==null) {
                     mWindowManager.addView(mView, mParams);
+
+                    targetSendMessage = new Target(context, CONFIGSENDMESSAGECOORDINATE);
+                    targetSendMessage.open();
+                    targetSendMessage.hide();
+                    targetTypeField = new Target(context, CONFIGTYPINGFIELDCOORDINATE);
+                    targetTypeField.open();
+                    targetTypeField.hide();
+
+                    dbListenerCoordinates = new DataBase(context, "coordinates");
+                    dbListenerMessages = new DataBase(context, "messages");
+
+                    AutoClickService.instance.setActionBarStatus(true);
+                    isRandomDelay = random_delay;
+                    delay = delay_s;
+                    maxDelay = maxDelay_s;
+                    minDelay = minDelay_s;
+                    isInfiniteLoop = infiniteLoop;
+                    isRandomOrder = random_order;
+                    groupName = group;
+                    setInputsOfMainActivity(this.context, false);
                 }
             }
-            AutoClickService.instance.setActionBarStatus(true);
-            isRandomDelay = random_delay;
-            delay = delay_s;
-            maxDelay = maxDelay_s;
-            minDelay = minDelay_s;
-            isInfiniteLoop = infiniteLoop;
-            isRandomOrder = random_order;
-            groupName = group;
-            setInputsOfMainActivity(this.context, false);
         } catch (Exception e) {
             Log.d("Error1",e.toString());
         }
