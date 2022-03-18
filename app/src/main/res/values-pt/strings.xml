@@ -19,8 +19,7 @@
     <string name="menu_share_app">Compartilhar app</string>
     <string name="menu_credits">Créditos</string>
     <string name="menu_privacy_policy">Política de privacidade</string>
-    <string name="menu_desktop_version">Versão Desktop</string>
-    <string name="button_desktop_version">Versão para PC</string>
+    <string name="button_my_quiz">Gosta de Quizzes?</string>
     <string name="srt_add_group_name">Nome do grupo:</string>
     <string name="button_save_message">Salvar</string>
     <string name="generic_error">Algum erro ocorreu</string>
@@ -58,7 +57,7 @@
     <string name="button_disable_clicker">Desabilitar</string>
     <string name="button_tutorials">Tutoriais</string>
     <string name="button_remove_ads">Remover anúncios</string>
-    <string name="str_version">Versão 2.0.5</string>
+    <string name="str_version">Versão 2.1.0</string>
     <string name="accessibility_service_description">Por favor, ative a permissão de acessibilidade para que o
         Auto Messenger execute gestos de clique automatizados.\n\nNenhuma informação pessoal é coletada pelo Auto Messenger.</string>
     <string name="accessibility_service_name">Auto Messenger</string>
@@ -97,5 +96,7 @@
     \nNenhuma informação pessoal do usuário ou outra informação sensível é coletada.\n\nSe você concorda em utilizá-la, clique em Concordo.</string>
     <string name="srt_prominent_disclosure_positive_button_title">Concordo</string>
     <string name="srt_prominent_disclosure_negative_button_title">Discordo</string>
+
+    <string name="toast_accessibility_service_is_not_connected">O serviço de acessibilidade deste dispositivo não está devidamente conectado</string>
 
 </resources>

@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import static android.content.Context.WINDOW_SERVICE;
 
@@ -210,8 +211,16 @@ public class Window {
     }
 
     public void runAlgorithm() {
-        AutoClickService.instance.setDefaultCoordinatesObtained(false); //used to infinite loop
-        AutoClickService.instance.setTypingFieldClickStatus(true); //will be clicked
+        if(AutoClickService.instance != null) {
+            AutoClickService.instance.setDefaultCoordinatesObtained(false); //used to infinite loop
+            AutoClickService.instance.setTypingFieldClickStatus(true); //will be clicked
+        }
+        else {
+            Toast toast = Toast.makeText(context, context.getResources().getString(R.string.toast_accessibility_service_is_not_connected), Toast.LENGTH_LONG);
+            toast.show();
+            return;
+        }
+
         String messages = dbListenerMessages.getMessageFromDataBase(groupName);
         if (isRandomOrder) {
             String randomMessages = "";
@@ -362,7 +371,12 @@ public class Window {
         coordinates.get(sizeStackCoordinates).add(auxCoordinates[1]);
         sizeStackCoordinates++;
 
-        AutoClickService.instance.chainedAutoClick(500, 100, coordinates, isRandomDelay, delay, maxDelay, minDelay, isInfiniteLoop);
+        if(AutoClickService.instance != null)
+            AutoClickService.instance.chainedAutoClick(500, 100, coordinates, isRandomDelay, delay, maxDelay, minDelay, isInfiniteLoop);
+        else {
+            Toast toast = Toast.makeText(context, context.getResources().getString(R.string.toast_accessibility_service_is_not_connected), Toast.LENGTH_LONG);
+            toast.show();
+        }
     }
 
     public boolean isSendingCoordinatesRegistered(){

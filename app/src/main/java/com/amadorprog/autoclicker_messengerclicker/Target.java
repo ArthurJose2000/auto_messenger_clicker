@@ -81,10 +81,21 @@ public class Target{
                                 int[] testCoordinates =  dbListener.getCoordinatesFromDataBase("a");
                                 coordinates.get(1).add(testCoordinates[0]);
                                 coordinates.get(1).add(testCoordinates[1]);
-                                AutoClickService.instance.doubleAutoClick(150, 100, coordinates); //teste correspondente à letra 'a'. Verifica se 'a' maiúsculo é digitado.
+
+                                if(AutoClickService.instance != null)
+                                    AutoClickService.instance.doubleAutoClick(150, 100, coordinates); //teste correspondente à letra 'a'. Verifica se 'a' maiúsculo é digitado.
+                                else {
+                                    Toast toast = Toast.makeText(context, context.getResources().getString(R.string.toast_accessibility_service_is_not_connected), Toast.LENGTH_LONG);
+                                    toast.show();
+                                }
                             }
                             else{
-                                AutoClickService.instance.simpleAutoClick(150, 100, coordX, coordY);
+                                if(AutoClickService.instance != null)
+                                    AutoClickService.instance.simpleAutoClick(150, 100, coordX, coordY);
+                                else {
+                                    Toast toast = Toast.makeText(context, context.getResources().getString(R.string.toast_accessibility_service_is_not_connected), Toast.LENGTH_LONG);
+                                    toast.show();
+                                }
                             }
                         }
                         else if(situation == CONFIGSENDMESSAGECOORDINATE) {

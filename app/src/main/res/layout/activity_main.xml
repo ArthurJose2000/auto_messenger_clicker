@@ -356,26 +356,15 @@
                     android:textSize="20sp" />
 
                 <Button
-                    android:id="@+id/button_desktop_version"
+                    android:id="@+id/button_my_quiz"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_margin="20dp"
                     android:backgroundTint="@color/teal_200"
-                    android:onClick="goToDesktopVersion"
-                    android:text="@string/button_desktop_version"
+                    android:onClick="goToMyQuiz"
+                    android:text="@string/button_my_quiz"
                     android:textSize="20sp" />
-
-<!--                <Button-->
-<!--                    android:id="@+id/button_remove_ads"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_gravity="center"-->
-<!--                    android:layout_marginBottom="20dp"-->
-<!--                    android:backgroundTint="@color/teal_200"-->
-<!--                    android:enabled="false"-->
-<!--                    android:text="@string/button_remove_ads"-->
-<!--                    android:textSize="20sp" />-->
             </LinearLayout>
 
             <TextView

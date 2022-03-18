@@ -12,9 +12,13 @@ import java.util.ArrayList;
 public final class DataBase {
 
     private SQLiteDatabase coordinatesDB;
-    private SQLiteDatabase messagesDB;
     private CoordinatesDbHelper coordinatesDbHelper;
+
+    private SQLiteDatabase messagesDB;
     private MessagesDbHelper messagesDbHelper;
+
+    private SQLiteDatabase settingsDB;
+    private SettingsDbHelper settingsDbHelper;
 
     public DataBase(Context context, String table) {
         if(table == Coordinates.TABLE_NAME){
@@ -24,6 +28,10 @@ public final class DataBase {
         else if (table == Messages.TABLE_NAME){
             messagesDbHelper = new MessagesDbHelper(context);
             messagesDB = messagesDbHelper.getWritableDatabase();
+        }
+        else if (table == Settings.TABLE_NAME){
+            settingsDbHelper = new SettingsDbHelper(context);
+            settingsDB = settingsDbHelper.getWritableDatabase();
         }
     }
 
@@ -184,13 +192,13 @@ public final class DataBase {
     }
 
     public void insertMessagesToDataBase(String message, String groupName){
-        //boolean sucess = true;
+        //boolean success = true;
         ContentValues values = new ContentValues();
         values.put(Messages.COLUMN_MESSAGE, message);
         values.put(Messages.COLUMN_GROUP_MESSAGE, groupName);
         long newRowID = messagesDB.insert(Messages.TABLE_NAME, null, values);
-        //if(newRowID == -1) sucess = false;
-        //return sucess;
+        //if(newRowID == -1) success = false;
+        //return success;
     }
 
     public void deleteGroupName(String groupName){
@@ -248,6 +256,87 @@ public final class DataBase {
 
         cursor.close();
         return groups;
+    }
+
+    /**** Settings data base configuration ****/
+    public static class Settings implements BaseColumns {
+        public static final String TABLE_NAME = "settings";
+        public static final String COLUMN_SETTINGS = "settings";
+        public static final String COLUMN_RELATED_SETTINGS = "related_settings";
+    }
+
+    private static final String SQL_CREATE_ENTRIES_SETTINGS =
+            "CREATE TABLE " + Settings.TABLE_NAME + " (" +
+                    Settings._ID + " INTEGER PRIMARY KEY," +
+                    Settings.COLUMN_SETTINGS + " TEXT," +
+                    Settings.COLUMN_RELATED_SETTINGS + " TEXT)";
+
+    private static final String SQL_DELETE_ENTRIES_SETTINGS =
+            "DROP TABLE IF EXISTS " + Settings.TABLE_NAME;
+
+    public class SettingsDbHelper extends SQLiteOpenHelper {
+        public static final int DATABASE_VERSION = 1;
+        public static final String DATABASE_NAME = "Settings.db";
+
+        public SettingsDbHelper(Context context) {
+            super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        }
+        public void onCreate(SQLiteDatabase db) {
+            db.execSQL(SQL_CREATE_ENTRIES_SETTINGS);
+            createInitialSettings(db);
+        }
+        public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+            db.execSQL(SQL_DELETE_ENTRIES_SETTINGS);
+            onCreate(db);
+        }
+        public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+            onUpgrade(db, oldVersion, newVersion);
+        }
+    }
+
+    public void createInitialSettings(SQLiteDatabase settingsDB){
+        //boolean success = true;
+        ContentValues values = new ContentValues();
+        values.put(Settings.COLUMN_SETTINGS, "disclosure_acceptation");
+        values.put(Settings.COLUMN_RELATED_SETTINGS, "false");
+        long newRowID = settingsDB.insert(Settings.TABLE_NAME, null, values);
+        //if(newRowID == -1) success = false;
+        //return success;
+    }
+
+    public String getSettings(String settings){
+        settingsDB = settingsDbHelper.getReadableDatabase();
+        String[] projection = {
+                Settings.COLUMN_RELATED_SETTINGS
+        };
+        String selection = Settings.COLUMN_SETTINGS + " = ?";
+        String[] selectionArgs = { settings };
+        String sortOrder = Settings.COLUMN_SETTINGS + " ASC"; //unnecessary
+
+        Cursor cursor = settingsDB.query(
+                Settings.TABLE_NAME,
+                projection,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                sortOrder
+        );
+
+        cursor.moveToFirst();
+        String related_settings = cursor.getString(0);
+        cursor.close();
+        return related_settings;
+    }
+
+    public void updateSettings(String settings, String relatedSettings){
+        settingsDB = settingsDbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(Settings.COLUMN_SETTINGS, settings);
+        values.put(Settings.COLUMN_RELATED_SETTINGS, relatedSettings);
+        String selection = Settings.COLUMN_SETTINGS + " LIKE ?";
+        String[] selectionArgs = { settings };
+        int count = settingsDB.update(Settings.TABLE_NAME, values, selection, selectionArgs);
     }
 
     public void closeDataBase(Context context, String table) {

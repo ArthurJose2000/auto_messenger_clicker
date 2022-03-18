@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
     Spinner groupNames, timeUnityDelay, timeUnityMaxDelay, timeUnityMinDelay;
     DataBase dbListenerCoordinates;
     DataBase dbListenerMessages;
+    DataBase dbListenerSettings;
     Context context;
     EditText delay, maxDelay, minDelay;
     CheckBox randomOrder, randomDelay, infiniteLoop;
@@ -88,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
 
         dbListenerCoordinates = new DataBase(context, "coordinates");
         dbListenerMessages = new DataBase(context, "messages");
+        dbListenerSettings = new DataBase(context, "settings");
 
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView = findViewById(R.id.adView);
@@ -147,12 +149,6 @@ public class MainActivity extends AppCompatActivity {
                 } catch(Exception e) {
                     //e.toString();
                 }
-                return true;
-            case R.id.menu_desktop_version:
-                Intent goToDesktopVersion =
-                        new Intent("android.intent.action.VIEW",
-                                Uri.parse("https://amadorprog.com/"));
-                startActivity(goToDesktopVersion);
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -446,11 +442,11 @@ public class MainActivity extends AppCompatActivity {
         startActivity(viewIntent);
     }
 
-    public void goToDesktopVersion(View view){
+    public void goToMyQuiz(View view){
         userVisitedAnotherActivity = true;
         Intent goToDesktopVersion =
                 new Intent("android.intent.action.VIEW",
-                        Uri.parse("https://amadorprog.com/"));
+                        Uri.parse("https://play.google.com/store/apps/details?id=com.amadorprog.myquiz"));
         startActivity(goToDesktopVersion);
     }
 
@@ -546,16 +542,6 @@ public class MainActivity extends AppCompatActivity {
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         window.open(isRandomDelay, delay_s, maxDelay_s, minDelay_s, isInfiniteLoop, isRandomOrder, groupName);
-
-//                        delay.setEnabled(false);
-//                        randomOrder.setEnabled(false);
-//                        randomDelay.setEnabled(false);
-//                        infiniteLoop.setEnabled(false);
-//                        maxDelay.setEnabled(false);
-//                        minDelay.setEnabled(false);
-//                        timeUnityDelay.setEnabled(false);
-//                        timeUnityMaxDelay.setEnabled(false);
-//                        timeUnityMinDelay.setEnabled(false);
                     }
                 })
                 .show();
@@ -693,31 +679,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void prominentDisclosure(){
-        prominentDisclosureDialogIsOpen = true;
-        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-        String instruction_title = getString(R.string.srt_prominent_disclosure);
-        String instruction = getString(R.string.srt_prominent_disclosure_message);
-        String positive_button = getString(R.string.srt_prominent_disclosure_positive_button_title);
-        String negative_button = getString(R.string.srt_prominent_disclosure_negative_button_title);
-        builder
-                .setTitle(instruction_title)
-                .setMessage(instruction)
-                .setPositiveButton(positive_button, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        prominentDisclosureDialogIsOpen = false;
-                        checkPermissions();
-                    }
-                })
-                .setNegativeButton(negative_button, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        finish();
-                    }
-                })
-                .setCancelable(false)
-                .show();
-    }
-
     public boolean checkAccessibilitySettings() {
         int accessibilityEnabled = 0;
         final String service = getPackageName() + "/" + AutoClickService.class.getCanonicalName();
@@ -754,5 +715,36 @@ public class MainActivity extends AppCompatActivity {
         //}
         //System.out.println("ganhamo");
         return false;
+    }
+
+    public void prominentDisclosure(){
+        if(dbListenerSettings.getSettings("disclosure_acceptation").equals("false")){
+            prominentDisclosureDialogIsOpen = true;
+            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+            String instruction_title = getString(R.string.srt_prominent_disclosure);
+            String instruction = getString(R.string.srt_prominent_disclosure_message);
+            String positive_button = getString(R.string.srt_prominent_disclosure_positive_button_title);
+            String negative_button = getString(R.string.srt_prominent_disclosure_negative_button_title);
+            builder
+                    .setTitle(instruction_title)
+                    .setMessage(instruction)
+                    .setPositiveButton(positive_button, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            prominentDisclosureDialogIsOpen = false;
+                            dbListenerSettings.updateSettings("disclosure_acceptation", "true");
+                            checkPermissions();
+                        }
+                    })
+                    .setNegativeButton(negative_button, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            finish();
+                        }
+                    })
+                    .setCancelable(false)
+                    .show();
+        }
+        else{
+            checkPermissions();
+        }
     }
 }
