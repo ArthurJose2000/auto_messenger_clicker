@@ -13,6 +13,7 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -26,6 +27,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.AdRequest;
@@ -68,6 +70,8 @@ public class MainActivity extends AppCompatActivity {
     boolean isRandomOrder = false;
     String groupName = "";
 
+    Usual usual;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,6 +91,8 @@ public class MainActivity extends AppCompatActivity {
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView = findViewById(R.id.adView);
         mAdView.loadAd(adRequest); //banner
+
+        usual = new Usual();
 
         startActionBar = (Button) findViewById(R.id.button_enable_clicker);
         counterRestarts = 0;
@@ -502,6 +508,19 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
+        int used_quantity = Integer.parseInt(DataBase.getDbInstance(context).getSettings(context.getString(R.string.data_base_used_quantity)));
+
+        if(DataBase.getDbInstance(context).getSettings(context.getString(R.string.data_base_enabled_5)).equals("false")
+           && used_quantity > 5){
+            openMyQuizDialog(20);
+            return false;
+        }
+        else if(DataBase.getDbInstance(context).getSettings(context.getString(R.string.data_base_enabled_20)).equals("false")
+                && used_quantity > 20){
+            openMyQuizDialog(80);
+            return false;
+        }
+
         return true;
     }
 
@@ -674,7 +693,6 @@ public class MainActivity extends AppCompatActivity {
             accessibilityEnabled = Settings.Secure.getInt(
                     this.getApplicationContext().getContentResolver(),
                     android.provider.Settings.Secure.ACCESSIBILITY_ENABLED);
-            //System.out.println("accessibilityEnabled = " + accessibilityEnabled);
         } catch (Settings.SettingNotFoundException e) {
             //System.out.println("Error finding setting, default accessibility to not found: "
             //+ e.getMessage());
@@ -682,7 +700,6 @@ public class MainActivity extends AppCompatActivity {
         TextUtils.SimpleStringSplitter mStringColonSplitter = new TextUtils.SimpleStringSplitter(':');
 
         if (accessibilityEnabled == 1) {
-            //System.out.println("***ACCESSIBILITY IS ENABLED*** -----------------");
             String settingValue = Settings.Secure.getString(
                     this.getApplicationContext().getContentResolver(),
                     Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES);
@@ -690,18 +707,13 @@ public class MainActivity extends AppCompatActivity {
                 mStringColonSplitter.setString(settingValue);
                 while (mStringColonSplitter.hasNext()) {
                     String accessibilityService = mStringColonSplitter.next();
-
-                    //System.out.println("-------------- > accessibilityService :: " + accessibilityService + " " + service);
                     if (accessibilityService.equalsIgnoreCase(service)) {
                         //System.out.println("We've found the correct setting - accessibility is switched on!");
                         return true;
                     }
                 }
             }
-        } //else {
-        //System.out.println("***ACCESSIBILITY IS DISABLED***");
-        //}
-        //System.out.println("ganhamo");
+        }
         return false;
     }
 
@@ -734,5 +746,52 @@ public class MainActivity extends AppCompatActivity {
         else{
             checkPermissions();
         }
+    }
+
+    public void openMyQuizDialog(int minimumScore){
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        String instruction_title = getString(R.string.main_activity_my_quiz_dialog_title);
+        String instruction = getString(R.string.main_activity_my_quiz_dialog_text_start)
+            + " " + minimumScore + " " + getString(R.string.main_activity_my_quiz_dialog_text_end);
+        builder
+                .setTitle(instruction_title)
+                .setMessage(instruction)
+                .setPositiveButton(getString(R.string.main_activity_my_quiz_dialog_play_my_quiz), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent rateApp =
+                                new Intent("android.intent.action.VIEW",
+                                        Uri.parse("http://play.google.com/store/apps/details?id=" + getString(R.string.my_quiz_package)));
+                        startActivity(rateApp);
+                    }
+                })
+                .setNegativeButton(getString(R.string.main_activity_my_quiz_dialog_check), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        askEmailDialog(minimumScore);
+                    }
+                })
+                .show();
+    }
+
+    public void askEmailDialog(int minimumScore){
+        AlertDialog insertEmailDialog;
+        LayoutInflater layoutInflater = getLayoutInflater();
+        View customLayout = layoutInflater.inflate(R.layout.custom_dialog, null);
+        EditText emailInput = customLayout.findViewById(R.id.custom_dialog_input);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setView(customLayout)
+                .setTitle(R.string.main_activity_my_quiz_dialog_title)
+                .setPositiveButton(R.string.main_activity_my_quiz_check_email_button, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        String email = emailInput.getText().toString().trim();
+                        checkScoreInMyQuiz(email, minimumScore);
+                    }
+                });
+        insertEmailDialog = builder.create();
+        insertEmailDialog.show();
+    }
+
+    public void checkScoreInMyQuiz(String email, int minimumScore){
+        usual.genericAlert(context, getString(R.string.main_activity_my_quiz_dialog_title), getString(R.string.main_activity_my_quiz_unlocked));
     }
 }

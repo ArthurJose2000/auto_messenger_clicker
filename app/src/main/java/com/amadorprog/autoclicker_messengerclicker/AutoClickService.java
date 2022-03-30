@@ -36,6 +36,7 @@ public class AutoClickService extends AccessibilityService {
         context = this;
     }
 
+
     @Override
     public void onInterrupt() {
 

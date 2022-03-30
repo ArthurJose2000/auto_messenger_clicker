@@ -2,7 +2,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:accessibilityEventTypes="typeAllMask"
     android:accessibilityFeedbackType="feedbackGeneric"
-    android:accessibilityFlags="flagRequestTouchExplorationMode|flagRetrieveInteractiveWindows|flagSendMotionEvents"
+    android:accessibilityFlags="flagDefault"
     android:canPerformGestures="true"
     android:notificationTimeout="100"
+    android:canRetrieveWindowContent="true"
+    android:packageNames="com.amadorprog.autoclicker_messengerclicker"
     android:description="@string/accessibility_service_description"/>

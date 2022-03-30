@@ -355,7 +355,7 @@ public final class DataBase {
         //return success;
     }
 
-    public boolean doesSettingsExist(String settings, SQLiteDatabase settingsDB){
+    private boolean doesSettingsExist(String settings, SQLiteDatabase settingsDB){
         String[] projection = {
                 Settings.COLUMN_RELATED_SETTINGS
         };

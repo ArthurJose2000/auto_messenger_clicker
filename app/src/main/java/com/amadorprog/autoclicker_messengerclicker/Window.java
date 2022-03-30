@@ -363,8 +363,11 @@ public class Window {
         coordinates.get(sizeStackCoordinates).add(auxCoordinates[1]);
         sizeStackCoordinates++;
 
-        if(AutoClickService.instance != null)
+        if(AutoClickService.instance != null) {
+            String used = DataBase.getDbInstance(context).getSettings(context.getString(R.string.data_base_used_quantity));
+            DataBase.getDbInstance(context).updateSettings(context.getString(R.string.data_base_used_quantity), String.valueOf(Integer.parseInt(used) + 1));
             AutoClickService.instance.chainedAutoClick(500, 100, coordinates, isRandomDelay, delay, maxDelay, minDelay, isInfiniteLoop);
+        }
         else {
             Toast toast = Toast.makeText(context, context.getResources().getString(R.string.toast_accessibility_service_is_not_connected), Toast.LENGTH_LONG);
             toast.show();

@@ -1,4 +1,15 @@
 <resources>
+    my_quiz_package
+    <string translatable="false" name="my_quiz_package">com.amadorprog.myquiz</string>
+    <!-- DataBase Class -->
+    <!-- Do not modify!!!!!!!!!!!!!!!!! -->
+    <string translatable="false" name="data_base_disclosure_acceptation">disclosure_acceptation</string>
+    <string translatable="false" name="data_base_used_quantity">used_quantity</string>
+    <string translatable="false" name="data_base_enabled_5">enabled_5</string>
+    <string translatable="false" name="data_base_enabled_20">enabled_20</string>
+    <!-- //-->
+
+
     <string name="app_name">Auto Messenger</string>
     <string name="str_msg_group">Message group:</string>
     <string name="str_delay_time_simple">Delay:</string>
@@ -94,6 +105,17 @@
     If you agree to use it, click on Agree.</string>
     <string name="srt_prominent_disclosure_positive_button_title">I agree</string>
     <string name="srt_prominent_disclosure_negative_button_title">I disagree</string>
+    <!--######################-->
+
+    <!-- MainActivity class -->
+    <string name="main_activity_my_quiz_dialog_title">Unlock access</string>
+    <string name="main_activity_my_quiz_dialog_text_start">To continue using Auto Messenger you need to have more than</string>
+    <string name="main_activity_my_quiz_dialog_text_end">XP in the My Quiz app.</string>
+    <string name="main_activity_my_quiz_dialog_play_my_quiz">Unlock</string>
+    <string name="main_activity_my_quiz_dialog_check">I already have</string>
+    <string name="main_activity_my_quiz_check_email">Type your email registered in My Quiz app to check your score.</string>
+    <string name="main_activity_my_quiz_check_email_button">Check</string>
+    <string name="main_activity_my_quiz_unlocked">Successfully unlocked!</string>
     <!--######################-->
 
     <string name="toast_accessibility_service_is_not_connected">AccessibilityService of this device is not properly connected</string>

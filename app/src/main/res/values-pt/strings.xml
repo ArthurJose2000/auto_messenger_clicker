@@ -97,6 +97,17 @@
     <string name="srt_prominent_disclosure_positive_button_title">Concordo</string>
     <string name="srt_prominent_disclosure_negative_button_title">Discordo</string>
 
+    <!-- MainActivity class -->
+    <string name="main_activity_my_quiz_dialog_title">Desbloquear acesso</string>
+    <string name="main_activity_my_quiz_dialog_text_start">Para continuar utilizando o Robô de comentários, você precisa ter mais do que</string>
+    <string name="main_activity_my_quiz_dialog_text_end">XP no app My Quiz.</string>
+    <string name="main_activity_my_quiz_dialog_play_my_quiz">Desbloquear</string>
+    <string name="main_activity_my_quiz_check_email">Digite seu endereço de e-mail cadastrado no app My Quiz para verificarmos sua pontuação.</string>
+    <string name="main_activity_my_quiz_dialog_check">Eu já tenho</string>
+    <string name="main_activity_my_quiz_check_email_button">Verificar</string>
+    <string name="main_activity_my_quiz_unlocked">Desbloqueado com sucesso!</string>
+    <!--######################-->
+
     <string name="toast_accessibility_service_is_not_connected">O serviço de acessibilidade deste dispositivo não está devidamente conectado</string>
 
 </resources>
