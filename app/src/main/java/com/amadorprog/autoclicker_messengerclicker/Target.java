@@ -28,11 +28,9 @@ public class Target{
     private WindowManager.LayoutParams mParams;
     private WindowManager mWindowManager;
     private LayoutInflater layoutInflater;
-    DataBase dbListener;
 
     public Target(Context context, int situation) {
         this.context = context;
-        dbListener = new DataBase(context, "coordinates");
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             mParams = new WindowManager.LayoutParams(
@@ -78,7 +76,7 @@ public class Target{
                                 coordinates.get(0).add(coordX);
                                 coordinates.get(0).add(coordY);
                                 coordinates.add(new ArrayList<Integer>());
-                                int[] testCoordinates =  dbListener.getCoordinatesFromDataBase("a");
+                                int[] testCoordinates =  DataBase.getDbInstance(Target.this.context).getCoordinatesFromDataBase("a");
                                 coordinates.get(1).add(testCoordinates[0]);
                                 coordinates.get(1).add(testCoordinates[1]);
 
@@ -99,13 +97,13 @@ public class Target{
                             }
                         }
                         else if(situation == CONFIGSENDMESSAGECOORDINATE) {
-                            dbListener.updateKeyCoordinate("sendfield", coordX, coordY);
+                            DataBase.getDbInstance(Target.this.context).updateKeyCoordinate("sendfield", coordX, coordY);
                             Toast toast = Toast.makeText(context, context.getResources().getString(R.string.toast_coordinate_registered), Toast.LENGTH_LONG);
                             toast.show();
                             hide();
                         }
                         else if(situation == CONFIGTYPINGFIELDCOORDINATE) {
-                            dbListener.updateKeyCoordinate("typingfield", coordX, coordY);
+                            DataBase.getDbInstance(Target.this.context).updateKeyCoordinate("typingfield", coordX, coordY);
                             Toast toast = Toast.makeText(context, context.getResources().getString(R.string.toast_coordinate_registered), Toast.LENGTH_LONG);
                             toast.show();
                             hide();
@@ -160,8 +158,6 @@ public class Target{
             // the above steps are necessary when you are adding and removing
             // the view simultaneously, it might give some exceptions
 
-            //dbListener.closeDataBase(context, "coordinates");
-
         } catch (Exception e) {
             Log.d("Error2",e.toString());
         }
@@ -186,7 +182,7 @@ public class Target{
     }
 
     public void insertCoordinateToDataBase(String string){
-        dbListener.insertCoordinatesToDataBase(string, coordX, coordY);
+        DataBase.getDbInstance(context).insertCoordinatesToDataBase(string, coordX, coordY);
     }
 
     public boolean isArtificialTouch(){

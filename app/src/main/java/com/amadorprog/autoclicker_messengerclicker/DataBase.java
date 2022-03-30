@@ -10,6 +10,10 @@ import android.provider.BaseColumns;
 import java.util.ArrayList;
 
 public final class DataBase {
+    int CREATE =1;
+    int UPDATE = 2;
+
+    private static DataBase dbInstance;
 
     private SQLiteDatabase coordinatesDB;
     private CoordinatesDbHelper coordinatesDbHelper;
@@ -20,19 +24,21 @@ public final class DataBase {
     private SQLiteDatabase settingsDB;
     private SettingsDbHelper settingsDbHelper;
 
-    public DataBase(Context context, String table) {
-        if(table == Coordinates.TABLE_NAME){
-            coordinatesDbHelper = new CoordinatesDbHelper(context);
-            coordinatesDB = coordinatesDbHelper.getWritableDatabase();
-        }
-        else if (table == Messages.TABLE_NAME){
-            messagesDbHelper = new MessagesDbHelper(context);
-            messagesDB = messagesDbHelper.getWritableDatabase();
-        }
-        else if (table == Settings.TABLE_NAME){
-            settingsDbHelper = new SettingsDbHelper(context);
-            settingsDB = settingsDbHelper.getWritableDatabase();
-        }
+    private DataBase(Context context) {
+        coordinatesDbHelper = new CoordinatesDbHelper(context);
+        coordinatesDB = coordinatesDbHelper.getWritableDatabase();
+
+        messagesDbHelper = new MessagesDbHelper(context);
+        messagesDB = messagesDbHelper.getWritableDatabase();
+
+        settingsDbHelper = new SettingsDbHelper(context);
+        settingsDB = settingsDbHelper.getWritableDatabase();
+    }
+
+    public static DataBase getDbInstance(Context context){
+        if(dbInstance == null)
+            dbInstance = new DataBase(context);
+        return dbInstance;
     }
 
     /**** Coordinates data base configuration ****/
@@ -275,7 +281,7 @@ public final class DataBase {
             "DROP TABLE IF EXISTS " + Settings.TABLE_NAME;
 
     public class SettingsDbHelper extends SQLiteOpenHelper {
-        public static final int DATABASE_VERSION = 1;
+        public static final int DATABASE_VERSION = 2;
         public static final String DATABASE_NAME = "Settings.db";
 
         public SettingsDbHelper(Context context) {
@@ -283,25 +289,99 @@ public final class DataBase {
         }
         public void onCreate(SQLiteDatabase db) {
             db.execSQL(SQL_CREATE_ENTRIES_SETTINGS);
-            createInitialSettings(db);
+            manageInitialSettings(db, CREATE);
         }
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-            db.execSQL(SQL_DELETE_ENTRIES_SETTINGS);
-            onCreate(db);
+            manageInitialSettings(db, UPDATE);
         }
         public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
             onUpgrade(db, oldVersion, newVersion);
         }
     }
 
-    public void createInitialSettings(SQLiteDatabase settingsDB){
+    public void manageInitialSettings(SQLiteDatabase settingsDB, int operation){
         //boolean success = true;
-        ContentValues values = new ContentValues();
-        values.put(Settings.COLUMN_SETTINGS, "disclosure_acceptation");
-        values.put(Settings.COLUMN_RELATED_SETTINGS, "false");
-        long newRowID = settingsDB.insert(Settings.TABLE_NAME, null, values);
+
+        if(operation == CREATE) {
+            ContentValues values = new ContentValues();
+            long newRowID;
+
+            values.put(Settings.COLUMN_SETTINGS, "disclosure_acceptation");
+            values.put(Settings.COLUMN_RELATED_SETTINGS, "false");
+            newRowID = settingsDB.insert(Settings.TABLE_NAME, null, values);
+
+            values.put(Settings.COLUMN_SETTINGS, "used_quantity");
+            values.put(Settings.COLUMN_RELATED_SETTINGS, "0");
+            newRowID = settingsDB.insert(Settings.TABLE_NAME, null, values);
+
+            values.put(Settings.COLUMN_SETTINGS, "enabled_5");
+            values.put(Settings.COLUMN_RELATED_SETTINGS, "false");
+            newRowID = settingsDB.insert(Settings.TABLE_NAME, null, values);
+
+            values.put(Settings.COLUMN_SETTINGS, "enabled_20");
+            values.put(Settings.COLUMN_RELATED_SETTINGS, "false");
+            newRowID = settingsDB.insert(Settings.TABLE_NAME, null, values);
+        }
+        else if(operation == UPDATE){
+            ContentValues values = new ContentValues();
+            long newRowID;
+
+            if(!doesSettingsExist("disclosure_acceptation", settingsDB)) {
+                values.put(Settings.COLUMN_SETTINGS, "disclosure_acceptation");
+                values.put(Settings.COLUMN_RELATED_SETTINGS, "false");
+                newRowID = settingsDB.insert(Settings.TABLE_NAME, null, values);
+            }
+
+            if(!doesSettingsExist("used_quantity", settingsDB)) {
+                values.put(Settings.COLUMN_SETTINGS, "used_quantity");
+                values.put(Settings.COLUMN_RELATED_SETTINGS, "0");
+                newRowID = settingsDB.insert(Settings.TABLE_NAME, null, values);
+            }
+
+            if(!doesSettingsExist("enabled_5", settingsDB)) {
+                values.put(Settings.COLUMN_SETTINGS, "enabled_5");
+                values.put(Settings.COLUMN_RELATED_SETTINGS, "false");
+                newRowID = settingsDB.insert(Settings.TABLE_NAME, null, values);
+            }
+
+            if(!doesSettingsExist("enabled_20", settingsDB)) {
+                values.put(Settings.COLUMN_SETTINGS, "enabled_20");
+                values.put(Settings.COLUMN_RELATED_SETTINGS, "false");
+                newRowID = settingsDB.insert(Settings.TABLE_NAME, null, values);
+            }
+        }
+
         //if(newRowID == -1) success = false;
         //return success;
+    }
+
+    public boolean doesSettingsExist(String settings, SQLiteDatabase settingsDB){
+        String[] projection = {
+                Settings.COLUMN_RELATED_SETTINGS
+        };
+        String selection = Settings.COLUMN_SETTINGS + " = ?";
+        String[] selectionArgs = { settings };
+
+        Cursor cursor = settingsDB.query(
+                Settings.TABLE_NAME,
+                projection,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                null
+        );
+
+        cursor.moveToFirst();
+
+        if(cursor.getCount() > 0) {
+            cursor.close();
+            return true;
+        }
+        else {
+            cursor.close();
+            return false;
+        }
     }
 
     public String getSettings(String settings){
@@ -311,7 +391,6 @@ public final class DataBase {
         };
         String selection = Settings.COLUMN_SETTINGS + " = ?";
         String[] selectionArgs = { settings };
-        String sortOrder = Settings.COLUMN_SETTINGS + " ASC"; //unnecessary
 
         Cursor cursor = settingsDB.query(
                 Settings.TABLE_NAME,
@@ -320,11 +399,17 @@ public final class DataBase {
                 selectionArgs,
                 null,
                 null,
-                sortOrder
+                null
         );
 
+        String related_settings;
         cursor.moveToFirst();
-        String related_settings = cursor.getString(0);
+
+        if(cursor.getCount() > 0)
+            related_settings = cursor.getString(0);
+        else
+            related_settings = null;
+
         cursor.close();
         return related_settings;
     }
@@ -337,14 +422,5 @@ public final class DataBase {
         String selection = Settings.COLUMN_SETTINGS + " LIKE ?";
         String[] selectionArgs = { settings };
         int count = settingsDB.update(Settings.TABLE_NAME, values, selection, selectionArgs);
-    }
-
-    public void closeDataBase(Context context, String table) {
-        if(table == Coordinates.TABLE_NAME)
-            if(coordinatesDbHelper != null)
-                coordinatesDbHelper.close();
-        else if (table == Messages.TABLE_NAME)
-            if(messagesDbHelper != null)
-                messagesDbHelper.close();
     }
 }

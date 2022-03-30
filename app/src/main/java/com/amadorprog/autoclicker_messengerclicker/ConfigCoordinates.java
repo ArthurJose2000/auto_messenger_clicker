@@ -27,10 +27,8 @@ public class ConfigCoordinates extends AppCompatActivity {
     TextView requiredCharacter;
     Button startButton;
     Target target;
-    DataBase dbListener;
     String characters = "qwertyuiopasdfghjklzxcvbnm1234567890+/_!@#$%*()-'\":,?.XYZ"; //X -> relacionado ao Caps Lock, Y -> relacionado ao Special Char, Z -> relacionado ao Space Bar
     //String characters = "qwaXYZ"; //para testes
-    String tableName_DB = "coordinates";
     int sizeCharacters = characters.length();
     int count; //auxiliar count to verifyConfigProcess()
     int enableToListen = 0; //check if user clean the typingField
@@ -51,8 +49,6 @@ public class ConfigCoordinates extends AppCompatActivity {
 
         checkPermissions();
 
-        dbListener = new DataBase(context, "coordinates");
-
         startButton = (Button) findViewById(R.id.button_start_config_coordinate);
         typingField = (EditText) findViewById(R.id.text_edit_config_coordinate);
         requiredCharacter = (TextView) findViewById(R.id.str_view_key_config);
@@ -66,8 +62,6 @@ public class ConfigCoordinates extends AppCompatActivity {
             target.close();
             target = null;
         }
-
-        dbListener.closeDataBase(context, "coordinates");
     }
 
     @Override
@@ -106,7 +100,7 @@ public class ConfigCoordinates extends AppCompatActivity {
                         public void onClick(DialogInterface dialog, int which) {
                             count = 0;
                             target = new Target(context, CONFIGCOORDINATES);
-                            dbListener.deleteAllCoordinates();
+                            DataBase.getDbInstance(context).deleteAllCoordinates();
                             target.open();
                             enableAbortOperation = true;
                             enableListener = true;
@@ -192,9 +186,9 @@ public class ConfigCoordinates extends AppCompatActivity {
                             requiredCharacter.setTextColor(Color.BLACK);
                             startButton.setText(R.string.str_start_config_coordinates);
                             startButton.setBackgroundColor(Color.parseColor("#FF03DAC5"));
-                            dbListener.insertCoordinatesToDataBase("sendfield", 0, 0); //pré-configuração das coordenadas da tecla de envio
-                            dbListener.insertCoordinatesToDataBase("typingfield", 0, 0); //pré-configuração das coordenadas do campo de escrita
-                            dbListener.insertCoordinatesToDataBase("breakline", 0, 0); //configuração da coordenada que representa a quebra de linha
+                            DataBase.getDbInstance(context).insertCoordinatesToDataBase("sendfield", 0, 0); //pré-configuração das coordenadas da tecla de envio
+                            DataBase.getDbInstance(context).insertCoordinatesToDataBase("typingfield", 0, 0); //pré-configuração das coordenadas do campo de escrita
+                            DataBase.getDbInstance(context).insertCoordinatesToDataBase("breakline", 0, 0); //configuração da coordenada que representa a quebra de linha
                             successRegister();
                         }
                         else {

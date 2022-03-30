@@ -25,7 +25,6 @@ public class MessagesEditorActivity extends AppCompatActivity {
     Button save;
     EditText editMessage;
     EditText editGroupName;
-    DataBase dbListener;
     Bundle bundle;
     String previousGroupName;
     private AdView mAdView;
@@ -37,11 +36,9 @@ public class MessagesEditorActivity extends AppCompatActivity {
 
         context = this;
 
-        dbListener = new DataBase(context, "messages");
-
-        save = (Button) findViewById(R.id.button_save_message);
-        editMessage = (EditText) findViewById(R.id.text_message);
-        editGroupName = (EditText) findViewById(R.id.text_add_group_name);
+        save = findViewById(R.id.button_save_message);
+        editMessage = findViewById(R.id.text_message);
+        editGroupName = findViewById(R.id.text_add_group_name);
 
         setEditMessageField();
 
@@ -63,8 +60,6 @@ public class MessagesEditorActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
-        dbListener.closeDataBase(context, "messages");
     }
 
     public void checkBundleContent(){
@@ -103,13 +98,13 @@ public class MessagesEditorActivity extends AppCompatActivity {
         }
         else if(isUpdate(groupName)){
             message = removeBreakLineFromTheEnd(message);
-            dbListener.deleteGroupName(groupName);
-            dbListener.insertMessagesToDataBase(message, groupName);
+            DataBase.getDbInstance(context).deleteGroupName(groupName);
+            DataBase.getDbInstance(context).insertMessagesToDataBase(message, groupName);
             finish();
         }
         else {
             message = removeBreakLineFromTheEnd(message);
-            dbListener.insertMessagesToDataBase(message, groupName);
+            DataBase.getDbInstance(context).insertMessagesToDataBase(message, groupName);
             finish();
         }
     }
@@ -181,7 +176,7 @@ public class MessagesEditorActivity extends AppCompatActivity {
 
     public boolean isUpdate(String groupName){
         ArrayList<String> groupNames;
-        groupNames = dbListener.getGroupNamesFromDataBase();
+        groupNames = DataBase.getDbInstance(context).getGroupNamesFromDataBase();
         for(int i = 0; i < groupNames.size(); i++){
             if(groupName == groupNames.get(i))
                 return false;
@@ -200,7 +195,7 @@ public class MessagesEditorActivity extends AppCompatActivity {
                     .setMessage(instruction)
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-                            dbListener.deleteGroupName(previousGroupName);
+                            DataBase.getDbInstance(context).deleteGroupName(previousGroupName);
                             finish();
                         }
                     })

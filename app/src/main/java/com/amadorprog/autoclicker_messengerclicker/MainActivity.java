@@ -45,9 +45,6 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     Spinner groupNames, timeUnityDelay, timeUnityMaxDelay, timeUnityMinDelay;
-    DataBase dbListenerCoordinates;
-    DataBase dbListenerMessages;
-    DataBase dbListenerSettings;
     Context context;
     EditText delay, maxDelay, minDelay;
     CheckBox randomOrder, randomDelay, infiniteLoop;
@@ -87,10 +84,6 @@ public class MainActivity extends AppCompatActivity {
 
         loadInterstitialAd();
 
-        dbListenerCoordinates = new DataBase(context, "coordinates");
-        dbListenerMessages = new DataBase(context, "messages");
-        dbListenerSettings = new DataBase(context, "settings");
-
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView = findViewById(R.id.adView);
         mAdView.loadAd(adRequest); //banner
@@ -111,8 +104,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
 
-        dbListenerCoordinates.closeDataBase(context, "coordinates");
-        dbListenerMessages.closeDataBase(context, "messages");
         window.close();
     }
 
@@ -339,10 +330,7 @@ public class MainActivity extends AppCompatActivity {
         randomOrder.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if(b)
-                    isRandomOrder = true;
-                else
-                    isRandomOrder = false;
+                isRandomOrder = b;
             }
         });
 
@@ -386,7 +374,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void completeGroupNamesSpinner(){
-        ArrayList<String> aux = dbListenerMessages.getGroupNamesFromDataBase();
+        ArrayList<String> aux = DataBase.getDbInstance(context).getGroupNamesFromDataBase();
         ArrayList<String> groups = new ArrayList<>();
         //check if need reorganize the spinner
         for(int i = 0; i < aux.size(); i++){ //seek for previous group name and put it on first
@@ -452,14 +440,14 @@ public class MainActivity extends AppCompatActivity {
 
     public boolean enableToPlay(){
         //Check if messages db is empty
-        ArrayList<String> groupNames = dbListenerMessages.getGroupNamesFromDataBase();
+        ArrayList<String> groupNames = DataBase.getDbInstance(context).getGroupNamesFromDataBase();
         if(groupNames.size() == 0) {
             configureMessagesDb();
             return false;
         }
 
         //Check if coordinates db is empty
-        int amountOfRows = dbListenerCoordinates.getAmountOfRowsFromCoordinatesDataBase();
+        int amountOfRows = DataBase.getDbInstance(context).getAmountOfRowsFromCoordinatesDataBase();
         if(amountOfRows != 60) {
             configureCoordinatesDb();
             return false;
@@ -718,7 +706,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void prominentDisclosure(){
-        if(dbListenerSettings.getSettings("disclosure_acceptation").equals("false")){
+        if(DataBase.getDbInstance(context).getSettings("disclosure_acceptation").equals("false")){
             prominentDisclosureDialogIsOpen = true;
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
             String instruction_title = getString(R.string.srt_prominent_disclosure);
@@ -731,7 +719,7 @@ public class MainActivity extends AppCompatActivity {
                     .setPositiveButton(positive_button, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             prominentDisclosureDialogIsOpen = false;
-                            dbListenerSettings.updateSettings("disclosure_acceptation", "true");
+                            DataBase.getDbInstance(context).updateSettings("disclosure_acceptation", "true");
                             checkPermissions();
                         }
                     })

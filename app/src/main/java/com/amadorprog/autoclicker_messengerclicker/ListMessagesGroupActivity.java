@@ -14,7 +14,6 @@ import java.util.ArrayList;
 
 public class ListMessagesGroupActivity extends AppCompatActivity {
 
-    DataBase dbListener;
     ListView list;
     ArrayList<String> groups;
     ArrayAdapter<String> arrayAdapter;
@@ -26,8 +25,7 @@ public class ListMessagesGroupActivity extends AppCompatActivity {
         setContentView(R.layout.activity_list_messages_group);
 
         context = this;
-        dbListener = new DataBase(context, "messages");
-        list = (ListView) findViewById(R.id.list_view_group_messages);
+        list = findViewById(R.id.list_view_group_messages);
         groups = getAllGroupName();
         arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, groups);
         list.setAdapter(arrayAdapter);
@@ -39,8 +37,7 @@ public class ListMessagesGroupActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 String groupName = list.getItemAtPosition(i).toString();
-                String message = dbListener.getMessageFromDataBase(groupName);
-                //dbListener = null;
+                String message = DataBase.getDbInstance(context).getMessageFromDataBase(groupName);
                 Intent intent = new Intent(context, MessagesEditorActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("groupName", groupName);
@@ -52,7 +49,7 @@ public class ListMessagesGroupActivity extends AppCompatActivity {
     }
 
     private ArrayList<String> getAllGroupName(){
-        return dbListener.getGroupNamesFromDataBase();
+        return DataBase.getDbInstance(context).getGroupNamesFromDataBase();
     }
 
     public void openActivityMessagesEditor(View view){
@@ -72,7 +69,6 @@ public class ListMessagesGroupActivity extends AppCompatActivity {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        dbListener.closeDataBase(context, "messages");
     }
 
 }

@@ -28,8 +28,6 @@ public class Window {
     private LayoutInflater layoutInflater;
     Target targetSendMessage;
     Target targetTypeField;
-    DataBase dbListenerCoordinates;
-    DataBase dbListenerMessages;
     final int CONFIGSENDMESSAGECOORDINATE = 2; //update send message coordinate
     final int CONFIGTYPINGFIELDCOORDINATE = 3; //update type field coordinate
 
@@ -153,9 +151,6 @@ public class Window {
                     targetTypeField.open();
                     targetTypeField.hide();
 
-                    dbListenerCoordinates = new DataBase(context, "coordinates");
-                    dbListenerMessages = new DataBase(context, "messages");
-
                     AutoClickService.instance.setActionBarStatus(true);
                     isRandomDelay = random_delay;
                     delay = delay_s;
@@ -202,9 +197,6 @@ public class Window {
 
             // the above steps are necessary when you are adding and removing
             // the view simultaneously, it might give some exceptions
-
-            //dbListenerCoordinates.closeDataBase(context, "coordinates");
-            //dbListenerMessages.closeDataBase(context, "messages");
         } catch (Exception e) {
             Log.d("Error2",e.toString());
         }
@@ -221,7 +213,7 @@ public class Window {
             return;
         }
 
-        String messages = dbListenerMessages.getMessageFromDataBase(groupName);
+        String messages = DataBase.getDbInstance(context).getMessageFromDataBase(groupName);
         if (isRandomOrder) {
             String randomMessages = "";
             Scanner scanner = new Scanner(messages);
@@ -249,7 +241,7 @@ public class Window {
         boolean lastKeyIsASpecialChar = false;
 
         coordinates.add(new ArrayList<Integer>());
-        auxCoordinates = dbListenerCoordinates.getCoordinatesFromDataBase("typingfield");
+        auxCoordinates = DataBase.getDbInstance(context).getCoordinatesFromDataBase("typingfield");
         coordinates.get(sizeStackCoordinates).add(auxCoordinates[0]);
         coordinates.get(sizeStackCoordinates).add(auxCoordinates[1]);
         sizeStackCoordinates++;
@@ -258,10 +250,10 @@ public class Window {
         for(int i = 0; i < sizeMessage; i++){
             char key = message.charAt(i);
             if(Character.isLetter(key)){
-                auxCoordinates = dbListenerCoordinates.getCoordinatesFromDataBase(Character.toString(Character.toLowerCase(key)));
+                auxCoordinates = DataBase.getDbInstance(context).getCoordinatesFromDataBase(Character.toString(Character.toLowerCase(key)));
                 if(auxCoordinates == null){
                     coordinates.add(new ArrayList<Integer>());
-                    auxCoordinates = dbListenerCoordinates.getCoordinatesFromDataBase("spacebar");
+                    auxCoordinates = DataBase.getDbInstance(context).getCoordinatesFromDataBase("spacebar");
                     coordinates.get(sizeStackCoordinates).add(auxCoordinates[0]);
                     coordinates.get(sizeStackCoordinates).add(auxCoordinates[1]);
                     sizeStackCoordinates++;
@@ -269,20 +261,20 @@ public class Window {
                 else{
                     if(Character.isUpperCase(key)){
                         coordinates.add(new ArrayList<Integer>());
-                        auxCoordinates = dbListenerCoordinates.getCoordinatesFromDataBase("capslock");
+                        auxCoordinates = DataBase.getDbInstance(context).getCoordinatesFromDataBase("capslock");
                         coordinates.get(sizeStackCoordinates).add(auxCoordinates[0]);
                         coordinates.get(sizeStackCoordinates).add(auxCoordinates[1]);
                         sizeStackCoordinates++;
 
                         coordinates.add(new ArrayList<Integer>());
-                        auxCoordinates = dbListenerCoordinates.getCoordinatesFromDataBase(Character.toString(Character.toLowerCase(key)));
+                        auxCoordinates = DataBase.getDbInstance(context).getCoordinatesFromDataBase(Character.toString(Character.toLowerCase(key)));
                         coordinates.get(sizeStackCoordinates).add(auxCoordinates[0]);
                         coordinates.get(sizeStackCoordinates).add(auxCoordinates[1]);
                         sizeStackCoordinates++;
                     }
                     else{
                         coordinates.add(new ArrayList<Integer>());
-                        auxCoordinates = dbListenerCoordinates.getCoordinatesFromDataBase(Character.toString(key));
+                        auxCoordinates = DataBase.getDbInstance(context).getCoordinatesFromDataBase(Character.toString(key));
                         coordinates.get(sizeStackCoordinates).add(auxCoordinates[0]);
                         coordinates.get(sizeStackCoordinates).add(auxCoordinates[1]);
                         sizeStackCoordinates++;
@@ -291,14 +283,14 @@ public class Window {
             }
             else if(key == ' '){
                 coordinates.add(new ArrayList<Integer>());
-                auxCoordinates = dbListenerCoordinates.getCoordinatesFromDataBase("spacebar");
+                auxCoordinates = DataBase.getDbInstance(context).getCoordinatesFromDataBase("spacebar");
                 coordinates.get(sizeStackCoordinates).add(auxCoordinates[0]);
                 coordinates.get(sizeStackCoordinates).add(auxCoordinates[1]);
                 sizeStackCoordinates++;
             }
             else if(key == '\n'){
                 coordinates.add(new ArrayList<Integer>());
-                auxCoordinates = dbListenerCoordinates.getCoordinatesFromDataBase("sendfield");
+                auxCoordinates = DataBase.getDbInstance(context).getCoordinatesFromDataBase("sendfield");
                 coordinates.get(sizeStackCoordinates).add(auxCoordinates[0]);
                 coordinates.get(sizeStackCoordinates).add(auxCoordinates[1]);
                 sizeStackCoordinates++;
@@ -309,16 +301,16 @@ public class Window {
                 sizeStackCoordinates++; // a quantidade de cliques é igual à sizeStackCoordinates - (as ocorrências nesse if)
 
                 coordinates.add(new ArrayList<Integer>());
-                auxCoordinates = dbListenerCoordinates.getCoordinatesFromDataBase("typingfield");
+                auxCoordinates = DataBase.getDbInstance(context).getCoordinatesFromDataBase("typingfield");
                 coordinates.get(sizeStackCoordinates).add(auxCoordinates[0]);
                 coordinates.get(sizeStackCoordinates).add(auxCoordinates[1]);
                 sizeStackCoordinates++;
             }
             else{
-                auxCoordinates = dbListenerCoordinates.getCoordinatesFromDataBase(Character.toString(key));
+                auxCoordinates = DataBase.getDbInstance(context).getCoordinatesFromDataBase(Character.toString(key));
                 if(auxCoordinates == null){
                     coordinates.add(new ArrayList<Integer>());
-                    auxCoordinates = dbListenerCoordinates.getCoordinatesFromDataBase("spacebar");
+                    auxCoordinates = DataBase.getDbInstance(context).getCoordinatesFromDataBase("spacebar");
                     coordinates.get(sizeStackCoordinates).add(auxCoordinates[0]);
                     coordinates.get(sizeStackCoordinates).add(auxCoordinates[1]);
                     sizeStackCoordinates++;
@@ -326,24 +318,24 @@ public class Window {
                 else{
                     if(lastKeyIsASpecialChar == false) {
                         coordinates.add(new ArrayList<Integer>());
-                        auxCoordinates = dbListenerCoordinates.getCoordinatesFromDataBase("specialchar");
+                        auxCoordinates = DataBase.getDbInstance(context).getCoordinatesFromDataBase("specialchar");
                         coordinates.get(sizeStackCoordinates).add(auxCoordinates[0]);
                         coordinates.get(sizeStackCoordinates).add(auxCoordinates[1]);
                         sizeStackCoordinates++;
                     }
 
                     coordinates.add(new ArrayList<Integer>());
-                    auxCoordinates = dbListenerCoordinates.getCoordinatesFromDataBase(Character.toString(key));
+                    auxCoordinates = DataBase.getDbInstance(context).getCoordinatesFromDataBase(Character.toString(key));
                     coordinates.get(sizeStackCoordinates).add(auxCoordinates[0]);
                     coordinates.get(sizeStackCoordinates).add(auxCoordinates[1]);
                     sizeStackCoordinates++;
 
                     if(i + 1 < sizeMessage){  //check if next key not is a special char
                         char auxKey = message.charAt(i + 1);
-                        auxCoordinates = dbListenerCoordinates.getCoordinatesFromDataBase(Character.toString(auxKey));
+                        auxCoordinates = DataBase.getDbInstance(context).getCoordinatesFromDataBase(Character.toString(auxKey));
                         if(auxCoordinates == null || Character.isLetter(auxKey) || auxKey == '\n' || auxKey == ' '){
                             coordinates.add(new ArrayList<Integer>());
-                            auxCoordinates = dbListenerCoordinates.getCoordinatesFromDataBase("specialchar");
+                            auxCoordinates = DataBase.getDbInstance(context).getCoordinatesFromDataBase("specialchar");
                             coordinates.get(sizeStackCoordinates).add(auxCoordinates[0]);
                             coordinates.get(sizeStackCoordinates).add(auxCoordinates[1]);
                             sizeStackCoordinates++;
@@ -355,7 +347,7 @@ public class Window {
                     }
                     else{  //end of messages
                         coordinates.add(new ArrayList<Integer>());
-                        auxCoordinates = dbListenerCoordinates.getCoordinatesFromDataBase("specialchar");
+                        auxCoordinates = DataBase.getDbInstance(context).getCoordinatesFromDataBase("specialchar");
                         coordinates.get(sizeStackCoordinates).add(auxCoordinates[0]);
                         coordinates.get(sizeStackCoordinates).add(auxCoordinates[1]);
                         sizeStackCoordinates++;
@@ -366,7 +358,7 @@ public class Window {
         }
 
         coordinates.add(new ArrayList<Integer>());
-        auxCoordinates = dbListenerCoordinates.getCoordinatesFromDataBase("sendfield");
+        auxCoordinates = DataBase.getDbInstance(context).getCoordinatesFromDataBase("sendfield");
         coordinates.get(sizeStackCoordinates).add(auxCoordinates[0]);
         coordinates.get(sizeStackCoordinates).add(auxCoordinates[1]);
         sizeStackCoordinates++;
@@ -382,11 +374,11 @@ public class Window {
     public boolean isSendingCoordinatesRegistered(){
         //Check if send message button and typing field are registered
 
-        int[] coordinates = dbListenerCoordinates.getCoordinatesFromDataBase("sendfield");
+        int[] coordinates = DataBase.getDbInstance(context).getCoordinatesFromDataBase("sendfield");
         if(coordinates[0] == 0 || coordinates[1] == 0)
             return false;
 
-        coordinates = dbListenerCoordinates.getCoordinatesFromDataBase("typingfield");
+        coordinates = DataBase.getDbInstance(context).getCoordinatesFromDataBase("typingfield");
         if(coordinates[0] == 0 || coordinates[1] == 0)
             return false;
 
