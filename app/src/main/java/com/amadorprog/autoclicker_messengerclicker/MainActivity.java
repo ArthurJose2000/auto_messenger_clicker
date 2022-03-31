@@ -29,6 +29,12 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -40,8 +46,13 @@ import com.google.android.gms.ads.initialization.OnInitializationCompleteListene
 import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -750,13 +761,13 @@ public class MainActivity extends AppCompatActivity {
 
     public void openMyQuizDialog(int minimumScore){
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-        String instruction_title = getString(R.string.main_activity_my_quiz_dialog_title);
-        String instruction = getString(R.string.main_activity_my_quiz_dialog_text_start)
-            + " " + minimumScore + " " + getString(R.string.main_activity_my_quiz_dialog_text_end);
+        String instruction_title = getString(R.string.main_my_quiz_dialog_title);
+        String instruction = getString(R.string.main_my_quiz_dialog_text_start)
+            + " " + minimumScore + " " + getString(R.string.main_my_quiz_dialog_text_end);
         builder
                 .setTitle(instruction_title)
                 .setMessage(instruction)
-                .setPositiveButton(getString(R.string.main_activity_my_quiz_dialog_play_my_quiz), new DialogInterface.OnClickListener() {
+                .setPositiveButton(getString(R.string.main_my_quiz_dialog_play_my_quiz), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         Intent rateApp =
                                 new Intent("android.intent.action.VIEW",
@@ -764,7 +775,7 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(rateApp);
                     }
                 })
-                .setNegativeButton(getString(R.string.main_activity_my_quiz_dialog_check), new DialogInterface.OnClickListener() {
+                .setNegativeButton(getString(R.string.main_my_quiz_dialog_check), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         askEmailDialog(minimumScore);
                     }
@@ -780,11 +791,19 @@ public class MainActivity extends AppCompatActivity {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setView(customLayout)
-                .setTitle(R.string.main_activity_my_quiz_dialog_title)
-                .setPositiveButton(R.string.main_activity_my_quiz_check_email_button, new DialogInterface.OnClickListener() {
+                .setTitle(R.string.main_my_quiz_dialog_title)
+                .setPositiveButton(R.string.main_my_quiz_check_email_button, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         String email = emailInput.getText().toString().trim();
-                        checkScoreInMyQuiz(email, minimumScore);
+
+                        String regex = "^[A-Za-z0-9+_.-]+@(.+)$";
+                        Pattern pattern = Pattern.compile(regex);
+                        Matcher matcher = pattern.matcher(email);
+
+                        if(matcher.matches())
+                            checkScoreInMyQuiz(email, minimumScore);
+                        else
+                            usual.genericAlert(context, getString(R.string.main_error_title), getString(R.string.main_invalid_email));
                     }
                 });
         insertEmailDialog = builder.create();
@@ -792,6 +811,51 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void checkScoreInMyQuiz(String email, int minimumScore){
-        usual.genericAlert(context, getString(R.string.main_activity_my_quiz_dialog_title), getString(R.string.main_activity_my_quiz_unlocked));
+        usual.openSpinnerAlert(context, getString(R.string.main_loading));
+
+        RequestQueue queue = Volley.newRequestQueue(this);
+        //String route_check_score = "http://192.168.0.134:80/MyQuiz/MyQuizAPI/AutoMessenger/controller_check_score.php";
+        String route_check_score = "https://www.amadorprog.com/MyQuizAPI/AutoMessenger/controller_check_score.php";
+        JSONObject postData = new JSONObject();
+        try {
+            postData.put("email", email);
+            postData.put("score", minimumScore);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, route_check_score, postData, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                usual.closeSpinnerAlert();
+                boolean success = false;
+                try {
+
+
+                    if(response.getString("permission").equals("true")) {
+                        if(minimumScore == 20)
+                            DataBase.getDbInstance(context).updateSettings(getString(R.string.data_base_enabled_5), "true");
+                        else if(minimumScore == 80)
+                            DataBase.getDbInstance(context).updateSettings(getString(R.string.data_base_enabled_20), "true");
+                        usual.genericAlert(context, getString(R.string.main_my_quiz_dialog_title), getString(R.string.main_my_quiz_unlocked));
+                    }
+                    else
+                        usual.genericAlert(context, getString(R.string.main_my_quiz_dialog_title), email + ": " + getString(R.string.main_my_quiz_not_unlocked));
+
+                    success = true;
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                if(!success)
+                    usual.genericAlert(context, getString(R.string.main_error_title), getString(R.string.main_error));
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                usual.closeSpinnerAlert();
+                usual.genericAlert(context, getString(R.string.main_error_title), getString(R.string.main_error));
+            }
+        });
+        queue.add(jsonObjectRequest);
     }
 }

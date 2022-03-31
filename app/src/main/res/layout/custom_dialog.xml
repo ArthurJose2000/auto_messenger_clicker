@@ -16,7 +16,7 @@
         android:layout_marginLeft="10dp"
         android:textColor="@color/black"
         android:textSize="18sp"
-        android:text="@string/main_activity_my_quiz_check_email"/>
+        android:text="@string/main_my_quiz_check_email"/>
 
         <EditText
             android:id="@+id/custom_dialog_input"

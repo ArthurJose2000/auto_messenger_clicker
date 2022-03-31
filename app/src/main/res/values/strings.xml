@@ -108,14 +108,19 @@
     <!--######################-->
 
     <!-- MainActivity class -->
-    <string name="main_activity_my_quiz_dialog_title">Unlock access</string>
-    <string name="main_activity_my_quiz_dialog_text_start">To continue using Auto Messenger you need to have more than</string>
-    <string name="main_activity_my_quiz_dialog_text_end">XP in the My Quiz app.</string>
-    <string name="main_activity_my_quiz_dialog_play_my_quiz">Unlock</string>
-    <string name="main_activity_my_quiz_dialog_check">I already have</string>
-    <string name="main_activity_my_quiz_check_email">Type your email registered in My Quiz app to check your score.</string>
-    <string name="main_activity_my_quiz_check_email_button">Check</string>
-    <string name="main_activity_my_quiz_unlocked">Successfully unlocked!</string>
+    <string name="main_my_quiz_dialog_title">Unlock access</string>
+    <string name="main_my_quiz_dialog_text_start">To continue using Auto Messenger you need to have more than</string>
+    <string name="main_my_quiz_dialog_text_end">XP in the My Quiz app.</string>
+    <string name="main_my_quiz_dialog_play_my_quiz">Unlock</string>
+    <string name="main_my_quiz_dialog_check">I already have</string>
+    <string name="main_my_quiz_check_email">Type your email registered in My Quiz app to check your score.</string>
+    <string name="main_my_quiz_check_email_button">Check</string>
+    <string name="main_my_quiz_unlocked">Successfully unlocked!</string>
+    <string name="main_error_title">Error</string>
+    <string name="main_error">An error has occurred. Check your internet connection or wait a few moments.</string>
+    <string name="main_loading">Checking...</string>
+    <string name="main_invalid_email">Invalid email.</string>
+    <string name="main_my_quiz_not_unlocked">You do not have enough XP in My Quiz. Play more!</string>
     <!--######################-->
 
     <string name="toast_accessibility_service_is_not_connected">AccessibilityService of this device is not properly connected</string>
