@@ -137,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
             case R.id.menu_tutorials:
                 Intent watchTutorial =
                         new Intent("android.intent.action.VIEW",
-                                Uri.parse("https://www.youtube.com/watch?v=-Ykr-FV1-s8"));
+                                Uri.parse("https://youtu.be/PCGr105dG9k"));
                 startActivity(watchTutorial);
                 return true;
             case R.id.menu_rate_app:
@@ -443,7 +443,7 @@ public class MainActivity extends AppCompatActivity {
         userVisitedAnotherActivity = true;
         Intent viewIntent =
                 new Intent("android.intent.action.VIEW",
-                        Uri.parse("https://www.youtube.com/watch?v=-Ykr-FV1-s8"));
+                        Uri.parse("https://youtu.be/PCGr105dG9k"));
         startActivity(viewIntent);
     }
 

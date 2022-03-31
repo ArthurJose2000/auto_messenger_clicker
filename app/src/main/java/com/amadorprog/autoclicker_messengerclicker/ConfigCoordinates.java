@@ -83,7 +83,7 @@ public class ConfigCoordinates extends AppCompatActivity {
     public void openYouTubeTutorial(View view){
         Intent viewIntent =
                 new Intent("android.intent.action.VIEW",
-                        Uri.parse("https://www.youtube.com/watch?v=-Ykr-FV1-s8"));
+                        Uri.parse("https://youtu.be/PCGr105dG9k"));
         startActivity(viewIntent);
     }
 
