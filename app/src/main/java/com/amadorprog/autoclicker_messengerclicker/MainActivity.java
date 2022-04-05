@@ -3,6 +3,7 @@ package com.amadorprog.autoclicker_messengerclicker;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -87,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
         context = this;
 
@@ -523,12 +525,12 @@ public class MainActivity extends AppCompatActivity {
 
         if(DataBase.getDbInstance(context).getSettings(context.getString(R.string.data_base_enabled_5)).equals("false")
            && used_quantity > 5){
-            openMyQuizDialog(20);
+            openMyQuizDialog(30);
             return false;
         }
         else if(DataBase.getDbInstance(context).getSettings(context.getString(R.string.data_base_enabled_20)).equals("false")
                 && used_quantity > 20){
-            openMyQuizDialog(80);
+            openMyQuizDialog(120);
             return false;
         }
 
