@@ -78,6 +78,8 @@ public class MainActivity extends AppCompatActivity {
     int delay_s = 20;
     int maxDelay_s = 30;
     int minDelay_s = 20;
+    int enable_5_xp = 30;
+    int enable_20_xp = 120;
     boolean isInfiniteLoop = false;
     boolean isRandomOrder = false;
     String groupName = "";
@@ -525,12 +527,12 @@ public class MainActivity extends AppCompatActivity {
 
         if(DataBase.getDbInstance(context).getSettings(context.getString(R.string.data_base_enabled_5)).equals("false")
            && used_quantity > 5){
-            openMyQuizDialog(30);
+            openMyQuizDialog(enable_5_xp);
             return false;
         }
         else if(DataBase.getDbInstance(context).getSettings(context.getString(R.string.data_base_enabled_20)).equals("false")
                 && used_quantity > 20){
-            openMyQuizDialog(120);
+            openMyQuizDialog(enable_20_xp);
             return false;
         }
 
@@ -834,9 +836,9 @@ public class MainActivity extends AppCompatActivity {
 
 
                     if(response.getString("permission").equals("true")) {
-                        if(minimumScore == 20)
+                        if(minimumScore == enable_5_xp)
                             DataBase.getDbInstance(context).updateSettings(getString(R.string.data_base_enabled_5), "true");
-                        else if(minimumScore == 80)
+                        else if(minimumScore == enable_20_xp)
                             DataBase.getDbInstance(context).updateSettings(getString(R.string.data_base_enabled_20), "true");
                         usual.genericAlert(context, getString(R.string.main_my_quiz_dialog_title), getString(R.string.main_my_quiz_unlocked));
                     }
