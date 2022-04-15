@@ -1,9 +1,54 @@
 <resources>
-    my_quiz_package
+
     <string translatable="false" name="my_quiz_package">com.amadorprog.myquiz</string>
+
+    <!-- MainActivity class -->
+    <string name="main_my_quiz_dialog_title">Unlock access</string>
+    <string name="main_my_quiz_dialog_text_start">To continue using Auto Messenger you need to have more than</string>
+    <string name="main_my_quiz_dialog_text_end">XP in the My Quiz app.</string>
+    <string name="main_my_quiz_dialog_play_my_quiz">Unlock</string>
+    <string name="main_my_quiz_dialog_check">I already have</string>
+    <string name="main_my_quiz_check_email">Type your email registered in My Quiz app to check your score.</string>
+    <string name="main_my_quiz_check_email_button">Check</string>
+    <string name="main_my_quiz_unlocked">Successfully unlocked!</string>
+    <string name="main_error_title">Error</string>
+    <string name="main_error">An error has occurred. Check your internet connection or wait a few moments.</string>
+    <string name="main_loading">Checking...</string>
+    <string name="main_invalid_email">Invalid email.</string>
+    <string name="main_my_quiz_not_unlocked">You do not have enough XP in My Quiz. Play more!</string>
+    <!--######################-->
 
     <!-- MessagesEditorActivity Class -->
     <string name="messages_editor_group_already_exist">This group already exists. Please choose another name for the group.</string>
+    <string name="messages_editor_alert_empty_title">Almost there!</string>
+    <string name="messages_editor_alert_empty_message">Type your messages.</string>
+    <string name="messages_editor_alert_empty_groupname">Name your message group.</string>
+    <string name="messages_editor_instr_title">Instructions</string>
+    <string name="messages_editor_instr">Skip line to represent the end of a message, as in
+    example bellow:\n\nFirst message\nSecond message\nThird message</string>
+    <string name="messages_editor_delete_groupname_title">Attention!</string>
+    <string name="messages_editor_delete_groupname">Click OK to delete this message group:</string>
+    <!-- // -->
+
+    <!-- ConfigCoordinates Class -->
+    <string name="config_coordinates_instr_title">Attention</string>
+    <string name="config_coordinates_instr">To record keyboard coordinates, drag the target to
+        the symbol corresponding to the one requested by the table above.</string>
+    <string name="config_coordinates_abort">Abort</string>
+    <string name="config_coordinates_start">Start</string>
+    <string name="config_coordinates_display_special_char">!#1 or ?123</string>
+    <string name="config_coordinates_toast_error_record_capslock">Click on CAPS LOCK.</string>
+    <string name="config_coordinates_toast_error_record_special_char">Click on !#1 or ?123</string>
+    <string name="config_coordinates_toast_error_register_space_bar">Click on spacebar</string>
+    <!-- // -->
+
+    <!-- AutoClickService Class -->
+    <string name="auto_click_service_finished">Finished operation</string>
+    <!-- // -->
+
+    <!-- Window Class -->
+    <string name="window_register_typing_field_coordinate">Record the coordinate referring to the message field</string>
+    <string name="window_register_send_message_coordinate">Record the coordinate referring to the sending of messages</string>
     <!-- // -->
 
     <!-- DataBase Class -->
@@ -12,6 +57,12 @@
     <string translatable="false" name="data_base_used_quantity">used_quantity</string>
     <string translatable="false" name="data_base_enabled_5">enabled_5</string>
     <string translatable="false" name="data_base_enabled_20">enabled_20</string>
+    <string translatable="false" name="data_base_typingfield">typingfield</string>
+    <string translatable="false" name="data_base_sendfield">sendfield</string>
+    <string translatable="false" name="data_base_spacebar">spacebar</string>
+    <string translatable="false" name="data_base_capslock">capslock</string>
+    <string translatable="false" name="data_base_specialchar">specialchar</string>
+    <string translatable="false" name="data_base_breakline">breakline</string>
     <!-- // -->
 
 
@@ -40,27 +91,12 @@
     <string name="generic_error">Some error occurred</string>
     <string name="button_instr_text_message">Instructions</string>
     <string name="str_list_group">Group list</string>
-    <string name="alert_delete_groupname_title">Attention!</string>
-    <string name="alert_delete_groupname">Click OK to delete this message group:</string>
-    <string name="alert_messages_editor_empty_title">Almost there!</string>
-    <string name="alert_messages_editor_empty_message">Type your messages.</string>
-    <string name="alert_messages_editor_empty_groupname">Name your message group.</string>
-    <string name="instr_messages_editor_title">Instructions</string>
-    <string name="instr_messages_editor">Skip line to represent the end of a message, as in
-    example bellow:\n\nFirst message\nSecond message\nThird message</string>
-    <string name="instr_coordinates_config_title">Attention</string>
-    <string name="instr_coordinates_config">To record keyboard coordinates, drag the target to
-        the symbol corresponding to the one requested by the table above.</string>
     <string name="str_success_register_title">Ready</string>
     <string name="str_success_register">Registered coordinates!</string>
     <string name="str_register_capslock">Record the coordinate corresponding to Caps Lock.</string>
     <string name="str_register_special_char">Write the coordinate related to special characters (!#1 or ?123).</string>
     <string name="str_register_space_bar">Write the coordinate corresponding to the spacebar.</string>
-    <string name="toast_error_register_capslock">Click CAPS LOCK.</string>
-    <string name="toast_error_register_special_char">Click !#1 or ?123</string>
-    <string name="toast_error_register_space_bar">Click spacebar</string>
     <string name="string_display_capslock">Caps Lock</string>
-    <string name="string_display_special_char">!#1 or ?123</string>
     <string name="string_display_space_bar">Space Bar</string>
     <string name="str_register_send_message_key_and_type_field">Register the coordinate corresponding to the sending of messages and the coordinate
         corresponding to the writing field. Auto Messenger will only work if these coordinates are registered. It is recommended to watch the tutorial. Click OK to continue.</string>
@@ -78,8 +114,6 @@
     <string name="accessibility_service_name">Auto Messenger</string>
     <string name="button_config_coordinates">Coordinates</string>
     <string name="str_enable_clicker">Enable Auto Messenger</string>
-    <string name="str_start_config_coordinates">Start</string>
-    <string name="str_abort_config_coordinates">Abort</string>
     <string name="str_warning">Warning</string>
     <string name="str_enable_accessibility_service">Enable accessibility permission for the
         Auto Messenger perform automated click gestures.</string>
@@ -110,23 +144,7 @@
     If you agree to use it, click on Agree.</string>
     <string name="srt_prominent_disclosure_positive_button_title">I agree</string>
     <string name="srt_prominent_disclosure_negative_button_title">I disagree</string>
-    <!--######################-->
-
-    <!-- MainActivity class -->
-    <string name="main_my_quiz_dialog_title">Unlock access</string>
-    <string name="main_my_quiz_dialog_text_start">To continue using Auto Messenger you need to have more than</string>
-    <string name="main_my_quiz_dialog_text_end">XP in the My Quiz app.</string>
-    <string name="main_my_quiz_dialog_play_my_quiz">Unlock</string>
-    <string name="main_my_quiz_dialog_check">I already have</string>
-    <string name="main_my_quiz_check_email">Type your email registered in My Quiz app to check your score.</string>
-    <string name="main_my_quiz_check_email_button">Check</string>
-    <string name="main_my_quiz_unlocked">Successfully unlocked!</string>
-    <string name="main_error_title">Error</string>
-    <string name="main_error">An error has occurred. Check your internet connection or wait a few moments.</string>
-    <string name="main_loading">Checking...</string>
-    <string name="main_invalid_email">Invalid email.</string>
-    <string name="main_my_quiz_not_unlocked">You do not have enough XP in My Quiz. Play more!</string>
-    <!--######################-->
+    <!-- // -->
 
     <string name="toast_accessibility_service_is_not_connected">AccessibilityService of this device is not properly connected</string>
 

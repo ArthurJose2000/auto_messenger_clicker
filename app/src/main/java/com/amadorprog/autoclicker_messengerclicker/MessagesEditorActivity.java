@@ -112,8 +112,8 @@ public class MessagesEditorActivity extends AppCompatActivity {
 
     public void messageIsEmptyAlert(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        String instruction_title = getString(R.string.alert_messages_editor_empty_title);
-        String instruction = getString(R.string.alert_messages_editor_empty_message);
+        String instruction_title = getString(R.string.messages_editor_alert_empty_title);
+        String instruction = getString(R.string.messages_editor_alert_empty_message);
         builder
                 .setTitle(instruction_title)
                 .setMessage(instruction)
@@ -127,8 +127,8 @@ public class MessagesEditorActivity extends AppCompatActivity {
 
     public void groupNameIsEmptyAlert(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        String instruction_title = getString(R.string.alert_messages_editor_empty_title);
-        String instruction = getString(R.string.alert_messages_editor_empty_groupname);
+        String instruction_title = getString(R.string.messages_editor_alert_empty_title);
+        String instruction = getString(R.string.messages_editor_alert_empty_groupname);
         builder
                 .setTitle(instruction_title)
                 .setMessage(instruction)
@@ -142,8 +142,8 @@ public class MessagesEditorActivity extends AppCompatActivity {
 
     public void openDialogTextMessageInstruction(View view){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        String instruction_title = getString(R.string.instr_messages_editor_title);
-        String instruction = getString(R.string.instr_messages_editor);
+        String instruction_title = getString(R.string.messages_editor_instr_title);
+        String instruction = getString(R.string.messages_editor_instr);
         builder
                 .setTitle(instruction_title)
                 .setMessage(instruction)
@@ -157,7 +157,7 @@ public class MessagesEditorActivity extends AppCompatActivity {
 
     public void thisGroupAlreadyExistAlert(String group){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        String instruction_title = getString(R.string.instr_messages_editor_title);
+        String instruction_title = getString(R.string.messages_editor_instr_title);
         String instruction = group + ": " + getString(R.string.messages_editor_group_already_exist);
         builder
                 .setTitle(instruction_title)
@@ -183,8 +183,8 @@ public class MessagesEditorActivity extends AppCompatActivity {
     public void deleteGroup(View view){
         if(previousGroupName != null){
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            String instruction_title = getString(R.string.alert_delete_groupname_title);
-            String instruction = getString(R.string.alert_delete_groupname) + " '" + previousGroupName + "'.";
+            String instruction_title = getString(R.string.messages_editor_delete_groupname_title);
+            String instruction = getString(R.string.messages_editor_delete_groupname) + " '" + previousGroupName + "'.";
             builder
                     .setTitle(instruction_title)
                     .setMessage(instruction)

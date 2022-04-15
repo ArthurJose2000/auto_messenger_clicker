@@ -150,6 +150,10 @@ public class AutoClickService extends AccessibilityService {
                                 typingFieldClickStatus = true; //will be clicked
                                 chainedAutoClick(delayBetweenMessages(isRandomDelay, delay, maxDelay, minDelay) * 1000, 100, auxCoordinates, isRandomDelay, delay, maxDelay, minDelay, isInfiniteLoop);
                             }
+                            else{
+                                Toast toast = Toast.makeText(context, context.getResources().getString(R.string.auto_click_service_finished), Toast.LENGTH_LONG);
+                                toast.show();
+                            }
                         }
                     }
                     @Override

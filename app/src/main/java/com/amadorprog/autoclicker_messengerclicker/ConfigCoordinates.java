@@ -92,8 +92,8 @@ public class ConfigCoordinates extends AppCompatActivity {
 
         if (!enableAbortOperation) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            String instruction_title = getString(R.string.instr_coordinates_config_title);
-            String instruction = getString(R.string.instr_coordinates_config);
+            String instruction_title = getString(R.string.config_coordinates_instr_title);
+            String instruction = getString(R.string.config_coordinates_instr);
             builder
                     .setTitle(instruction_title)
                     .setMessage(instruction)
@@ -105,7 +105,7 @@ public class ConfigCoordinates extends AppCompatActivity {
                             target.open();
                             enableAbortOperation = true;
                             enableListener = true;
-                            startButton.setText(R.string.str_abort_config_coordinates);
+                            startButton.setText(R.string.config_coordinates_abort);
                             startButton.setBackgroundColor(Color.RED);
                             verifyConfigProcess();
                         }
@@ -118,7 +118,7 @@ public class ConfigCoordinates extends AppCompatActivity {
                     .show();
         }
         else{
-            startButton.setText(R.string.str_start_config_coordinates);
+            startButton.setText(R.string.config_coordinates_start);
             startButton.setBackgroundColor(Color.parseColor("#FF03DAC5")); //R.color.teal_200 was returning other color
             requiredCharacter.setText("q");
             requiredCharacter.setTextColor(Color.BLACK);
@@ -156,14 +156,14 @@ public class ConfigCoordinates extends AppCompatActivity {
                                 clickOnCapsLockButton();
                                 isTimeToCheckCapsLock = true;
                                 target.setIsTimeToCheckCapsLock(true);
-                                requiredCharacter.setText(context.getResources().getString(R.string.string_display_capslock));
+                                requiredCharacter.setText(getString(R.string.string_display_capslock));
                                 isTimeToCheckThreeLastKeys = true;
                             }
                         }
                         else if(lastCharacter == 'A' && isTimeToCheckCapsLock){
                             typingField.setText("");
-                            requiredCharacter.setText(context.getResources().getString(R.string.string_display_special_char));
-                            target.insertCoordinateToDataBase("capslock");
+                            requiredCharacter.setText(getString(R.string.config_coordinates_display_special_char));
+                            target.insertCoordinateToDataBase(getString(R.string.data_base_capslock));
                             isTimeToCheckCapsLock = false;
                             target.setIsTimeToCheckCapsLock(false);
                             isTimeToCheckSpecialChar = true;
@@ -172,8 +172,8 @@ public class ConfigCoordinates extends AppCompatActivity {
                         }
                         else if(!Character.isLetter(lastCharacter) && isTimeToCheckSpecialChar){
                             typingField.setText("");
-                            requiredCharacter.setText(context.getResources().getString(R.string.string_display_space_bar));
-                            target.insertCoordinateToDataBase("specialchar");
+                            requiredCharacter.setText(getString(R.string.string_display_space_bar));
+                            target.insertCoordinateToDataBase(getString(R.string.data_base_specialchar));
                             isTimeToCheckSpecialChar = false;
                             target.setIsTimeToCheckSpecialChar(false);
                             isTimeToCheckSpaceBar = true;
@@ -181,31 +181,31 @@ public class ConfigCoordinates extends AppCompatActivity {
                         }
                         else if(lastCharacter == ' ' && isTimeToCheckSpaceBar){
                             typingField.setText("");
-                            target.insertCoordinateToDataBase("spacebar");
+                            target.insertCoordinateToDataBase(getString(R.string.data_base_spacebar));
                             isTimeToCheckSpaceBar = false;
                             requiredCharacter.setText("OK!");
                             requiredCharacter.setTextColor(Color.BLACK);
-                            startButton.setText(R.string.str_start_config_coordinates);
+                            startButton.setText(R.string.config_coordinates_start);
                             startButton.setBackgroundColor(Color.parseColor("#FF03DAC5"));
-                            DataBase.getDbInstance(context).insertCoordinatesToDataBase("sendfield", 0, 0); //pré-configuração das coordenadas da tecla de envio
-                            DataBase.getDbInstance(context).insertCoordinatesToDataBase("typingfield", 0, 0); //pré-configuração das coordenadas do campo de escrita
-                            DataBase.getDbInstance(context).insertCoordinatesToDataBase("breakline", 0, 0); //configuração da coordenada que representa a quebra de linha
+                            DataBase.getDbInstance(context).insertCoordinatesToDataBase(getString(R.string.data_base_sendfield), 0, 0); //pré-configuração das coordenadas da tecla de envio
+                            DataBase.getDbInstance(context).insertCoordinatesToDataBase(getString(R.string.data_base_typingfield), 0, 0); //pré-configuração das coordenadas do campo de escrita
+                            DataBase.getDbInstance(context).insertCoordinatesToDataBase(getString(R.string.data_base_breakline), 0, 0); //configuração da coordenada que representa a quebra de linha
                             successRegister();
                         }
                         else {
                             if(isTimeToCheckCapsLock){
                                 typingField.setText("");
-                                Toast toast = Toast.makeText(context, context.getResources().getString(R.string.toast_error_register_capslock), Toast.LENGTH_LONG);
+                                Toast toast = Toast.makeText(context, getString(R.string.config_coordinates_toast_error_record_capslock), Toast.LENGTH_LONG);
                                 toast.show();
                             }
                             else if(isTimeToCheckSpecialChar){
                                 typingField.setText("");
-                                Toast toast = Toast.makeText(context, context.getResources().getString(R.string.toast_error_register_special_char), Toast.LENGTH_LONG);
+                                Toast toast = Toast.makeText(context, getString(R.string.config_coordinates_toast_error_record_special_char), Toast.LENGTH_LONG);
                                 toast.show();
                             }
                             else if(isTimeToCheckSpaceBar){
                                 typingField.setText("");
-                                Toast toast = Toast.makeText(context, context.getResources().getString(R.string.toast_error_register_space_bar), Toast.LENGTH_LONG);
+                                Toast toast = Toast.makeText(context, getString(R.string.config_coordinates_toast_error_register_space_bar), Toast.LENGTH_LONG);
                                 toast.show();
                             }
                             else {
@@ -253,7 +253,7 @@ public class ConfigCoordinates extends AppCompatActivity {
 
     public void clickOnCapsLockButton(){
         AlertDialog.Builder builder = new AlertDialog.Builder(ConfigCoordinates.this);
-        String instruction_title = getString(R.string.instr_coordinates_config_title);
+        String instruction_title = getString(R.string.config_coordinates_instr_title);
         String instruction = getString(R.string.str_register_capslock);
         builder
                 .setTitle(instruction_title)
@@ -268,7 +268,7 @@ public class ConfigCoordinates extends AppCompatActivity {
 
     public void clickOnSpecialCharButton(){
         AlertDialog.Builder builder = new AlertDialog.Builder(ConfigCoordinates.this);
-        String instruction_title = getString(R.string.instr_coordinates_config_title);
+        String instruction_title = getString(R.string.config_coordinates_instr_title);
         String instruction = getString(R.string.str_register_special_char);
         builder
                 .setTitle(instruction_title)
@@ -283,7 +283,7 @@ public class ConfigCoordinates extends AppCompatActivity {
 
     public void clickOnSpaceBarButton(){
         AlertDialog.Builder builder = new AlertDialog.Builder(ConfigCoordinates.this);
-        String instruction_title = getString(R.string.instr_coordinates_config_title);
+        String instruction_title = getString(R.string.config_coordinates_instr_title);
         String instruction = getString(R.string.str_register_space_bar);
         builder
                 .setTitle(instruction_title)

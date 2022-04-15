@@ -41,12 +41,6 @@ public class Window {
     boolean isRandomOrder;
     String groupName;
 
-    String typingField = "typingfield";
-    String sendField = "sendfield";
-    String spaceBar = "spacebar";
-    String capslock = "capslock";
-    String specialChar = "specialchar";
-
     public Window(Context context){
         this.context = context;
 
@@ -86,6 +80,7 @@ public class Window {
         mView.findViewById(R.id.button_send_message).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                targetTypeField.hide(); //in case it's open
                 targetSendMessage.unhide();
             }
         });
@@ -93,6 +88,7 @@ public class Window {
         mView.findViewById(R.id.button_type_field).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                targetSendMessage.hide(); //in case it's open
                 targetTypeField.unhide();
             }
         });
@@ -245,6 +241,12 @@ public class Window {
         int[] aux;
         boolean lastKeyIsASpecialChar = false;
 
+        String typingField = context.getString(R.string.data_base_typingfield);
+        String sendField = context.getString(R.string.data_base_sendfield);
+        String spaceBar = context.getString(R.string.data_base_spacebar);
+        String capslock = context.getString(R.string.data_base_capslock);
+        String specialChar = context.getString(R.string.data_base_specialchar);
+
         sizeStackCoordinates = 0;
         coordinates = new ArrayList<ArrayList<Integer>>();
 
@@ -323,13 +325,19 @@ public class Window {
     public boolean isSendingCoordinatesRegistered(){
         //Check if send message button and typing field are registered
 
-        int[] coordinates = DataBase.getDbInstance(context).getCoordinatesFromDataBase(sendField);
-        if(coordinates[0] == 0 || coordinates[1] == 0)
+        int[] coordinates = DataBase.getDbInstance(context).getCoordinatesFromDataBase(context.getString(R.string.data_base_typingfield));
+        if(coordinates[0] == 0 || coordinates[1] == 0) {
+            Toast toast = Toast.makeText(context, context.getString(R.string.window_register_typing_field_coordinate), Toast.LENGTH_LONG);
+            toast.show();
             return false;
+        }
 
-        coordinates = DataBase.getDbInstance(context).getCoordinatesFromDataBase(typingField);
-        if(coordinates[0] == 0 || coordinates[1] == 0)
+        coordinates = DataBase.getDbInstance(context).getCoordinatesFromDataBase(context.getString(R.string.data_base_sendfield));
+        if(coordinates[0] == 0 || coordinates[1] == 0) {
+            Toast toast = Toast.makeText(context, context.getString(R.string.window_register_send_message_coordinate), Toast.LENGTH_LONG);
+            toast.show();
             return false;
+        }
 
         return true;
     }

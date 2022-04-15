@@ -439,7 +439,7 @@ public class MainActivity extends AppCompatActivity {
     public void openActionBar(View view) throws IOException, InterruptedException {
         if(!window.isOpen()) {
             if (enableToPlay())
-                backlightAlert();
+                window.open(isRandomDelay, delay_s, maxDelay_s, minDelay_s, isInfiniteLoop, isRandomOrder, groupName);
         }
     }
 
@@ -537,36 +537,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return true;
-    }
-
-    public void backlightAlert(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        String instruction_title = context.getResources().getString(R.string.instr_coordinates_config_title);
-        String instruction = context.getResources().getString(R.string.alert_backlight_duration);
-        builder
-                .setTitle(instruction_title)
-                .setMessage(instruction)
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        registerSendMessageButtonAndTypeField();
-                    }
-                })
-                .show();
-    }
-
-    public void registerSendMessageButtonAndTypeField(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        String instruction_title = context.getResources().getString(R.string.instr_coordinates_config_title);
-        String instruction = context.getResources().getString(R.string.str_register_send_message_key_and_type_field);
-        builder
-                .setTitle(instruction_title)
-                .setMessage(instruction)
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        window.open(isRandomDelay, delay_s, maxDelay_s, minDelay_s, isInfiniteLoop, isRandomOrder, groupName);
-                    }
-                })
-                .show();
     }
 
     public void configureDelayLimit(){
