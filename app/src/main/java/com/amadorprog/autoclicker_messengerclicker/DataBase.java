@@ -10,7 +10,7 @@ import android.provider.BaseColumns;
 import java.util.ArrayList;
 
 public final class DataBase {
-    int CREATE =1;
+    int CREATE = 1;
     int UPDATE = 2;
 
     private static DataBase dbInstance;

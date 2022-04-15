@@ -26,6 +26,8 @@ public class Window {
     private WindowManager.LayoutParams mParams;
     private WindowManager mWindowManager;
     private LayoutInflater layoutInflater;
+    public int sizeStackCoordinates;
+    public ArrayList<ArrayList<Integer>> coordinates;
     Target targetSendMessage;
     Target targetTypeField;
     final int CONFIGSENDMESSAGECOORDINATE = 2; //update send message coordinate
@@ -39,6 +41,11 @@ public class Window {
     boolean isRandomOrder;
     String groupName;
 
+    String typingField = "typingfield";
+    String sendField = "sendfield";
+    String spaceBar = "spacebar";
+    String capslock = "capslock";
+    String specialChar = "specialchar";
 
     public Window(Context context){
         this.context = context;
@@ -235,133 +242,72 @@ public class Window {
     }
 
     public void typeMessages(String message){
-        int sizeStackCoordinates = 0;
-        int[] auxCoordinates;
-        ArrayList<ArrayList<Integer>> coordinates = new ArrayList<ArrayList<Integer>>();
+        int[] aux;
         boolean lastKeyIsASpecialChar = false;
 
-        coordinates.add(new ArrayList<Integer>());
-        auxCoordinates = DataBase.getDbInstance(context).getCoordinatesFromDataBase("typingfield");
-        coordinates.get(sizeStackCoordinates).add(auxCoordinates[0]);
-        coordinates.get(sizeStackCoordinates).add(auxCoordinates[1]);
-        sizeStackCoordinates++;
+        sizeStackCoordinates = 0;
+        coordinates = new ArrayList<ArrayList<Integer>>();
+
+        pushCommand(typingField);
 
         int sizeMessage = message.length();
         for(int i = 0; i < sizeMessage; i++){
             char key = message.charAt(i);
             if(Character.isLetter(key)){
-                auxCoordinates = DataBase.getDbInstance(context).getCoordinatesFromDataBase(Character.toString(Character.toLowerCase(key)));
-                if(auxCoordinates == null){
-                    coordinates.add(new ArrayList<Integer>());
-                    auxCoordinates = DataBase.getDbInstance(context).getCoordinatesFromDataBase("spacebar");
-                    coordinates.get(sizeStackCoordinates).add(auxCoordinates[0]);
-                    coordinates.get(sizeStackCoordinates).add(auxCoordinates[1]);
-                    sizeStackCoordinates++;
-                }
+                aux = DataBase.getDbInstance(context).getCoordinatesFromDataBase(Character.toString(Character.toLowerCase(key)));
+                if(aux == null)
+                    pushCommand(spaceBar);
                 else{
                     if(Character.isUpperCase(key)){
-                        coordinates.add(new ArrayList<Integer>());
-                        auxCoordinates = DataBase.getDbInstance(context).getCoordinatesFromDataBase("capslock");
-                        coordinates.get(sizeStackCoordinates).add(auxCoordinates[0]);
-                        coordinates.get(sizeStackCoordinates).add(auxCoordinates[1]);
-                        sizeStackCoordinates++;
-
-                        coordinates.add(new ArrayList<Integer>());
-                        auxCoordinates = DataBase.getDbInstance(context).getCoordinatesFromDataBase(Character.toString(Character.toLowerCase(key)));
-                        coordinates.get(sizeStackCoordinates).add(auxCoordinates[0]);
-                        coordinates.get(sizeStackCoordinates).add(auxCoordinates[1]);
-                        sizeStackCoordinates++;
+                        pushCommand(capslock);
+                        pushCommand(Character.toString(Character.toLowerCase(key)));
                     }
-                    else{
-                        coordinates.add(new ArrayList<Integer>());
-                        auxCoordinates = DataBase.getDbInstance(context).getCoordinatesFromDataBase(Character.toString(key));
-                        coordinates.get(sizeStackCoordinates).add(auxCoordinates[0]);
-                        coordinates.get(sizeStackCoordinates).add(auxCoordinates[1]);
-                        sizeStackCoordinates++;
-                    }
+                    else
+                        pushCommand(Character.toString(key));
                 }
             }
-            else if(key == ' '){
-                coordinates.add(new ArrayList<Integer>());
-                auxCoordinates = DataBase.getDbInstance(context).getCoordinatesFromDataBase("spacebar");
-                coordinates.get(sizeStackCoordinates).add(auxCoordinates[0]);
-                coordinates.get(sizeStackCoordinates).add(auxCoordinates[1]);
-                sizeStackCoordinates++;
+            else if(key == '\'') {
+                if(lastKeyIsASpecialChar == false)
+                    pushCommand(specialChar);
+                pushCommand(Character.toString(key));
+                lastKeyIsASpecialChar = false;
             }
+            else if(key == ' ')
+                pushCommand(spaceBar);
             else if(key == '\n'){
-                coordinates.add(new ArrayList<Integer>());
-                auxCoordinates = DataBase.getDbInstance(context).getCoordinatesFromDataBase("sendfield");
-                coordinates.get(sizeStackCoordinates).add(auxCoordinates[0]);
-                coordinates.get(sizeStackCoordinates).add(auxCoordinates[1]);
-                sizeStackCoordinates++;
-
-                coordinates.add(new ArrayList<Integer>());
-                coordinates.get(sizeStackCoordinates).add(0);
-                coordinates.get(sizeStackCoordinates).add(0); //Coordenada 0 0 representa o fim de uma mensagem (break line)
-                sizeStackCoordinates++; // a quantidade de cliques é igual à sizeStackCoordinates - (as ocorrências nesse if)
-
-                coordinates.add(new ArrayList<Integer>());
-                auxCoordinates = DataBase.getDbInstance(context).getCoordinatesFromDataBase("typingfield");
-                coordinates.get(sizeStackCoordinates).add(auxCoordinates[0]);
-                coordinates.get(sizeStackCoordinates).add(auxCoordinates[1]);
-                sizeStackCoordinates++;
+                pushCommand(sendField);
+                pushEndOfMessage();
+                pushCommand(typingField);
             }
             else{
-                auxCoordinates = DataBase.getDbInstance(context).getCoordinatesFromDataBase(Character.toString(key));
-                if(auxCoordinates == null){
-                    coordinates.add(new ArrayList<Integer>());
-                    auxCoordinates = DataBase.getDbInstance(context).getCoordinatesFromDataBase("spacebar");
-                    coordinates.get(sizeStackCoordinates).add(auxCoordinates[0]);
-                    coordinates.get(sizeStackCoordinates).add(auxCoordinates[1]);
-                    sizeStackCoordinates++;
-                }
+                aux = DataBase.getDbInstance(context).getCoordinatesFromDataBase(Character.toString(key));
+                if(aux == null)
+                    pushCommand(spaceBar);
                 else{
-                    if(lastKeyIsASpecialChar == false) {
-                        coordinates.add(new ArrayList<Integer>());
-                        auxCoordinates = DataBase.getDbInstance(context).getCoordinatesFromDataBase("specialchar");
-                        coordinates.get(sizeStackCoordinates).add(auxCoordinates[0]);
-                        coordinates.get(sizeStackCoordinates).add(auxCoordinates[1]);
-                        sizeStackCoordinates++;
-                    }
+                    if(lastKeyIsASpecialChar == false)
+                        pushCommand(specialChar);
 
-                    coordinates.add(new ArrayList<Integer>());
-                    auxCoordinates = DataBase.getDbInstance(context).getCoordinatesFromDataBase(Character.toString(key));
-                    coordinates.get(sizeStackCoordinates).add(auxCoordinates[0]);
-                    coordinates.get(sizeStackCoordinates).add(auxCoordinates[1]);
-                    sizeStackCoordinates++;
+                    pushCommand(Character.toString(key));
 
                     if(i + 1 < sizeMessage){  //check if next key not is a special char
                         char auxKey = message.charAt(i + 1);
-                        auxCoordinates = DataBase.getDbInstance(context).getCoordinatesFromDataBase(Character.toString(auxKey));
-                        if(auxCoordinates == null || Character.isLetter(auxKey) || auxKey == '\n' || auxKey == ' '){
-                            coordinates.add(new ArrayList<Integer>());
-                            auxCoordinates = DataBase.getDbInstance(context).getCoordinatesFromDataBase("specialchar");
-                            coordinates.get(sizeStackCoordinates).add(auxCoordinates[0]);
-                            coordinates.get(sizeStackCoordinates).add(auxCoordinates[1]);
-                            sizeStackCoordinates++;
+                        aux = DataBase.getDbInstance(context).getCoordinatesFromDataBase(Character.toString(auxKey));
+                        if(aux == null || Character.isLetter(auxKey) || auxKey == '\n' || auxKey == ' '){
+                            pushCommand(specialChar);
                             lastKeyIsASpecialChar = false; //next key not is a special char
                         }
-                        else{
+                        else
                             lastKeyIsASpecialChar = true; //next key is a special char
-                        }
                     }
                     else{  //end of messages
-                        coordinates.add(new ArrayList<Integer>());
-                        auxCoordinates = DataBase.getDbInstance(context).getCoordinatesFromDataBase("specialchar");
-                        coordinates.get(sizeStackCoordinates).add(auxCoordinates[0]);
-                        coordinates.get(sizeStackCoordinates).add(auxCoordinates[1]);
-                        sizeStackCoordinates++;
+                        pushCommand(specialChar);
                         lastKeyIsASpecialChar = false; //next key not is a special char
                     }
                 }
             }
         }
 
-        coordinates.add(new ArrayList<Integer>());
-        auxCoordinates = DataBase.getDbInstance(context).getCoordinatesFromDataBase("sendfield");
-        coordinates.get(sizeStackCoordinates).add(auxCoordinates[0]);
-        coordinates.get(sizeStackCoordinates).add(auxCoordinates[1]);
-        sizeStackCoordinates++;
+        pushCommand(sendField);
 
         if(AutoClickService.instance != null) {
             String used = DataBase.getDbInstance(context).getSettings(context.getString(R.string.data_base_used_quantity));
@@ -377,11 +323,11 @@ public class Window {
     public boolean isSendingCoordinatesRegistered(){
         //Check if send message button and typing field are registered
 
-        int[] coordinates = DataBase.getDbInstance(context).getCoordinatesFromDataBase("sendfield");
+        int[] coordinates = DataBase.getDbInstance(context).getCoordinatesFromDataBase(sendField);
         if(coordinates[0] == 0 || coordinates[1] == 0)
             return false;
 
-        coordinates = DataBase.getDbInstance(context).getCoordinatesFromDataBase("typingfield");
+        coordinates = DataBase.getDbInstance(context).getCoordinatesFromDataBase(typingField);
         if(coordinates[0] == 0 || coordinates[1] == 0)
             return false;
 
@@ -425,4 +371,20 @@ public class Window {
         }
     }
 
+    public void pushCommand(String key){
+        int[] auxCoordinates;
+
+        coordinates.add(new ArrayList<Integer>());
+        auxCoordinates = DataBase.getDbInstance(context).getCoordinatesFromDataBase(key);
+        coordinates.get(sizeStackCoordinates).add(auxCoordinates[0]);
+        coordinates.get(sizeStackCoordinates).add(auxCoordinates[1]);
+        sizeStackCoordinates++;
+    }
+
+    public void pushEndOfMessage(){
+        coordinates.add(new ArrayList<Integer>());
+        coordinates.get(sizeStackCoordinates).add(0);
+        coordinates.get(sizeStackCoordinates).add(0); //Coordenada 0 0 representa o fim de uma mensagem (break line)
+        sizeStackCoordinates++; // a quantidade de cliques é igual à sizeStackCoordinates - (as ocorrências nesta função)
+    }
 }

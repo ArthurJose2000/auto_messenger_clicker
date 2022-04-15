@@ -29,7 +29,6 @@ public class ConfigCoordinates extends AppCompatActivity {
     Button startButton;
     Target target;
     String characters = "qwertyuiopasdfghjklzxcvbnm1234567890+/_!@#$%*()-'\":,?.XYZ"; //X -> relacionado ao Caps Lock, Y -> relacionado ao Special Char, Z -> relacionado ao Space Bar
-    //String characters = "qwaXYZ"; //para testes
     int sizeCharacters = characters.length();
     int count; //auxiliar count to verifyConfigProcess()
     int enableToListen = 0; //check if user clean the typingField
@@ -51,9 +50,9 @@ public class ConfigCoordinates extends AppCompatActivity {
 
         checkPermissions();
 
-        startButton = (Button) findViewById(R.id.button_start_config_coordinate);
-        typingField = (EditText) findViewById(R.id.text_edit_config_coordinate);
-        requiredCharacter = (TextView) findViewById(R.id.str_view_key_config);
+        startButton = findViewById(R.id.button_start_config_coordinate);
+        typingField = findViewById(R.id.text_edit_config_coordinate);
+        requiredCharacter = findViewById(R.id.str_view_key_config);
     }
 
     @Override
@@ -367,7 +366,7 @@ public class ConfigCoordinates extends AppCompatActivity {
 
                     //System.out.println("-------------- > accessibilityService :: " + accessibilityService + " " + service);
                     if (accessibilityService.equalsIgnoreCase(service)) {
-                        System.out.println("We've found the correct setting - accessibility is switched on!");
+                        //System.out.println("We've found the correct setting - accessibility is switched on!");
                         return true;
                     }
                 }

@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- MessagesEditorActivity Class -->
+    <string name="messages_editor_group_already_exist">Este grupo já existe. Escolha outro nome para o grupo.</string>
+    <!-- // -->
+
     <string name="app_name">Auto Messenger</string>
     <string name="str_msg_group">Grupo de mensagens:</string>
     <string name="str_delay_time_simple">Delay:</string>

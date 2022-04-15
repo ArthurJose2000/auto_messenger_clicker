@@ -34,16 +34,20 @@
 
         <activity
             android:name="com.amadorprog.autoclicker_messengerclicker.ListMessagesGroupActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.amadorprog.autoclicker_messengerclicker.ConfigCoordinates"
-            android:exported="true" />
+            android:exported="true"
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.amadorprog.autoclicker_messengerclicker.MessagesEditorActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.amadorprog.autoclicker_messengerclicker.MainActivity"
-            android:exported="true">
+            android:exported="true"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

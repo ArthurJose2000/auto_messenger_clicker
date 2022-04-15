@@ -92,32 +92,22 @@ public class MessagesEditorActivity extends AppCompatActivity {
         String message = editMessage.getText().toString();
         String groupName = editGroupName.getText().toString();
 
-        if(isEmpty(message)){
+        if(message.trim().length() == 0){
             messageIsEmptyAlert();
         }
-        else if(isEmpty(groupName)){
+        else if(groupName.trim().length() == 0){
             groupNameIsEmptyAlert();
         }
-        else if(isUpdate(groupName)){
-            message = removeBreakLineFromTheEnd(message);
-            DataBase.getDbInstance(context).deleteGroupName(groupName);
-            DataBase.getDbInstance(context).insertMessagesToDataBase(message, groupName);
-            finish();
-        }
         else {
-            message = removeBreakLineFromTheEnd(message);
-            DataBase.getDbInstance(context).insertMessagesToDataBase(message, groupName);
-            finish();
+            if(!doesThisGroupAlreadyExist(groupName.trim())){
+                if(previousGroupName != null)
+                    DataBase.getDbInstance(context).deleteGroupName(previousGroupName);
+                DataBase.getDbInstance(context).insertMessagesToDataBase(message.trim(), groupName.trim());
+                finish();
+            }
+            else
+                thisGroupAlreadyExistAlert(groupName.trim());
         }
-    }
-
-    public String removeBreakLineFromTheEnd(String s){
-        while(s.charAt(s.length() - 1) == '\n'){
-            s = s.substring(0, s.length() - 1);
-            if(s.length() < 2)
-                break;
-        }
-        return s;
     }
 
     public void messageIsEmptyAlert(){
@@ -165,29 +155,32 @@ public class MessagesEditorActivity extends AppCompatActivity {
                 .show();
     }
 
-    public boolean isEmpty(String s){
-        char aux;
-        for(int i = 0; i < s.length(); i++){
-            aux = s.charAt(i);
-            if(aux != ' ' && aux != '\n'){
-                return false;
-            }
-        }
-        return true;
+    public void thisGroupAlreadyExistAlert(String group){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        String instruction_title = getString(R.string.instr_messages_editor_title);
+        String instruction = group + ": " + getString(R.string.messages_editor_group_already_exist);
+        builder
+                .setTitle(instruction_title)
+                .setMessage(instruction)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Continue with delete operation
+                    }
+                })
+                .show();
     }
 
-    public boolean isUpdate(String groupName){
+    public boolean doesThisGroupAlreadyExist(String groupName){
         ArrayList<String> groupNames;
         groupNames = DataBase.getDbInstance(context).getGroupNamesFromDataBase();
-        for(int i = 0; i < groupNames.size(); i++){
-            if(groupName == groupNames.get(i))
-                return false;
-        }
-        return true;
+        for(int i = 0; i < groupNames.size(); i++)
+            if(groupName.equals(groupNames.get(i)) && !previousGroupName.equals(groupNames.get(i)))
+                return true;
+
+        return false;
     }
 
     public void deleteGroup(View view){
-        System.out.println(previousGroupName);
         if(previousGroupName != null){
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             String instruction_title = getString(R.string.alert_delete_groupname_title);
@@ -207,9 +200,6 @@ public class MessagesEditorActivity extends AppCompatActivity {
                         }
                     })
                     .show();
-        }
-        else{
-            System.out.println("akiiiiiii");
         }
     }
 }

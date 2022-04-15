@@ -526,12 +526,12 @@ public class MainActivity extends AppCompatActivity {
         int used_quantity = Integer.parseInt(DataBase.getDbInstance(context).getSettings(context.getString(R.string.data_base_used_quantity)));
 
         if(DataBase.getDbInstance(context).getSettings(context.getString(R.string.data_base_enabled_5)).equals("false")
-           && used_quantity > 5){
+           && used_quantity >= 5){
             openMyQuizDialog(enable_5_xp);
             return false;
         }
         else if(DataBase.getDbInstance(context).getSettings(context.getString(R.string.data_base_enabled_20)).equals("false")
-                && used_quantity > 20){
+                && used_quantity >= 20){
             openMyQuizDialog(enable_20_xp);
             return false;
         }

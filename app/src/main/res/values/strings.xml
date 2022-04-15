@@ -1,13 +1,18 @@
 <resources>
     my_quiz_package
     <string translatable="false" name="my_quiz_package">com.amadorprog.myquiz</string>
+
+    <!-- MessagesEditorActivity Class -->
+    <string name="messages_editor_group_already_exist">This group already exists. Please choose another name for the group.</string>
+    <!-- // -->
+
     <!-- DataBase Class -->
     <!-- Do not modify!!!!!!!!!!!!!!!!! -->
     <string translatable="false" name="data_base_disclosure_acceptation">disclosure_acceptation</string>
     <string translatable="false" name="data_base_used_quantity">used_quantity</string>
     <string translatable="false" name="data_base_enabled_5">enabled_5</string>
     <string translatable="false" name="data_base_enabled_20">enabled_20</string>
-    <!-- //-->
+    <!-- // -->
 
 
     <string name="app_name">Auto Messenger</string>
