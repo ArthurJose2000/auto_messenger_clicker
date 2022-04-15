@@ -156,7 +156,7 @@ public class ConfigCoordinates extends AppCompatActivity {
                                 clickOnCapsLockButton();
                                 isTimeToCheckCapsLock = true;
                                 target.setIsTimeToCheckCapsLock(true);
-                                requiredCharacter.setText(getString(R.string.string_display_capslock));
+                                requiredCharacter.setText(getString(R.string.config_coordinates_display_capslock));
                                 isTimeToCheckThreeLastKeys = true;
                             }
                         }
@@ -172,7 +172,7 @@ public class ConfigCoordinates extends AppCompatActivity {
                         }
                         else if(!Character.isLetter(lastCharacter) && isTimeToCheckSpecialChar){
                             typingField.setText("");
-                            requiredCharacter.setText(getString(R.string.string_display_space_bar));
+                            requiredCharacter.setText(getString(R.string.config_coordinates_display_space_bar));
                             target.insertCoordinateToDataBase(getString(R.string.data_base_specialchar));
                             isTimeToCheckSpecialChar = false;
                             target.setIsTimeToCheckSpecialChar(false);
@@ -236,8 +236,8 @@ public class ConfigCoordinates extends AppCompatActivity {
 
     public void successRegister(){
         AlertDialog.Builder builder = new AlertDialog.Builder(ConfigCoordinates.this);
-        String instruction_title = getString(R.string.str_success_register_title);
-        String instruction = getString(R.string.str_success_register);
+        String instruction_title = getString(R.string.config_coordinates_success_register_title);
+        String instruction = getString(R.string.config_coordinates_success_register);
         builder
                 .setTitle(instruction_title)
                 .setMessage(instruction)
@@ -254,7 +254,7 @@ public class ConfigCoordinates extends AppCompatActivity {
     public void clickOnCapsLockButton(){
         AlertDialog.Builder builder = new AlertDialog.Builder(ConfigCoordinates.this);
         String instruction_title = getString(R.string.config_coordinates_instr_title);
-        String instruction = getString(R.string.str_register_capslock);
+        String instruction = getString(R.string.config_coordinates_register_capslock);
         builder
                 .setTitle(instruction_title)
                 .setMessage(instruction)
@@ -269,7 +269,7 @@ public class ConfigCoordinates extends AppCompatActivity {
     public void clickOnSpecialCharButton(){
         AlertDialog.Builder builder = new AlertDialog.Builder(ConfigCoordinates.this);
         String instruction_title = getString(R.string.config_coordinates_instr_title);
-        String instruction = getString(R.string.str_register_special_char);
+        String instruction = getString(R.string.config_coordinates_register_special_char);
         builder
                 .setTitle(instruction_title)
                 .setMessage(instruction)
@@ -284,7 +284,7 @@ public class ConfigCoordinates extends AppCompatActivity {
     public void clickOnSpaceBarButton(){
         AlertDialog.Builder builder = new AlertDialog.Builder(ConfigCoordinates.this);
         String instruction_title = getString(R.string.config_coordinates_instr_title);
-        String instruction = getString(R.string.str_register_space_bar);
+        String instruction = getString(R.string.config_coordinates_register_space_bar);
         builder
                 .setTitle(instruction_title)
                 .setMessage(instruction)
@@ -299,8 +299,8 @@ public class ConfigCoordinates extends AppCompatActivity {
     public void checkPermissions(){
         if(!isAccessibilitySettingsOn()){
             AlertDialog.Builder builder = new AlertDialog.Builder(ConfigCoordinates.this);
-            String instruction_title = getString(R.string.str_warning);
-            String instruction = getString(R.string.str_enable_accessibility_service);
+            String instruction_title = getString(R.string.config_coordinates_warning);
+            String instruction = getString(R.string.config_coordinates_enable_accessibility_service);
             builder
                     .setTitle(instruction_title)
                     .setMessage(instruction)
@@ -323,8 +323,8 @@ public class ConfigCoordinates extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (!Settings.canDrawOverlays(this)) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(ConfigCoordinates.this);
-                String instruction_title = getString(R.string.str_warning);
-                String instruction = getString(R.string.str_enable_overlay_permission);
+                String instruction_title = getString(R.string.config_coordinates_warning);
+                String instruction = getString(R.string.config_coordinates_enable_overlay_permission);
                 builder
                         .setTitle(instruction_title)
                         .setMessage(instruction)

@@ -52,7 +52,7 @@ public class AutoClickService extends AccessibilityService {
                 @Override
                 public void onCancelled(GestureDescription gestureDescription) {
                     super.onCancelled(gestureDescription);
-                    Toast toast = Toast.makeText(context, getString(R.string.generic_error), Toast.LENGTH_LONG);
+                    Toast toast = Toast.makeText(context, getString(R.string.auto_click_generic_error), Toast.LENGTH_LONG);
                     toast.show();
                 }
             }, null);
@@ -75,7 +75,7 @@ public class AutoClickService extends AccessibilityService {
                     @Override
                     public void onCancelled(GestureDescription gestureDescription) {
                         super.onCancelled(gestureDescription);
-                        Toast toast = Toast.makeText(context, getString(R.string.generic_error), Toast.LENGTH_LONG);
+                        Toast toast = Toast.makeText(context, getString(R.string.auto_click_generic_error), Toast.LENGTH_LONG);
                         toast.show();
                     }
                 }, null);
@@ -159,7 +159,7 @@ public class AutoClickService extends AccessibilityService {
                     @Override
                     public void onCancelled(GestureDescription gestureDescription) {
                         super.onCancelled(gestureDescription);
-                        Toast toast = Toast.makeText(context, getString(R.string.generic_error), Toast.LENGTH_LONG);
+                        Toast toast = Toast.makeText(context, getString(R.string.auto_click_generic_error), Toast.LENGTH_LONG);
                         toast.show();
                     }
                 }, null);

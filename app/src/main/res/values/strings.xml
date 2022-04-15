@@ -1,55 +1,18 @@
 <resources>
-
+    <string name="app_name">Auto Messenger</string>
     <string translatable="false" name="my_quiz_package">com.amadorprog.myquiz</string>
-
-    <!-- MainActivity class -->
-    <string name="main_my_quiz_dialog_title">Unlock access</string>
-    <string name="main_my_quiz_dialog_text_start">To continue using Auto Messenger you need to have more than</string>
-    <string name="main_my_quiz_dialog_text_end">XP in the My Quiz app.</string>
-    <string name="main_my_quiz_dialog_play_my_quiz">Unlock</string>
-    <string name="main_my_quiz_dialog_check">I already have</string>
-    <string name="main_my_quiz_check_email">Type your email registered in My Quiz app to check your score.</string>
-    <string name="main_my_quiz_check_email_button">Check</string>
-    <string name="main_my_quiz_unlocked">Successfully unlocked!</string>
-    <string name="main_error_title">Error</string>
-    <string name="main_error">An error has occurred. Check your internet connection or wait a few moments.</string>
-    <string name="main_loading">Checking...</string>
-    <string name="main_invalid_email">Invalid email.</string>
-    <string name="main_my_quiz_not_unlocked">You do not have enough XP in My Quiz. Play more!</string>
-    <!--######################-->
-
-    <!-- MessagesEditorActivity Class -->
-    <string name="messages_editor_group_already_exist">This group already exists. Please choose another name for the group.</string>
-    <string name="messages_editor_alert_empty_title">Almost there!</string>
-    <string name="messages_editor_alert_empty_message">Type your messages.</string>
-    <string name="messages_editor_alert_empty_groupname">Name your message group.</string>
-    <string name="messages_editor_instr_title">Instructions</string>
-    <string name="messages_editor_instr">Skip line to represent the end of a message, as in
-    example bellow:\n\nFirst message\nSecond message\nThird message</string>
-    <string name="messages_editor_delete_groupname_title">Attention!</string>
-    <string name="messages_editor_delete_groupname">Click OK to delete this message group:</string>
-    <!-- // -->
-
-    <!-- ConfigCoordinates Class -->
-    <string name="config_coordinates_instr_title">Attention</string>
-    <string name="config_coordinates_instr">To record keyboard coordinates, drag the target to
-        the symbol corresponding to the one requested by the table above.</string>
-    <string name="config_coordinates_abort">Abort</string>
-    <string name="config_coordinates_start">Start</string>
-    <string name="config_coordinates_display_special_char">!#1 or ?123</string>
-    <string name="config_coordinates_toast_error_record_capslock">Click on CAPS LOCK.</string>
-    <string name="config_coordinates_toast_error_record_special_char">Click on !#1 or ?123</string>
-    <string name="config_coordinates_toast_error_register_space_bar">Click on spacebar</string>
-    <!-- // -->
-
-    <!-- AutoClickService Class -->
-    <string name="auto_click_service_finished">Finished operation</string>
-    <!-- // -->
-
-    <!-- Window Class -->
-    <string name="window_register_typing_field_coordinate">Record the coordinate referring to the message field</string>
-    <string name="window_register_send_message_coordinate">Record the coordinate referring to the sending of messages</string>
-    <!-- // -->
+    <string name="version">Version 2.2.1</string>
+    <string name="menu_tutorial">Tutorial</string>
+    <string name="menu_rate_app">Rate app</string>
+    <string name="menu_share_app">Share app</string>
+    <string name="accessibility_service_description">Please enable accessibility permission for the
+        Auto Messenger perform automated click gestures.\n\nNo personal information is collected by Auto Messenger.</string>
+    <string name="accessibility_service_name">Auto Messenger</string>
+    <string-array name="unity_time">
+        <item>s</item>
+        <item>min</item>
+    </string-array>
+    <string name="toast_accessibility_service_is_not_connected">AccessibilityService of this device is not properly connected</string>
 
     <!-- DataBase Class -->
     <!-- Do not modify!!!!!!!!!!!!!!!!! -->
@@ -65,87 +28,110 @@
     <string translatable="false" name="data_base_breakline">breakline</string>
     <!-- // -->
 
-
-    <string name="app_name">Auto Messenger</string>
-    <string name="str_msg_group">Message group:</string>
-    <string name="str_delay_time_simple">Delay:</string>
-    <string name="hint_delay_time_simple">20</string>
-    <string name="hint_delay_time_min">10</string>
-    <string name="hint_delay_time_max">30</string>
-    <string name="check_random_order">Random order:</string>
-    <string name="str_delay_time_min">Minimum:</string>
-    <string name="str_delay_time_max">Maximum:</string>
-    <string name="check_random_delay">Random delay:</string>
-    <string name="check_infinite_loop">Infinite repeat:</string>
-    <string name="str_basic_settings">Basic settings</string>
-    <string name="str_advanced_settings">Advanced settings</string>
-    <string name="menu_tutorial">Tutorial</string>
-    <string name="menu_remove_ads">Remove ads</string>
-    <string name="menu_rate_app">Rate app</string>
-    <string name="menu_share_app">Share app</string>
-    <string name="menu_credits">Credits</string>
-    <string name="menu_privacy_policy">Privacy policy</string>
-    <string name="button_my_quiz">Do you like quizzes?</string>
-    <string name="srt_add_group_name">Group name:</string>
-    <string name="button_save_message">Save</string>
-    <string name="generic_error">Some error occurred</string>
-    <string name="button_instr_text_message">Instructions</string>
-    <string name="str_list_group">Group list</string>
-    <string name="str_success_register_title">Ready</string>
-    <string name="str_success_register">Registered coordinates!</string>
-    <string name="str_register_capslock">Record the coordinate corresponding to Caps Lock.</string>
-    <string name="str_register_special_char">Write the coordinate related to special characters (!#1 or ?123).</string>
-    <string name="str_register_space_bar">Write the coordinate corresponding to the spacebar.</string>
-    <string name="string_display_capslock">Caps Lock</string>
-    <string name="string_display_space_bar">Space Bar</string>
-    <string name="str_register_send_message_key_and_type_field">Register the coordinate corresponding to the sending of messages and the coordinate
-        corresponding to the writing field. Auto Messenger will only work if these coordinates are registered. It is recommended to watch the tutorial. Click OK to continue.</string>
-    <string name="str_register_send_message">Drag the target to the coordinate corresponding to sending messages. she is at the keyboard.</string>
-    <string name="str_register_type_field">Drag the target into the writing field. The keyboard must be closed.</string>
-    <string name="toast_coordinate_registered">Registered coordinate</string>
-    <string name="str_other_options">Others</string>
-    <string name="button_enable_clicker">Enable</string>
-    <string name="button_disable_clicker">Disable</string>
-    <string name="button_tutorials">Tutorials</string>
-    <string name="button_remove_ads">Remove adds</string>
-    <string name="str_version">Version 2.2.1</string>
-    <string name="accessibility_service_description">Please enable accessibility permission for the
-        Auto Messenger perform automated click gestures.\n\nNo personal information is collected by Auto Messenger.</string>
-    <string name="accessibility_service_name">Auto Messenger</string>
-    <string name="button_config_coordinates">Coordinates</string>
-    <string name="str_enable_clicker">Enable Auto Messenger</string>
-    <string name="str_warning">Warning</string>
-    <string name="str_enable_accessibility_service">Enable accessibility permission for the
+    <!-- MainActivity class -->
+    <string name="main_my_quiz_dialog_title">Unlock access</string>
+    <string name="main_my_quiz_dialog_text_start">To continue using Auto Messenger you need to have more than</string>
+    <string name="main_my_quiz_dialog_text_end">XP in the My Quiz app.</string>
+    <string name="main_my_quiz_dialog_play_my_quiz">Unlock</string>
+    <string name="main_my_quiz_dialog_check">I already have</string>
+    <string name="main_my_quiz_check_email">Type your email registered in My Quiz app to check your score.</string>
+    <string name="main_my_quiz_check_email_button">Check</string>
+    <string name="main_my_quiz_unlocked">Successfully unlocked!</string>
+    <string name="main_error_title">Error</string>
+    <string name="main_error">An error has occurred. Check your internet connection or wait a few moments.</string>
+    <string name="main_loading">Checking...</string>
+    <string name="main_invalid_email">Invalid email.</string>
+    <string name="main_my_quiz_not_unlocked">You do not have enough XP in My Quiz. Play more!</string>
+    <string name="main_basic_settings">Basic settings</string>
+    <string name="main_msg_group">Message group:</string>
+    <string name="main_delay_time_simple">Delay:</string>
+    <string name="main_hint_delay_time_simple">20</string>
+    <string name="main_check_random_order">Random order:</string>
+    <string name="main_button_config_coordinates">Coordinates</string>
+    <string name="main_advanced_settings">Advanced settings</string>
+    <string name="main_check_random_delay">Random delay:</string>
+    <string name="main_delay_time_max">Maximum:</string>
+    <string name="main_hint_delay_time_max">30</string>
+    <string name="main_delay_time_min">Minimum:</string>
+    <string name="main_hint_delay_time_min">10</string>
+    <string name="main_check_infinite_loop">Infinite repeat:</string>
+    <string name="main_enable_clicker">Enable Auto Messenger</string>
+    <string name="main_button_enable_clicker">Enable</string>
+    <string name="main_other_options">Others</string>
+    <string name="main_button_tutorial">Tutorial</string>
+    <string name="main_button_my_quiz">Do you like quizzes?</string>
+    <string name="main_warning">Warning</string>
+    <string name="main_enable_accessibility_service">Enable accessibility permission for the
         Auto Messenger perform automated click gestures.</string>
-    <string name="str_enable_overlay_permission">Enable draw over other apps permission so that Auto Messenger can act.</string>
-
-    <string name="error_alert_title">Almost there!</string>
-    <string name="error_messages_db">Your messages are not set up yet!</string>
-    <string name="error_coordinates_db">Your coordinates are not set yet!</string>
-    <string name="error_delay_limit">The delay must be within the range of 1 second to 300 seconds.</string>
-    <string name="error_delay_max_min">The maximum delay must be greater than the minimum delay.</string>
-    <string name="error_send_message_button">Configure the coordinate corresponding to sending messages.
-    Click the related button on the action bar and configure it.</string>
-    <string name="error_type_field">Set the coordinate corresponding to the writing field.
-    Click the related button on the action bar and configure it.</string>
-
-    <string name="alert_backlight_duration">Make sure your backlight duration is set with enough time for Auto Messenger to work. Click OK to continue.</string>
-
-    <string-array name="unity_time">
-        <item>s</item>
-        <item>min</item>
-    </string-array>
-
-    <!-- Prominent disclosure -->
-    <string name="srt_prominent_disclosure">AccessibilityService</string>
-    <string name="srt_prominent_disclosure_message">The main feature of this app use the Accessibility Service API to simulate clicks.
+    <string name="main_enable_overlay_permission">Enable draw over other apps permission so that Auto Messenger can act.</string>
+    <string name="main_prominent_disclosure">AccessibilityService</string>
+    <string name="main_prominent_disclosure_message">The main feature of this app use the Accessibility Service API to simulate clicks.
     \n\n1. Why does this app need to use the Accessibility Services API?\nWe use this method to simulate click.\n\n
     2. Does this app collect and/or share personal or sensitive data using the accessibility capabilities?\nNo user\'s personal information is collected.\n\n
     If you agree to use it, click on Agree.</string>
-    <string name="srt_prominent_disclosure_positive_button_title">I agree</string>
-    <string name="srt_prominent_disclosure_negative_button_title">I disagree</string>
+    <string name="main_prominent_disclosure_positive_button_title">I agree</string>
+    <string name="main_prominent_disclosure_negative_button_title">I disagree</string>
+    <string name="main_error_alert_title">Almost there!</string>
+    <string name="main_error_delay_limit">The delay must be within the range of 1 second to 300 seconds.</string>
+    <string name="main_error_delay_max_min">The maximum delay must be greater than the minimum delay.</string>
+    <string name="main_error_messages_db">Your messages are not set up yet!</string>
+    <string name="main_error_coordinates_db">Your coordinates are not set yet!</string>
     <!-- // -->
 
-    <string name="toast_accessibility_service_is_not_connected">AccessibilityService of this device is not properly connected</string>
+    <!-- MessagesEditorActivity Class -->
+    <string name="messages_editor_group_already_exist">This group already exists. Please choose another name for the group.</string>
+    <string name="messages_editor_alert_empty_title">Almost there!</string>
+    <string name="messages_editor_alert_empty_message">Type your messages.</string>
+    <string name="messages_editor_alert_empty_groupname">Name your message group.</string>
+    <string name="messages_editor_instr_title">Instructions</string>
+    <string name="messages_editor_instr">Skip line to represent the end of a message, as in
+    example bellow:\n\nFirst message\nSecond message\nThird message</string>
+    <string name="messages_editor_delete_groupname_title">Attention!</string>
+    <string name="messages_editor_delete_groupname">Click OK to delete this message group:</string>
+    <string name="messages_editor_add_group_name">Group name:</string>
+    <string name="messages_editor_button_save_message">Save</string>
+    <string name="messages_editor_button_instr_text_message">Instructions</string>
+    <!-- // -->
 
+    <!-- ConfigCoordinates Class -->
+    <string name="config_coordinates_instr_title">Attention</string>
+    <string name="config_coordinates_instr">To record keyboard coordinates, drag the target to
+        the symbol corresponding to the one requested by the table above.</string>
+    <string name="config_coordinates_abort">Abort</string>
+    <string name="config_coordinates_start">Start</string>
+    <string name="config_coordinates_display_capslock">Caps Lock</string>
+    <string name="config_coordinates_display_space_bar">Space Bar</string>
+    <string name="config_coordinates_display_special_char">!#1 or ?123</string>
+    <string name="config_coordinates_toast_error_record_capslock">Click on CAPS LOCK.</string>
+    <string name="config_coordinates_toast_error_record_special_char">Click on !#1 or ?123</string>
+    <string name="config_coordinates_toast_error_register_space_bar">Click on spacebar</string>
+    <string name="config_coordinates_success_register_title">Ready</string>
+    <string name="config_coordinates_success_register">Registered coordinates!</string>
+    <string name="config_coordinates_register_capslock">Record the coordinate corresponding to Caps Lock.</string>
+    <string name="config_coordinates_register_special_char">Write the coordinate related to special characters (!#1 or ?123).</string>
+    <string name="config_coordinates_register_space_bar">Write the coordinate corresponding to the spacebar.</string>
+    <string name="config_coordinates_warning">Warning</string>
+    <string name="config_coordinates_enable_accessibility_service">Enable accessibility permission for the
+        Auto Messenger perform automated click gestures.</string>
+    <string name="config_coordinates_enable_overlay_permission">Enable draw over other apps permission so that Auto Messenger can act.</string>
+    <string name="config_coordinates_button_tutorial">Tutorial</string>
+    <!-- // -->
+
+    <!-- ListMessagesGroupActivity Class -->
+    <string name="list_messages_group_list_group">Group list</string>
+    <!-- // -->
+
+    <!-- AutoClickService Class -->
+    <string name="auto_click_service_finished">Finished operation</string>
+    <string name="auto_click_generic_error">Some error occurred</string>
+    <!-- // -->
+
+    <!-- Window Class -->
+    <string name="window_register_typing_field_coordinate">Record the coordinate referring to the message field</string>
+    <string name="window_register_send_message_coordinate">Record the coordinate referring to the sending of messages</string>
+    <!-- // -->
+
+    <!-- Target Class -->
+    <string name="target_toast_coordinate_registered">Registered coordinate</string>
+    <!-- // -->
 </resources>

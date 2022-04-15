@@ -17,7 +17,7 @@
         android:layout_height="34dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
-        android:text="@string/str_list_group"
+        android:text="@string/list_messages_group_list_group"
         android:textColor="@color/black"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"

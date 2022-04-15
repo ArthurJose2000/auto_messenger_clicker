@@ -1,5 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name">Auto Messenger</string>
+    <string name="version">Versão 2.2.1</string>
+    <string name="menu_tutorial">Tutorial</string>
+    <string name="menu_rate_app">Avaliar app</string>
+    <string name="menu_share_app">Compartilhar app</string>
+    <string name="accessibility_service_description">Por favor, ative a permissão de acessibilidade para que o
+        Auto Messenger execute gestos de clique automatizados.\n\nNenhuma informação pessoal é coletada pelo Auto Messenger.</string>
+    <string name="accessibility_service_name">Auto Messenger</string>
+    <string-array name="unity_time">
+        <item>s</item>
+        <item>min</item>
+    </string-array>
+    <string name="toast_accessibility_service_is_not_connected">O serviço de acessibilidade deste dispositivo não está devidamente conectado</string>
 
     <!-- MainActivity class -->
     <string name="main_my_quiz_dialog_title">Desbloquear acesso</string>
@@ -15,7 +28,41 @@
     <string name="main_error">Algum erro ocorreu. Verifique sua conexão com a Internet ou aguarde alguns instantes.</string>
     <string name="main_invalid_email">E-mail inválido.</string>
     <string name="main_my_quiz_not_unlocked">Você ainda não possui pontos suficientes. Jogue mais!</string>
-    <!--######################-->
+    <string name="main_basic_settings">Configurações básicas</string>
+    <string name="main_msg_group">Grupo de mensagens:</string>
+    <string name="main_delay_time_simple">Delay:</string>
+    <string name="main_hint_delay_time_simple">20</string>
+    <string name="main_check_random_order">Ordem aleatória de envio:</string>
+    <string name="main_button_config_coordinates">Coordenadas</string>
+    <string name="main_advanced_settings">Configurações avançadas</string>
+    <string name="main_check_random_delay">Delay aleatório:</string>
+    <string name="main_delay_time_max">Máximo:</string>
+    <string name="main_hint_delay_time_max">30</string>
+    <string name="main_delay_time_min">Mínimo:</string>
+    <string name="main_hint_delay_time_min">10</string>
+    <string name="main_check_infinite_loop">Repetição infinita:</string>
+    <string name="main_enable_clicker">Habilitar Auto Messenger</string>
+    <string name="main_button_enable_clicker">Habilitar</string>
+    <string name="main_other_options">Outros</string>
+    <string name="main_button_tutorial">Tutorial</string>
+    <string name="main_button_my_quiz">Gosta de Quizzes?</string>
+    <string name="main_warning">Aviso</string>
+    <string name="main_enable_accessibility_service">Ative a permissão de acessibilidade para que o
+        Auto Messenger execute gestos de clique automatizados.</string>
+    <string name="main_enable_overlay_permission">Ative a permissão de navegabilidade sobre outros apps para que o Auto Messenger possa atuar.</string>
+    <string name="main_prominent_disclosure">AccessibilityService</string>
+    <string name="main_prominent_disclosure_message">A principal funcionalidade deste app utiliza a API Accessibility Service para simular cliques.
+    \n\n1. Por que este app necessita utilizar esta ferramenta?\nNós utilizamos este método para simular cliques.\n\n
+    2. Este app coleta alguma informação pessoal ou outros dados sensíveis utilizando esta API?
+    \nNenhuma informação pessoal do usuário ou outra informação sensível é coletada.\n\nSe você concorda em utilizá-la, clique em Concordo.</string>
+    <string name="main_prominent_disclosure_positive_button_title">Concordo</string>
+    <string name="main_prominent_disclosure_negative_button_title">Discordo</string>
+    <string name="main_error_alert_title">Quase lá!</string>
+    <string name="main_error_delay_limit">O delay deve estar dentro da faixa de 1 segundo a 300 segundos.</string>
+    <string name="main_error_delay_max_min">O delay máximo deve ser maior que o delay mínimo.</string>
+    <string name="main_error_messages_db">Suas mensagens ainda não estão configuradas!</string>
+    <string name="main_error_coordinates_db">Suas coordenadas ainda não estão configuradas!</string>
+    <!-- // -->
 
     <!-- MessagesEditorActivity Class -->
     <string name="messages_editor_group_already_exist">Este grupo já existe. Escolha outro nome para o grupo.</string>
@@ -27,6 +74,9 @@
     exemplo a seguir:\n\nPrimeira mensagem a ser enviada\nSegunda mensagem\nTerceira mensagem</string>
     <string name="messages_editor_delete_groupname_title">Atenção!</string>
     <string name="messages_editor_delete_groupname">Clique em OK para apagar este grupo de mensagens:</string>
+    <string name="messages_editor_add_group_name">Nome do grupo:</string>
+    <string name="messages_editor_button_save_message">Salvar</string>
+    <string name="messages_editor_button_instr_text_message">Instruções</string>
     <!-- // -->
 
     <!-- ConfigCoordinates Class -->
@@ -35,14 +85,31 @@
         o símbolo correspondente ao requisitado pelo quadro acima.</string>
     <string name="config_coordinates_abort">Cancelar</string>
     <string name="config_coordinates_start">Iniciar</string>
+    <string name="config_coordinates_display_capslock">Caps Lock</string>
+    <string name="config_coordinates_display_space_bar">Barra de espaço</string>
     <string name="config_coordinates_display_special_char">!#1 ou ?123</string>
     <string name="config_coordinates_toast_error_record_capslock">Clique em CAPS LOCK.</string>
     <string name="config_coordinates_toast_error_record_special_char">Clique na chave !#1 ou ?123</string>
     <string name="config_coordinates_toast_error_register_space_bar">Clique na barra de espaços</string>
+    <string name="config_coordinates_success_register_title">Pronto</string>
+    <string name="config_coordinates_success_register">Coordenadas registradas!</string>
+    <string name="config_coordinates_register_capslock">Grave a coordenada correspondente ao Caps Lock.</string>
+    <string name="config_coordinates_register_special_char">Grave a coordenada relacionada aos caracteres especiais (!#1 ou ?123).</string>
+    <string name="config_coordinates_register_space_bar">Grave a coordenada correspondente à barra de espaços.</string>
+    <string name="config_coordinates_warning">Aviso</string>
+    <string name="config_coordinates_enable_accessibility_service">Ative a permissão de acessibilidade para que o
+        Auto Messenger execute gestos de clique automatizados.</string>
+    <string name="config_coordinates_enable_overlay_permission">Ative a permissão de navegabilidade sobre outros apps para que o Auto Messenger possa atuar.</string>
+    <string name="config_coordinates_button_tutorial">Tutorial</string>
+    <!-- // -->
+
+    <!-- ListMessagesGroupActivity Class -->
+    <string name="list_messages_group_list_group">Lista de grupos</string>
     <!-- // -->
 
     <!-- AutoClickService Class -->
     <string name="auto_click_service_finished">Operação finalizada</string>
+    <string name="auto_click_generic_error">Algum erro ocorreu</string>
     <!-- // -->
 
     <!-- Window Class -->
@@ -50,87 +117,7 @@
     <string name="window_register_send_message_coordinate">Registre a coordenada referente ao envio de mensagens</string>
     <!-- // -->
 
-    <string name="app_name">Auto Messenger</string>
-    <string name="str_msg_group">Grupo de mensagens:</string>
-    <string name="str_delay_time_simple">Delay:</string>
-    <string name="hint_delay_time_simple">20</string>
-    <string name="hint_delay_time_min">10</string>
-    <string name="hint_delay_time_max">30</string>
-    <string name="check_random_order">Ordem aleatória de envio:</string>
-    <string name="str_delay_time_min">Mínimo:</string>
-    <string name="str_delay_time_max">Máximo:</string>
-    <string name="check_random_delay">Delay aleatório:</string>
-    <string name="check_infinite_loop">Repetição infinita:</string>
-    <string name="str_basic_settings">Configurações básicas</string>
-    <string name="str_advanced_settings">Configurações avançadas</string>
-    <string name="menu_tutorial">Tutorial</string>
-    <string name="menu_remove_ads">Remover anúncios</string>
-    <string name="menu_rate_app">Avaliar app</string>
-    <string name="menu_share_app">Compartilhar app</string>
-    <string name="menu_credits">Créditos</string>
-    <string name="menu_privacy_policy">Política de privacidade</string>
-    <string name="button_my_quiz">Gosta de Quizzes?</string>
-    <string name="srt_add_group_name">Nome do grupo:</string>
-    <string name="button_save_message">Salvar</string>
-    <string name="generic_error">Algum erro ocorreu</string>
-    <string name="button_instr_text_message">Instruções</string>
-    <string name="str_list_group">Lista de grupos</string>
-    <string name="str_success_register_title">Pronto</string>
-    <string name="str_success_register">Coordenadas registradas!</string>
-    <string name="str_register_capslock">Grave a coordenada correspondente ao Caps Lock.</string>
-    <string name="str_register_special_char">Grave a coordenada relacionada aos caracteres especiais (!#1 ou ?123).</string>
-    <string name="str_register_space_bar">Grave a coordenada correspondente à barra de espaços.</string>
-    <string name="string_display_capslock">Caps Lock</string>
-    <string name="string_display_space_bar">Barra de espaço</string>
-    <string name="str_register_send_message_key_and_type_field">Registre a coordenada correspondente ao envio de mensagens e a coordenada
-        correspondente ao campo de escrita. O Auto Messenger só funcionará se estas coordenadas estiverem registradas. Clique em OK para continuar.</string>
-    <string name="str_register_send_message">Arraste o alvo para a coordenada correspondente ao envio de mensagens. Ela se encontra no teclado.</string>
-    <string name="str_register_type_field">Arraste o alvo para o campo de escrita. O teclado deve estar fechado.</string>
-    <string name="toast_coordinate_registered">Coordenada registrada</string>
-    <string name="str_other_options">Outros</string>
-    <string name="button_enable_clicker">Habilitar</string>
-    <string name="button_disable_clicker">Desabilitar</string>
-    <string name="button_tutorials">Tutoriais</string>
-    <string name="button_remove_ads">Remover anúncios</string>
-    <string name="str_version">Versão 2.2.1</string>
-    <string name="accessibility_service_description">Por favor, ative a permissão de acessibilidade para que o
-        Auto Messenger execute gestos de clique automatizados.\n\nNenhuma informação pessoal é coletada pelo Auto Messenger.</string>
-    <string name="accessibility_service_name">Auto Messenger</string>
-    <string name="button_config_coordinates">Coordenadas</string>
-    <string name="str_enable_clicker">Habilitar Auto Messenger</string>
-    <string name="str_warning">Aviso</string>
-    <string name="str_enable_accessibility_service">Ative a permissão de acessibilidade para que o
-        Auto Messenger execute gestos de clique automatizados.</string>
-    <string name="str_enable_overlay_permission">Ative a permissão de navegabilidade sobre outros apps para que o Auto Messenger possa atuar.</string>
-
-    <string name="error_alert_title">Quase lá!</string>
-    <string name="error_messages_db">Suas mensagens ainda não estão configuradas!</string>
-    <string name="error_coordinates_db">Suas coordenadas ainda não estão configuradas!</string>
-    <string name="error_delay_limit">O delay deve estar dentro da faixa de 1 segundo a 300 segundos.</string>
-    <string name="error_delay_max_min">O delay máximo deve ser maior que o delay mínimo.</string>
-    <string name="error_send_message_button">Configure a coordenada correspondente ao envio de mensagens.
-    Clique no botão relacionado na barra de ação e configure.</string>
-    <string name="error_type_field">Configure a coordenada correspondente ao campo de escrita.
-    Clique no botão relacionado na barra de ação e configure.</string>
-
-    <string name="alert_backlight_duration">Certifique-se de que a duração da sua luz de fundo está configurada
-        com tempo suficiente para que o Auto Messenger trabalhe. Clique em OK para continuar.</string>
-
-    <string-array name="unity_time">
-        <item>s</item>
-        <item>min</item>
-    </string-array>
-
-    <!-- Prominent disclosure -->
-    <string name="srt_prominent_disclosure">AccessibilityService</string>
-    <string name="srt_prominent_disclosure_message">A principal funcionalidade deste app utiliza a API Accessibility Service para simular cliques.
-    \n\n1. Por que este app necessita utilizar esta ferramenta?\nNós utilizamos este método para simular cliques.\n\n
-    2. Este app coleta alguma informação pessoal ou outros dados sensíveis utilizando esta API?
-    \nNenhuma informação pessoal do usuário ou outra informação sensível é coletada.\n\nSe você concorda em utilizá-la, clique em Concordo.</string>
-    <string name="srt_prominent_disclosure_positive_button_title">Concordo</string>
-    <string name="srt_prominent_disclosure_negative_button_title">Discordo</string>
+    <!-- Target Class -->
+    <string name="target_toast_coordinate_registered">Coordenada registrada</string>
     <!-- // -->
-
-    <string name="toast_accessibility_service_is_not_connected">O serviço de acessibilidade deste dispositivo não está devidamente conectado</string>
-
 </resources>

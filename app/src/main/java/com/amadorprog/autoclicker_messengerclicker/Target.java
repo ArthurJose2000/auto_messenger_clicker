@@ -97,14 +97,14 @@ public class Target{
                             }
                         }
                         else if(situation == CONFIGSENDMESSAGECOORDINATE) {
-                            DataBase.getDbInstance(Target.this.context).updateKeyCoordinate("sendfield", coordX, coordY);
-                            Toast toast = Toast.makeText(context, context.getResources().getString(R.string.toast_coordinate_registered), Toast.LENGTH_LONG);
+                            DataBase.getDbInstance(Target.this.context).updateKeyCoordinate(context.getResources().getString(R.string.data_base_sendfield), coordX, coordY);
+                            Toast toast = Toast.makeText(context, context.getResources().getString(R.string.target_toast_coordinate_registered), Toast.LENGTH_LONG);
                             toast.show();
                             hide();
                         }
                         else if(situation == CONFIGTYPINGFIELDCOORDINATE) {
-                            DataBase.getDbInstance(Target.this.context).updateKeyCoordinate("typingfield", coordX, coordY);
-                            Toast toast = Toast.makeText(context, context.getResources().getString(R.string.toast_coordinate_registered), Toast.LENGTH_LONG);
+                            DataBase.getDbInstance(Target.this.context).updateKeyCoordinate(context.getResources().getString(R.string.data_base_typingfield), coordX, coordY);
+                            Toast toast = Toast.makeText(context, context.getResources().getString(R.string.target_toast_coordinate_registered), Toast.LENGTH_LONG);
                             toast.show();
                             hide();
                         }

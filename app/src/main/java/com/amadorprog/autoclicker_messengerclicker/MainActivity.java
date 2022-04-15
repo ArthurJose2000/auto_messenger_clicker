@@ -541,8 +541,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void configureDelayLimit(){
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        String instruction_title = context.getResources().getString(R.string.error_alert_title);
-        String instruction = context.getResources().getString(R.string.error_delay_limit);
+        String instruction_title = context.getResources().getString(R.string.main_error_alert_title);
+        String instruction = context.getResources().getString(R.string.main_error_delay_limit);
         builder
                 .setTitle(instruction_title)
                 .setMessage(instruction)
@@ -556,8 +556,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void configureDelayDifference(){
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        String instruction_title = context.getResources().getString(R.string.error_alert_title);
-        String instruction = context.getResources().getString(R.string.error_delay_max_min);
+        String instruction_title = context.getResources().getString(R.string.main_error_alert_title);
+        String instruction = context.getResources().getString(R.string.main_error_delay_max_min);
         builder
                 .setTitle(instruction_title)
                 .setMessage(instruction)
@@ -571,8 +571,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void configureMessagesDb(){
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        String instruction_title = context.getResources().getString(R.string.error_alert_title);
-        String instruction = context.getResources().getString(R.string.error_messages_db);
+        String instruction_title = context.getResources().getString(R.string.main_error_alert_title);
+        String instruction = context.getResources().getString(R.string.main_error_messages_db);
         builder
                 .setTitle(instruction_title)
                 .setMessage(instruction)
@@ -586,8 +586,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void configureCoordinatesDb(){
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        String instruction_title = context.getResources().getString(R.string.error_alert_title);
-        String instruction = context.getResources().getString(R.string.error_coordinates_db);
+        String instruction_title = context.getResources().getString(R.string.main_error_alert_title);
+        String instruction = context.getResources().getString(R.string.main_error_coordinates_db);
         builder
                 .setTitle(instruction_title)
                 .setMessage(instruction)
@@ -603,8 +603,8 @@ public class MainActivity extends AppCompatActivity {
         if(!checkAccessibilitySettings()){
             accessibilityServiceDialogIsOpen = true;
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-            String instruction_title = getString(R.string.str_warning);
-            String instruction = getString(R.string.str_enable_accessibility_service);
+            String instruction_title = getString(R.string.main_warning);
+            String instruction = getString(R.string.main_enable_accessibility_service);
             builder
                     .setTitle(instruction_title)
                     .setMessage(instruction)
@@ -631,8 +631,8 @@ public class MainActivity extends AppCompatActivity {
             if (!Settings.canDrawOverlays(this)) {
                 canDrawOverOtherAppsDialogIsOpen = true;
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                String instruction_title = getString(R.string.str_warning);
-                String instruction = getString(R.string.str_enable_overlay_permission);
+                String instruction_title = getString(R.string.main_warning);
+                String instruction = getString(R.string.main_enable_overlay_permission);
                 builder
                         .setTitle(instruction_title)
                         .setMessage(instruction)
@@ -653,8 +653,8 @@ public class MainActivity extends AppCompatActivity {
         if(!checkAccessibilitySettings()){
             accessibilityServiceDialogIsOpen = true;
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-            String instruction_title = getString(R.string.str_warning);
-            String instruction = getString(R.string.str_enable_accessibility_service);
+            String instruction_title = getString(R.string.main_warning);
+            String instruction = getString(R.string.main_enable_accessibility_service);
             builder
                     .setTitle(instruction_title)
                     .setMessage(instruction)
@@ -706,10 +706,10 @@ public class MainActivity extends AppCompatActivity {
         if(DataBase.getDbInstance(context).getSettings("disclosure_acceptation").equals("false")){
             prominentDisclosureDialogIsOpen = true;
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-            String instruction_title = getString(R.string.srt_prominent_disclosure);
-            String instruction = getString(R.string.srt_prominent_disclosure_message);
-            String positive_button = getString(R.string.srt_prominent_disclosure_positive_button_title);
-            String negative_button = getString(R.string.srt_prominent_disclosure_negative_button_title);
+            String instruction_title = getString(R.string.main_prominent_disclosure);
+            String instruction = getString(R.string.main_prominent_disclosure_message);
+            String positive_button = getString(R.string.main_prominent_disclosure_positive_button_title);
+            String negative_button = getString(R.string.main_prominent_disclosure_negative_button_title);
             builder
                     .setTitle(instruction_title)
                     .setMessage(instruction)
