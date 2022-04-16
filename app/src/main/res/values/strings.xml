@@ -1,10 +1,11 @@
 <resources>
     <string name="app_name">Auto Messenger</string>
     <string translatable="false" name="my_quiz_package">com.amadorprog.myquiz</string>
-    <string name="version">Version 2.2.1</string>
+    <string name="version">Version 2.3.0</string>
     <string name="menu_tutorial">Tutorial</string>
     <string name="menu_rate_app">Rate app</string>
     <string name="menu_share_app">Share app</string>
+    <string name="menu_contact">Contact</string>
     <string name="accessibility_service_description">Please enable accessibility permission for the
         Auto Messenger perform automated click gestures.\n\nNo personal information is collected by Auto Messenger.</string>
     <string name="accessibility_service_name">Auto Messenger</string>
@@ -80,6 +81,8 @@
     <string name="main_custom_dialog_permissions_accessibility_services_title">Accessibility Service</string>
     <string name="main_custom_dialog_permissions_draw_over_other_apps_title">Overlay permission</string>
     <string name="main_custom_dialog_permissions_accessibility_services_link">Watch the tutorial</string>
+    <string name="main_menu_contact_title">Contact</string>
+    <string name="main_menu_contact">Send an email to <b>arthur2000jose@gmail.com</b> to questions, suggestions and others matters.</string>
     <!-- // -->
 
     <!-- MessagesEditorActivity Class -->
@@ -137,5 +140,10 @@
 
     <!-- Target Class -->
     <string name="target_toast_coordinate_registered">Registered coordinate</string>
+    <!-- // -->
+
+    <!-- InAppBilling Class -->
+    <string translatable="false" name="in_app_billing_product_id">premiumversion001</string>
+    <string name="in_app_billing_error_to_connect_to_google_play">Unable to connect to google play</string>
     <!-- // -->
 </resources>

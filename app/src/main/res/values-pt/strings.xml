@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Auto Messenger</string>
-    <string name="version">Versão 2.2.1</string>
+    <string name="version">Versão 2.3.0</string>
     <string name="menu_tutorial">Tutorial</string>
     <string name="menu_rate_app">Avaliar app</string>
     <string name="menu_share_app">Compartilhar app</string>
+    <string name="menu_contact">Contato</string>
     <string name="accessibility_service_description">Por favor, ative a permissão de acessibilidade para que o
         Auto Messenger execute gestos de clique automatizados.\n\nNenhuma informação pessoal é coletada pelo Auto Messenger.</string>
     <string name="accessibility_service_name">Auto Messenger</string>
@@ -65,6 +66,8 @@
     <string name="main_custom_dialog_permissions_accessibility_services_title">Serviço de acessibilidade</string>
     <string name="main_custom_dialog_permissions_draw_over_other_apps_title">Permissão de sobreposição</string>
     <string name="main_custom_dialog_permissions_accessibility_services_link"><u>Assista ao tutorial</u></string>
+    <string name="main_menu_contact_title">Contato</string>
+    <string name="main_menu_contact">Envie um e-mail para <b>arthur2000jose@gmail.com</b> para dúvidas, sugestões e outros assuntos.</string>
     <!-- // -->
 
     <!-- MessagesEditorActivity Class -->
@@ -122,5 +125,9 @@
 
     <!-- Target Class -->
     <string name="target_toast_coordinate_registered">Coordenada registrada</string>
+    <!-- // -->
+
+    <!-- InAppBilling Class -->
+    <string name="in_app_billing_error_to_connect_to_google_play">Não foi possível se conectar ao Google Play</string>
     <!-- // -->
 </resources>

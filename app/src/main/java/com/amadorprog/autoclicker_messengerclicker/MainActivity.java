@@ -29,6 +29,14 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.android.billingclient.api.BillingClient;
+import com.android.billingclient.api.BillingClientStateListener;
+import com.android.billingclient.api.BillingResult;
+import com.android.billingclient.api.ConsumeParams;
+import com.android.billingclient.api.ConsumeResponseListener;
+import com.android.billingclient.api.Purchase;
+import com.android.billingclient.api.PurchasesResponseListener;
+import com.android.billingclient.api.PurchasesUpdatedListener;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -51,6 +59,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -84,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
     String groupName = "";
 
     Usual usual;
+    InAppBilling inAppBilling;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,6 +117,7 @@ public class MainActivity extends AppCompatActivity {
         mAdView.loadAd(adRequest); //banner
 
         usual = new Usual();
+        inAppBilling = new InAppBilling(context);
 
         startActionBar = (Button) findViewById(R.id.button_enable_clicker);
         counterRestarts = 0;
@@ -161,6 +172,9 @@ public class MainActivity extends AppCompatActivity {
                     //e.toString();
                 }
                 return true;
+            case R.id.menu_contact:
+                openContactDialog();
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -176,6 +190,34 @@ public class MainActivity extends AppCompatActivity {
             checkPermissions();
 
         completeGroupNamesSpinner();
+
+//        inAppBilling.startPurchase();
+//
+//        inAppBilling.getBillingClient().queryPurchasesAsync(BillingClient.SkuType.INAPP, new PurchasesResponseListener() {
+//            @Override
+//            public void onQueryPurchasesResponse(@NonNull BillingResult billingResult, @NonNull List<Purchase> list) {
+//                if(billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK){
+//                    for(Purchase purchase : list){
+//                        if(purchase.getPurchaseState() == Purchase.PurchaseState.PURCHASED && purchase.isAcknowledged()){
+//                            System.out.println("#################################");
+//                            System.out.println("#################################");
+//                            System.out.println("#################################");
+//                            System.out.println("#################################");
+//                            System.out.println("#################################");
+//                            System.out.println("o que tah acontecendo");
+//                            System.out.println("#################################");
+//                            System.out.println("#################################");
+//                            System.out.println("#################################");
+//                            System.out.println("#################################");
+//                            System.out.println("#################################");
+//                            System.out.println("#################################");
+//                            System.out.println("#################################");
+//                            System.out.println("#################################");
+//                        }
+//                    }
+//                }
+//            }
+//        });
     }
 
     @Override
@@ -717,6 +759,20 @@ public class MainActivity extends AppCompatActivity {
         }
         else
             checkPermissions();
+    }
+
+    public void openContactDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        String instruction_title = getString(R.string.main_menu_contact_title);
+        String instruction = getString(R.string.main_menu_contact);
+        builder
+                .setTitle(instruction_title)
+                .setMessage(instruction)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                })
+                .show();
     }
 
     public void openMyQuizDialog(int minimumScore){

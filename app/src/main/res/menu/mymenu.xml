@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-
     <item android:id="@+id/menu_tutorials"
         android:icon="@drawable/ic_menu"
         android:title="@string/menu_tutorial">
@@ -8,8 +7,10 @@
     <item android:id="@+id/menu_rate_app"
         android:title="@string/menu_rate_app">
     </item>
-
     <item android:id="@+id/menu_share_app"
         android:title="@string/menu_share_app">
+    </item>
+    <item android:id="@+id/menu_contact"
+        android:title="@string/menu_contact">
     </item>
 </menu>
