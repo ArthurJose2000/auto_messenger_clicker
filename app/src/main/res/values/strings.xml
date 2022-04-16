@@ -13,6 +13,7 @@
         <item>min</item>
     </string-array>
     <string name="toast_accessibility_service_is_not_connected">AccessibilityService of this device is not properly connected</string>
+    <string translatable="false" name="youtube_tutorial_link">https://youtu.be/PCGr105dG9k</string>
 
     <!-- DataBase Class -->
     <!-- Do not modify!!!!!!!!!!!!!!!!! -->
@@ -64,7 +65,7 @@
     <string name="main_enable_accessibility_service">Enable accessibility permission for the
         Auto Messenger perform automated click gestures.</string>
     <string name="main_enable_overlay_permission">Enable draw over other apps permission so that Auto Messenger can act.</string>
-    <string name="main_prominent_disclosure">AccessibilityService</string>
+    <string name="main_prominent_disclosure">Accessibility Service</string>
     <string name="main_prominent_disclosure_message">The main feature of this app use the Accessibility Service API to simulate clicks.
     \n\n1. Why does this app need to use the Accessibility Services API?\nWe use this method to simulate click.\n\n
     2. Does this app collect and/or share personal or sensitive data using the accessibility capabilities?\nNo user\'s personal information is collected.\n\n
@@ -76,6 +77,9 @@
     <string name="main_error_delay_max_min">The maximum delay must be greater than the minimum delay.</string>
     <string name="main_error_messages_db">Your messages are not set up yet!</string>
     <string name="main_error_coordinates_db">Your coordinates are not set yet!</string>
+    <string name="main_custom_dialog_permissions_accessibility_services_title">Accessibility Service</string>
+    <string name="main_custom_dialog_permissions_draw_over_other_apps_title">Overlay permission</string>
+    <string name="main_custom_dialog_permissions_accessibility_services_link">Watch the tutorial</string>
     <!-- // -->
 
     <!-- MessagesEditorActivity Class -->

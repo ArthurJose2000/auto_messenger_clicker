@@ -50,7 +50,7 @@
     <string name="main_enable_accessibility_service">Ative a permissão de acessibilidade para que o
         Auto Messenger execute gestos de clique automatizados.</string>
     <string name="main_enable_overlay_permission">Ative a permissão de navegabilidade sobre outros apps para que o Auto Messenger possa atuar.</string>
-    <string name="main_prominent_disclosure">AccessibilityService</string>
+    <string name="main_prominent_disclosure">Serviço de acessibilidade</string>
     <string name="main_prominent_disclosure_message">A principal funcionalidade deste app utiliza a API Accessibility Service para simular cliques.
     \n\n1. Por que este app necessita utilizar esta ferramenta?\nNós utilizamos este método para simular cliques.\n\n
     2. Este app coleta alguma informação pessoal ou outros dados sensíveis utilizando esta API?
@@ -62,6 +62,9 @@
     <string name="main_error_delay_max_min">O delay máximo deve ser maior que o delay mínimo.</string>
     <string name="main_error_messages_db">Suas mensagens ainda não estão configuradas!</string>
     <string name="main_error_coordinates_db">Suas coordenadas ainda não estão configuradas!</string>
+    <string name="main_custom_dialog_permissions_accessibility_services_title">Serviço de acessibilidade</string>
+    <string name="main_custom_dialog_permissions_draw_over_other_apps_title">Permissão de sobreposição</string>
+    <string name="main_custom_dialog_permissions_accessibility_services_link"><u>Assista ao tutorial</u></string>
     <!-- // -->
 
     <!-- MessagesEditorActivity Class -->

@@ -37,7 +37,7 @@
             android:exported="true"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.amadorprog.autoclicker_messengerclicker.ConfigCoordinates"
+            android:name="com.amadorprog.autoclicker_messengerclicker.ConfigCoordinatesActivity"
             android:exported="true"
             android:screenOrientation="portrait" />
         <activity

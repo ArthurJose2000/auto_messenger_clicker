@@ -21,7 +21,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
-public class ConfigCoordinates extends AppCompatActivity {
+public class ConfigCoordinatesActivity extends AppCompatActivity {
 
     Context context;
     EditText typingField;
@@ -84,7 +84,7 @@ public class ConfigCoordinates extends AppCompatActivity {
     public void openYouTubeTutorial(View view){
         Intent viewIntent =
                 new Intent("android.intent.action.VIEW",
-                        Uri.parse("https://youtu.be/PCGr105dG9k"));
+                        Uri.parse(getString(R.string.youtube_tutorial_link)));
         startActivity(viewIntent);
     }
 
@@ -235,7 +235,7 @@ public class ConfigCoordinates extends AppCompatActivity {
     }
 
     public void successRegister(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(ConfigCoordinates.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(ConfigCoordinatesActivity.this);
         String instruction_title = getString(R.string.config_coordinates_success_register_title);
         String instruction = getString(R.string.config_coordinates_success_register);
         builder
@@ -252,7 +252,7 @@ public class ConfigCoordinates extends AppCompatActivity {
     }
 
     public void clickOnCapsLockButton(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(ConfigCoordinates.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(ConfigCoordinatesActivity.this);
         String instruction_title = getString(R.string.config_coordinates_instr_title);
         String instruction = getString(R.string.config_coordinates_register_capslock);
         builder
@@ -267,7 +267,7 @@ public class ConfigCoordinates extends AppCompatActivity {
     }
 
     public void clickOnSpecialCharButton(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(ConfigCoordinates.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(ConfigCoordinatesActivity.this);
         String instruction_title = getString(R.string.config_coordinates_instr_title);
         String instruction = getString(R.string.config_coordinates_register_special_char);
         builder
@@ -282,7 +282,7 @@ public class ConfigCoordinates extends AppCompatActivity {
     }
 
     public void clickOnSpaceBarButton(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(ConfigCoordinates.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(ConfigCoordinatesActivity.this);
         String instruction_title = getString(R.string.config_coordinates_instr_title);
         String instruction = getString(R.string.config_coordinates_register_space_bar);
         builder
@@ -298,7 +298,7 @@ public class ConfigCoordinates extends AppCompatActivity {
 
     public void checkPermissions(){
         if(!isAccessibilitySettingsOn()){
-            AlertDialog.Builder builder = new AlertDialog.Builder(ConfigCoordinates.this);
+            AlertDialog.Builder builder = new AlertDialog.Builder(ConfigCoordinatesActivity.this);
             String instruction_title = getString(R.string.config_coordinates_warning);
             String instruction = getString(R.string.config_coordinates_enable_accessibility_service);
             builder
@@ -322,7 +322,7 @@ public class ConfigCoordinates extends AppCompatActivity {
     public void isOverlayPermissionOn(){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (!Settings.canDrawOverlays(this)) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(ConfigCoordinates.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(ConfigCoordinatesActivity.this);
                 String instruction_title = getString(R.string.config_coordinates_warning);
                 String instruction = getString(R.string.config_coordinates_enable_overlay_permission);
                 builder

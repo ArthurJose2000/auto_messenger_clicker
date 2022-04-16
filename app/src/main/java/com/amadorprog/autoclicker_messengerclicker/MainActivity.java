@@ -19,7 +19,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.os.Build;
 import android.provider.Settings;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -68,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
     private AdView mAdView;
     private InterstitialAd mInterstitialAd;
     boolean userVisitedAnotherActivity;
-    boolean accessibilityServiceDialogIsOpen, canDrawOverOtherAppsDialogIsOpen, prominentDisclosureDialogIsOpen;
+    boolean prominentDisclosureDialogIsOpen, accessibilityServiceDialogIsOpen, canDrawOverOtherAppsDialogIsOpen;
     String timeUnityDelay_s = "s";
     String timeUnityMaxDelay_s = "s";
     String timeUnityMinDelay_s = "s";
@@ -141,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
             case R.id.menu_tutorials:
                 Intent watchTutorial =
                         new Intent("android.intent.action.VIEW",
-                                Uri.parse("https://youtu.be/PCGr105dG9k"));
+                                Uri.parse(getString(R.string.youtube_tutorial_link)));
                 startActivity(watchTutorial);
                 return true;
             case R.id.menu_rate_app:
@@ -173,14 +172,8 @@ public class MainActivity extends AppCompatActivity {
         if(counterRestarts % 5 == 4 && userVisitedAnotherActivity == true)
             showInterstitialAd();
 
-        if(!prominentDisclosureDialogIsOpen) {
-
-            if (!accessibilityServiceDialogIsOpen)
-                checkAccessibilityPermission();
-
-            if (!canDrawOverOtherAppsDialogIsOpen && !accessibilityServiceDialogIsOpen)
-                checkOverlayPermission();
-        }
+        if(!prominentDisclosureDialogIsOpen)
+            checkPermissions();
 
         completeGroupNamesSpinner();
     }
@@ -432,7 +425,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void openActivityConfigCoordinates(View view) {
         userVisitedAnotherActivity = true;
-        Intent intent = new Intent(this, ConfigCoordinates.class);
+        Intent intent = new Intent(this, ConfigCoordinatesActivity.class);
         startActivity(intent);
     }
 
@@ -447,7 +440,7 @@ public class MainActivity extends AppCompatActivity {
         userVisitedAnotherActivity = true;
         Intent viewIntent =
                 new Intent("android.intent.action.VIEW",
-                        Uri.parse("https://youtu.be/PCGr105dG9k"));
+                        Uri.parse(getString(R.string.youtube_tutorial_link)));
         startActivity(viewIntent);
     }
 
@@ -600,74 +593,69 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void checkPermissions(){
-        if(!checkAccessibilitySettings()){
-            accessibilityServiceDialogIsOpen = true;
-            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-            String instruction_title = getString(R.string.main_warning);
-            String instruction = getString(R.string.main_enable_accessibility_service);
-            builder
-                    .setTitle(instruction_title)
-                    .setMessage(instruction)
-                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            accessibilityServiceDialogIsOpen = false;
-                            Intent myIntent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
-                            myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            startActivity(myIntent);
-                        }
-                    })
-                    .setCancelable(false)
-                    .show();
-        }
-        else{
-            checkOverlayPermission();
-        }
-    }
+        if(!canDrawOverOtherAppsDialogIsOpen && !accessibilityServiceDialogIsOpen) {
+            if (!checkAccessibilitySettings()) {
+                accessibilityServiceDialogIsOpen = true;
+                AlertDialog checkAccessibilitySettingsDialog;
+                LayoutInflater layoutInflater = getLayoutInflater();
+                View customLayout = layoutInflater.inflate(R.layout.custom_dialog_permissions_accessibility_service, null);
+                TextView link = customLayout.findViewById(R.id.custom_dialog_permissions_accessibility_services_link);
 
+                link.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent watchTutorial =
+                                new Intent("android.intent.action.VIEW",
+                                        Uri.parse(getString(R.string.youtube_tutorial_link)));
+                        startActivity(watchTutorial);
+                    }
+                });
 
-
-    public void checkOverlayPermission(){
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (!Settings.canDrawOverlays(this)) {
-                canDrawOverOtherAppsDialogIsOpen = true;
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                String instruction_title = getString(R.string.main_warning);
-                String instruction = getString(R.string.main_enable_overlay_permission);
-                builder
-                        .setTitle(instruction_title)
-                        .setMessage(instruction)
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setView(customLayout)
+                        .setTitle(R.string.main_custom_dialog_permissions_accessibility_services_title)
                         .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
+                            public void onClick(DialogInterface dialog, int id) {
+                                accessibilityServiceDialogIsOpen = false;
+                                Intent myIntent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
+                                myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(myIntent);
+                            }
+                        })
+                        .setCancelable(false);
+                checkAccessibilitySettingsDialog = builder.create();
+                checkAccessibilitySettingsDialog.show();
+            } else if (!Settings.canDrawOverlays(this)) {
+                canDrawOverOtherAppsDialogIsOpen = true;
+                AlertDialog checkAccessibilitySettingsDialog;
+                LayoutInflater layoutInflater = getLayoutInflater();
+                View customLayout = layoutInflater.inflate(R.layout.custom_dialog_permissions_draw_over_other_apps, null);
+                TextView link = customLayout.findViewById(R.id.custom_dialog_permissions_draw_over_other_apps_link);
+
+                link.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent watchTutorial =
+                                new Intent("android.intent.action.VIEW",
+                                        Uri.parse(getString(R.string.youtube_tutorial_link)));
+                        startActivity(watchTutorial);
+                    }
+                });
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setView(customLayout)
+                        .setTitle(R.string.main_custom_dialog_permissions_draw_over_other_apps_title)
+                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
                                 canDrawOverOtherAppsDialogIsOpen = false;
                                 Intent myIntent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + getPackageName()));
                                 startActivity(myIntent);
                             }
                         })
-                        .setCancelable(false)
-                        .show();
+                        .setCancelable(false);
+                checkAccessibilitySettingsDialog = builder.create();
+                checkAccessibilitySettingsDialog.show();
             }
-        }
-    }
-
-    public void checkAccessibilityPermission(){
-        if(!checkAccessibilitySettings()){
-            accessibilityServiceDialogIsOpen = true;
-            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-            String instruction_title = getString(R.string.main_warning);
-            String instruction = getString(R.string.main_enable_accessibility_service);
-            builder
-                    .setTitle(instruction_title)
-                    .setMessage(instruction)
-                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            accessibilityServiceDialogIsOpen = false;
-                            Intent myIntent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
-                            myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            startActivity(myIntent);
-                        }
-                    })
-                    .setCancelable(false)
-                    .show();
         }
     }
 
@@ -679,8 +667,7 @@ public class MainActivity extends AppCompatActivity {
                     this.getApplicationContext().getContentResolver(),
                     android.provider.Settings.Secure.ACCESSIBILITY_ENABLED);
         } catch (Settings.SettingNotFoundException e) {
-            //System.out.println("Error finding setting, default accessibility to not found: "
-            //+ e.getMessage());
+            //System.out.println("Error finding setting, default accessibility to not found: "+ e.getMessage());
         }
         TextUtils.SimpleStringSplitter mStringColonSplitter = new TextUtils.SimpleStringSplitter(':');
 
@@ -728,9 +715,8 @@ public class MainActivity extends AppCompatActivity {
                     .setCancelable(false)
                     .show();
         }
-        else{
+        else
             checkPermissions();
-        }
     }
 
     public void openMyQuizDialog(int minimumScore){
@@ -760,7 +746,7 @@ public class MainActivity extends AppCompatActivity {
     public void askEmailDialog(int minimumScore){
         AlertDialog insertEmailDialog;
         LayoutInflater layoutInflater = getLayoutInflater();
-        View customLayout = layoutInflater.inflate(R.layout.custom_dialog, null);
+        View customLayout = layoutInflater.inflate(R.layout.custom_dialog_myquiz, null);
         EditText emailInput = customLayout.findViewById(R.id.custom_dialog_input);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
