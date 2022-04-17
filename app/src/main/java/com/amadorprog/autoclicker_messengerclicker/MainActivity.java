@@ -28,7 +28,14 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.billingclient.api.BillingClient;
+import com.android.billingclient.api.BillingClientStateListener;
+import com.android.billingclient.api.BillingResult;
+import com.android.billingclient.api.Purchase;
+import com.android.billingclient.api.PurchasesResponseListener;
+import com.android.billingclient.api.PurchasesUpdatedListener;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -51,6 +58,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -77,14 +85,14 @@ public class MainActivity extends AppCompatActivity {
     int delay_s = 20;
     int maxDelay_s = 30;
     int minDelay_s = 20;
-    int enable_5_xp = 30;
-    int enable_20_xp = 120;
+    int myQuizFactor = 6;
     boolean isInfiniteLoop = false;
     boolean isRandomOrder = false;
     String groupName = "";
 
     Usual usual;
-    InAppBilling inAppBilling;
+    public PurchasesUpdatedListener purchasesUpdatedListener;
+    public BillingClient billingClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,21 +102,7 @@ public class MainActivity extends AppCompatActivity {
 
         context = this;
 
-        MobileAds.initialize(this, new OnInitializationCompleteListener() {
-            @Override
-            public void onInitializationComplete(InitializationStatus initializationStatus) {
-
-            }
-        });
-
-        loadInterstitialAd();
-
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView = findViewById(R.id.adView);
-        mAdView.loadAd(adRequest); //banner
-
         usual = new Usual();
-        inAppBilling = new InAppBilling(context); //do not remove. this is to update data manager if user is premium
 
         startActionBar = (Button) findViewById(R.id.button_enable_clicker);
         counterRestarts = 0;
@@ -118,8 +112,27 @@ public class MainActivity extends AppCompatActivity {
         prominentDisclosureDialogIsOpen = false;
         setPreviousOptions();
         prominentDisclosure();
+        checkIfUserIsAlreadyPremium();
 
         window = new Window(context);
+    }
+
+    @Override
+    public void onRestart(){
+        super.onRestart();
+        counterRestarts++;
+        if(counterRestarts % 5 == 4 && userVisitedAnotherActivity == true && !DataManager.getInstace().isUserPremium())
+            showInterstitialAd();
+
+        if(!prominentDisclosureDialogIsOpen)
+            checkPermissions();
+
+        completeGroupNamesSpinner();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
     }
 
     @Override
@@ -170,27 +183,9 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onRestart(){
-        super.onRestart();
-        counterRestarts++;
-        if(counterRestarts % 5 == 4 && userVisitedAnotherActivity == true)
-            showInterstitialAd();
-
-        if(!prominentDisclosureDialogIsOpen)
-            checkPermissions();
-
-        completeGroupNamesSpinner();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-    }
-
     public void loadInterstitialAd(){
         AdRequest adRequest = new AdRequest.Builder().build();
-        InterstitialAd.load(this,"ca-app-pub-8798131674672035/3977598488", adRequest, //interstitial
+        InterstitialAd.load(this,getString(R.string.ad_main_interstitial), adRequest, //interstitial
                 new InterstitialAdLoadCallback() {
                     @Override
                     public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
@@ -443,8 +438,12 @@ public class MainActivity extends AppCompatActivity {
     public void openActionBar(View view) throws IOException, InterruptedException {
         if(!window.isOpen()) {
             if (enableToPlay())
-                window.open(isRandomDelay, delay_s, maxDelay_s, minDelay_s, isInfiniteLoop, isRandomOrder, groupName);
+                openWindow();
         }
+    }
+
+    public void openWindow(){
+        window.open(isRandomDelay, delay_s, maxDelay_s, minDelay_s, isInfiniteLoop, isRandomOrder, groupName);
     }
 
     public void openYouTubeTutorial(View view){
@@ -457,15 +456,15 @@ public class MainActivity extends AppCompatActivity {
 
     public void openMiniTutorial(View view){
         TextView text = findViewById(R.id.problems_solution_text);
-        TextView linkToAccessibilitySettings = findViewById(R.id.problems_solution_go_to_acessibility_settings);
+        TextView linkToAccessibilitySettings = findViewById(R.id.problems_solution_go_to_accessibility_settings);
 
         if(View.VISIBLE == text.getVisibility()){
-            text.setVisibility(View.VISIBLE);
-            linkToAccessibilitySettings.setVisibility(View.VISIBLE);
-        }
-        else{
             text.setVisibility(View.GONE);
             linkToAccessibilitySettings.setVisibility(View.GONE);
+        }
+        else{
+            text.setVisibility(View.VISIBLE);
+            linkToAccessibilitySettings.setVisibility(View.VISIBLE);
         }
     }
 
@@ -539,16 +538,16 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        int used_quantity = Integer.parseInt(DataBase.getDbInstance(context).getSettings(context.getString(R.string.data_base_used_quantity)));
+        int used_quantity = Integer.parseInt(DataBase.getDbInstance(context).getSettings(getString(R.string.data_base_used_quantity)));
+        boolean temporaryLock = used_quantity % 5 == 0
+                                && used_quantity > 0
+                                && !DataManager.getInstace().isUserPremium()
+                                && DataBase.getDbInstance(context).getSettings(getString(R.string.data_base_temporary_enabled)).equals("false")
+                                ? true : false;
 
-        if(DataBase.getDbInstance(context).getSettings(context.getString(R.string.data_base_enabled_5)).equals("false")
-           && used_quantity >= 5){
-            openMyQuizDialog(enable_5_xp);
-            return false;
-        }
-        else if(DataBase.getDbInstance(context).getSettings(context.getString(R.string.data_base_enabled_20)).equals("false")
-                && used_quantity >= 20){
-            openMyQuizDialog(enable_20_xp);
+        //this verification should be always in the end of enableToPlay()!!!!!!!!!!
+        if(temporaryLock){
+            openMyQuizDialog(used_quantity * myQuizFactor);
             return false;
         }
 
@@ -757,33 +756,50 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void openMyQuizDialog(int minimumScore){
-        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
         String instruction_title = getString(R.string.main_my_quiz_dialog_title);
         String instruction = getString(R.string.main_my_quiz_dialog_text_start)
-            + " " + minimumScore + " " + getString(R.string.main_my_quiz_dialog_text_end);
-        builder
+                + " " + minimumScore + " " + getString(R.string.main_my_quiz_dialog_text_end);
+
+        AlertDialog myQuizDialog;
+        LayoutInflater layoutInflater = getLayoutInflater();
+        View customLayout = layoutInflater.inflate(R.layout.custom_dialog_temporary_lock, null);
+        TextView message = customLayout.findViewById(R.id.custom_dialog_text);
+        TextView link = customLayout.findViewById(R.id.custom_dialog_link);
+
+        link.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent rateApp =
+                        new Intent("android.intent.action.VIEW",
+                                Uri.parse("http://play.google.com/store/apps/details?id=" + getString(R.string.my_quiz_package)));
+                startActivity(rateApp);
+            }
+        });
+
+        message.setText(instruction);
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setView(customLayout)
                 .setTitle(instruction_title)
-                .setMessage(instruction)
-                .setPositiveButton(getString(R.string.main_my_quiz_dialog_play_my_quiz), new DialogInterface.OnClickListener() {
+                .setPositiveButton(getString(R.string.main_become_premium), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        Intent rateApp =
-                                new Intent("android.intent.action.VIEW",
-                                        Uri.parse("http://play.google.com/store/apps/details?id=" + getString(R.string.my_quiz_package)));
-                        startActivity(rateApp);
+                        userVisitedAnotherActivity = true;
+                        Intent intent = new Intent(context, PurchaseActivity.class);
+                        startActivity(intent);
                     }
                 })
                 .setNegativeButton(getString(R.string.main_my_quiz_dialog_check), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         askEmailDialog(minimumScore);
                     }
-                })
-                .show();
+                });
+        myQuizDialog = builder.create();
+        myQuizDialog.show();
     }
 
     public void askEmailDialog(int minimumScore){
         AlertDialog insertEmailDialog;
         LayoutInflater layoutInflater = getLayoutInflater();
-        View customLayout = layoutInflater.inflate(R.layout.custom_dialog_myquiz, null);
+        View customLayout = layoutInflater.inflate(R.layout.custom_dialog_myquiz_check_email, null);
         EditText emailInput = customLayout.findViewById(R.id.custom_dialog_input);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -829,10 +845,8 @@ public class MainActivity extends AppCompatActivity {
 
 
                     if(response.getString("permission").equals("true")) {
-                        if(minimumScore == enable_5_xp)
-                            DataBase.getDbInstance(context).updateSettings(getString(R.string.data_base_enabled_5), "true");
-                        else if(minimumScore == enable_20_xp)
-                            DataBase.getDbInstance(context).updateSettings(getString(R.string.data_base_enabled_20), "true");
+                        DataBase.getDbInstance(context).updateSettings(context.getString(R.string.data_base_temporary_enabled), "true");
+                        openWindow();
                         usual.genericAlert(context, getString(R.string.main_my_quiz_dialog_title), getString(R.string.main_my_quiz_unlocked));
                     }
                     else
@@ -854,5 +868,71 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         queue.add(jsonObjectRequest);
+    }
+
+    public void checkIfUserIsAlreadyPremium(){
+
+        //just to setListener not to be null
+        purchasesUpdatedListener = new PurchasesUpdatedListener() {
+            @Override
+            public void onPurchasesUpdated(BillingResult billingResult, List<Purchase> purchases) {
+
+            }
+        };
+
+        billingClient = BillingClient.newBuilder(context)
+                .setListener(purchasesUpdatedListener)
+                .enablePendingPurchases()
+                .build();
+
+        billingClient.startConnection(new BillingClientStateListener() {
+            @Override
+            public void onBillingSetupFinished(BillingResult billingResult) {
+                if (billingResult.getResponseCode() ==  BillingClient.BillingResponseCode.OK) {
+                    // The BillingClient is ready. You can query purchases here.
+                    billingClient.queryPurchasesAsync(BillingClient.SkuType.INAPP, new PurchasesResponseListener() {
+                        @Override
+                        public void onQueryPurchasesResponse(@NonNull BillingResult billingResult, @NonNull List<Purchase> list) {
+                            boolean isPremium = false;
+                            if(billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK){
+                                for(Purchase purchase : list){
+                                    if(purchase.getPurchaseState() == Purchase.PurchaseState.PURCHASED && purchase.isAcknowledged()){
+                                        isPremium = true;
+                                        DataManager.getInstace().isPremiumUpdate(true);
+
+                                    }
+                                }
+                            }
+
+                            if(!isPremium)
+                                enableAds();
+                        }
+                    });
+                }
+            }
+            @Override
+            public void onBillingServiceDisconnected() {
+                // Try to restart the connection on the next request to
+                // Google Play by calling the startConnection() method.
+                enableAds();
+                Toast toast = Toast.makeText(context, context.getString(R.string.in_app_billing_error_to_connect_to_google_play), Toast.LENGTH_LONG);
+                toast.show();
+            }
+        });
+    }
+
+    public void enableAds(){
+        MobileAds.initialize(context, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+
+            }
+        });
+
+        loadInterstitialAd();
+
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView = findViewById(R.id.adView);
+        mAdView.loadAd(adRequest); //banner
     }
 }

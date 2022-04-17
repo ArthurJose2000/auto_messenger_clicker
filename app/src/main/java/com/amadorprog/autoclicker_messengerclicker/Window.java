@@ -314,6 +314,7 @@ public class Window {
         if(AutoClickService.instance != null) {
             String used = DataBase.getDbInstance(context).getSettings(context.getString(R.string.data_base_used_quantity));
             DataBase.getDbInstance(context).updateSettings(context.getString(R.string.data_base_used_quantity), String.valueOf(Integer.parseInt(used) + 1));
+            DataBase.getDbInstance(context).updateSettings(context.getString(R.string.data_base_temporary_enabled), "false");
             AutoClickService.instance.chainedAutoClick(500, 100, coordinates, isRandomDelay, delay, maxDelay, minDelay, isInfiniteLoop);
         }
         else {

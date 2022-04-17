@@ -7,6 +7,7 @@
         <entry key="..\:/Users/arthu/AndroidStudioProjects/AutoClickerMessengerClicker/app/src/main/res/drawable/ic_add_message.xml" value="0.1578125" />
         <entry key="..\:/Users/arthu/AndroidStudioProjects/AutoClickerMessengerClicker/app/src/main/res/drawable/ic_add_target.xml" value="0.155078125" />
         <entry key="..\:/Users/arthu/AndroidStudioProjects/AutoClickerMessengerClicker/app/src/main/res/drawable/ic_baseline_add_24.xml" value="0.166015625" />
+        <entry key="..\:/Users/arthu/AndroidStudioProjects/AutoClickerMessengerClicker/app/src/main/res/drawable/ic_baseline_warning_24.xml" value="0.17421875" />
         <entry key="..\:/Users/arthu/AndroidStudioProjects/AutoClickerMessengerClicker/app/src/main/res/drawable/ic_edit_message_list.xml" value="0.160546875" />
         <entry key="..\:/Users/arthu/AndroidStudioProjects/AutoClickerMessengerClicker/app/src/main/res/drawable/ic_launcher_background.xml" value="0.166015625" />
         <entry key="..\:/Users/arthu/AndroidStudioProjects/AutoClickerMessengerClicker/app/src/main/res/drawable/ic_launcher_test.xml" value="0.15625" />
@@ -28,7 +29,9 @@
         <entry key="..\:/Users/arthu/AndroidStudioProjects/AutoClickerMessengerClicker/app/src/main/res/layout/custom_dailog_permissions_accessibility_service.xml" value="0.264" />
         <entry key="..\:/Users/arthu/AndroidStudioProjects/AutoClickerMessengerClicker/app/src/main/res/layout/custom_dailog_permissions_draw_over_other_apps.xml" value="0.175390625" />
         <entry key="..\:/Users/arthu/AndroidStudioProjects/AutoClickerMessengerClicker/app/src/main/res/layout/custom_dialog.xml" value="0.264" />
+        <entry key="..\:/Users/arthu/AndroidStudioProjects/AutoClickerMessengerClicker/app/src/main/res/layout/custom_dialog_myquiz.xml" value="0.161328125" />
         <entry key="..\:/Users/arthu/AndroidStudioProjects/AutoClickerMessengerClicker/app/src/main/res/layout/custom_dialog_permissions_accessibility_service.xml" value="0.275" />
+        <entry key="..\:/Users/arthu/AndroidStudioProjects/AutoClickerMessengerClicker/app/src/main/res/layout/custom_dialog_temporary_lock.xml" value="0.161328125" />
         <entry key="..\:/Users/arthu/AndroidStudioProjects/AutoClickerMessengerClicker/app/src/main/res/layout/custom_progress_bar.xml" value="0.133984375" />
         <entry key="..\:/Users/arthu/AndroidStudioProjects/AutoClickerMessengerClicker/app/src/main/res/layout/teste.xml" value="0.15390625" />
         <entry key="..\:/Users/arthu/AndroidStudioProjects/AutoClickerMessengerClicker/app/src/main/res/layout/unity_time.xml" value="0.26844262295081966" />

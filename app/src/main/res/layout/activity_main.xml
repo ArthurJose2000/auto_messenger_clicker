@@ -24,7 +24,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"
                 app:adSize="BANNER"
-                app:adUnitId="ca-app-pub-8798131674672035/3707451425"></com.google.android.gms.ads.AdView>
+                app:adUnitId="@string/ad_main_banner"></com.google.android.gms.ads.AdView>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -385,14 +385,14 @@
                     android:visibility="gone" />
 
                 <TextView
-                    android:id="@+id/problems_solution_go_to_acessibility_settings"
+                    android:id="@+id/problems_solution_go_to_accessibility_settings"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textAlignment="textEnd"
                     android:layout_marginBottom="20dp"
                     android:textColor="#007bff"
                     android:onClick="goToAccessibilitySettings"
-                    android:text="@string/problems_solution_go_to_acessibility_settings"
+                    android:text="@string/problems_solution_go_to_accessibility_settings"
                     android:textSize="16sp"
                     android:visibility="gone" />
 

@@ -20,8 +20,7 @@
     <!-- Do not modify!!!!!!!!!!!!!!!!! -->
     <string name="data_base_disclosure_acceptation" translatable="false">disclosure_acceptation</string>
     <string name="data_base_used_quantity" translatable="false">used_quantity</string>
-    <string name="data_base_enabled_5" translatable="false">enabled_5</string>
-    <string name="data_base_enabled_20" translatable="false">enabled_20</string>
+    <string name="data_base_temporary_enabled" translatable="false">temporary_enabled</string>
     <string name="data_base_typingfield" translatable="false">typingfield</string>
     <string name="data_base_sendfield" translatable="false">sendfield</string>
     <string name="data_base_spacebar" translatable="false">spacebar</string>
@@ -32,9 +31,9 @@
 
     <!-- MainActivity class -->
     <string name="main_my_quiz_dialog_title">Unlock access</string>
-    <string name="main_my_quiz_dialog_text_start">To continue using Auto Messenger you need to have more than</string>
+    <string name="main_my_quiz_dialog_text_start">To continue using Auto Messenger you need to be Premium or to have more than</string>
     <string name="main_my_quiz_dialog_text_end">XP in the My Quiz app.</string>
-    <string name="main_my_quiz_dialog_play_my_quiz">Unlock</string>
+    <string name="main_my_quiz_dialog_text_link"><u>Download My Quiz</u></string>
     <string name="main_my_quiz_dialog_check">I already have</string>
     <string name="main_my_quiz_check_email">Type your email registered in My Quiz app to check your score.</string>
     <string name="main_my_quiz_check_email_button">Check</string>
@@ -85,7 +84,8 @@
     <string name="main_button_premium">Premium experience</string>
     <string name="main_problems_solution"><u>Has the app been malfunctioning?</u></string>
     <string name="problems_solution_text">If the app malfunctions, turn access permission <b>off and on again</b>. If it still doesn\'t work, restart your phone.</string>
-    <string name="problems_solution_go_to_acessibility_settings"><u>Go to Accessibility Settings</u></string>
+    <string name="problems_solution_go_to_accessibility_settings"><u>Go to Accessibility Settings</u></string>
+    <string name="main_become_premium">Become Premium</string>
     <!-- // -->
 
     <!-- MessagesEditorActivity Class -->
@@ -129,6 +129,10 @@
 
     <!-- ListMessagesGroupActivity Class -->
     <string name="list_messages_group_list_group">Group list</string>
+    <string name="list_messages_group_lock_dialog_title">Become Premium</string>
+    <string name="list_messages_group_lock_dialog_text">To register more message groups, become Premium.</string>
+    <string name="list_messages_group_lock_dialog_understand">I understood</string>
+    <string name="list_messages_group_lock_dialog_become_premium">Become Premium</string>
     <!-- // -->
 
     <!-- PurchaseActivity Class -->
@@ -136,8 +140,10 @@
     <string name="purchase_header">Premium Subscription</string>
     <string name="purchase_increases_1">Unlimited usage amount</string>
     <string name="purchase_increases_2">Unlimited message groups</string>
-    <string name="purchase_increases_3">Infinite loop feature</string>
-    <string name="purchase_increases_4">Ad removal</string>
+    <string name="purchase_increases_3">Ad removal</string>
+    <string name="purchase_dot_1">Unsubscribe at any time</string>
+    <string name="purchase_dot_2">1 day of grace</string>
+    <string name="purchase_important_advice">This app gives you a lot of power to use. Use it with caution.</string>
     <string name="purchase_loading">Loading...</string>
     <string name="purchase_you_are_premium">You are premium!</string>
     <!-- // -->
@@ -160,4 +166,16 @@
     <string name="in_app_billing_product_id" translatable="false">premiumversion001</string>
     <string name="in_app_billing_error_to_connect_to_google_play">Unable to connect to google play</string>
     <!-- // -->
+
+    <!-- Ads -->
+    <string name="ad_main_banner" translatable="false">ca-app-pub-8798131674672035/3707451425</string>
+    <string name="ad_main_interstitial" translatable="false">ca-app-pub-8798131674672035/3977598488</string>
+    <string name="ad_messages_editor_banner" translatable="false">ca-app-pub-8798131674672035/8129620586</string>
+    <!-- // -->
+
+<!--    &lt;!&ndash; Test Ads &ndash;&gt;-->
+<!--    <string name="ad_main_banner" translatable="false">ca-app-pub-3940256099942544/6300978111</string>-->
+<!--    <string name="ad_main_interstitial" translatable="false">ca-app-pub-3940256099942544/1033173712</string>-->
+<!--    <string name="ad_messages_editor_banner" translatable="false">ca-app-pub-3940256099942544/6300978111</string>-->
+<!--    &lt;!&ndash; // &ndash;&gt;-->
 </resources>

@@ -47,16 +47,8 @@ public class MessagesEditorActivity extends AppCompatActivity {
         bundle = getIntent().getExtras();
         checkBundleContent();
 
-        MobileAds.initialize(this, new OnInitializationCompleteListener() {
-            @Override
-            public void onInitializationComplete(InitializationStatus initializationStatus) {
-
-            }
-        });
-
-        mAdView = findViewById(R.id.adView2);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
+        if(!DataManager.getInstace().isUserPremium())
+            enableAds();
     }
 
     @Override
@@ -201,5 +193,18 @@ public class MessagesEditorActivity extends AppCompatActivity {
                     })
                     .show();
         }
+    }
+
+    public void enableAds(){
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+
+            }
+        });
+
+        mAdView = findViewById(R.id.adView2);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
     }
 }
