@@ -49,6 +49,8 @@ public class MessagesEditorActivity extends AppCompatActivity {
 
         if(!DataManager.getInstace().isUserPremium())
             enableAds();
+        else
+            hideBannerAd();
     }
 
     @Override
@@ -203,8 +205,24 @@ public class MessagesEditorActivity extends AppCompatActivity {
             }
         });
 
-        mAdView = findViewById(R.id.adView2);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
+        ((MessagesEditorActivity) context).runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mAdView = findViewById(R.id.adView2);
+                mAdView.setVisibility(View.VISIBLE);
+                AdRequest adRequest = new AdRequest.Builder().build();
+                mAdView.loadAd(adRequest);
+            }
+        });
+    }
+
+    public void hideBannerAd(){
+        ((MessagesEditorActivity) context).runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mAdView = findViewById(R.id.adView2);
+                mAdView.setVisibility(View.GONE);
+            }
+        });
     }
 }

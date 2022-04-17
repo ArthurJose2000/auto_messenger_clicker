@@ -27,6 +27,7 @@
     <string name="data_base_capslock" translatable="false">capslock</string>
     <string name="data_base_specialchar" translatable="false">specialchar</string>
     <string name="data_base_breakline" translatable="false">breakline</string>
+    <string name="data_base_evaluation_request" translatable="false">evaluation_request</string>
     <!-- // -->
 
     <!-- MainActivity class -->
@@ -86,6 +87,11 @@
     <string name="problems_solution_text">If the app malfunctions, turn access permission <b>off and on again</b>. If it still doesn\'t work, restart your phone.</string>
     <string name="problems_solution_go_to_accessibility_settings"><u>Go to Accessibility Settings</u></string>
     <string name="main_become_premium">Become Premium</string>
+    <string name="main_evaluation_yes">Rate</string>
+    <string name="main_evaluation_no">No</string>
+    <string name="main_evaluation_later">Later</string>
+    <string name="main_evaluation_title">Rate app</string>
+    <string name="main_evaluation_text">Are you enjoying the app? Rate us on the Play Store. =)</string>
     <!-- // -->
 
     <!-- MessagesEditorActivity Class -->
@@ -142,10 +148,11 @@
     <string name="purchase_increases_2">Unlimited message groups</string>
     <string name="purchase_increases_3">Ad removal</string>
     <string name="purchase_dot_1">Unsubscribe at any time</string>
-    <string name="purchase_dot_2">1 day of grace</string>
+    <string name="purchase_dot_2">3 days of grace</string>
     <string name="purchase_important_advice">This app gives you a lot of power to use. Use it with caution.</string>
     <string name="purchase_loading">Loading...</string>
     <string name="purchase_you_are_premium">You are premium!</string>
+    <string name="purchase_manage_subscription">Manage subscription</string>
     <!-- // -->
 
     <!-- AutoClickService Class -->
@@ -163,7 +170,7 @@
     <!-- // -->
 
     <!-- InAppBilling Class -->
-    <string name="in_app_billing_product_id" translatable="false">premiumversion001</string>
+    <string name="in_app_billing_premium_subscription" translatable="false">premiumsubscription001</string>
     <string name="in_app_billing_error_to_connect_to_google_play">Unable to connect to google play</string>
     <!-- // -->
 

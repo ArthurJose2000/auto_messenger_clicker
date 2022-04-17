@@ -306,41 +306,56 @@ public final class DataBase {
     public void manageInitialSettings(SQLiteDatabase settingsDB, int operation){
         //boolean success = true;
 
+        String disclosure_acceptation = "disclosure_acceptation";
+        String used_quantity = "used_quantity";
+        String temporary_enabled = "temporary_enabled";
+        String evaluation_request = "evaluation_request";
+
         if(operation == CREATE) {
             ContentValues values = new ContentValues();
             long newRowID;
 
-            values.put(Settings.COLUMN_SETTINGS, "disclosure_acceptation");
+            values.put(Settings.COLUMN_SETTINGS, disclosure_acceptation);
             values.put(Settings.COLUMN_RELATED_SETTINGS, "false");
             newRowID = settingsDB.insert(Settings.TABLE_NAME, null, values);
 
-            values.put(Settings.COLUMN_SETTINGS, "used_quantity");
+            values.put(Settings.COLUMN_SETTINGS, used_quantity);
             values.put(Settings.COLUMN_RELATED_SETTINGS, "0");
             newRowID = settingsDB.insert(Settings.TABLE_NAME, null, values);
 
-            values.put(Settings.COLUMN_SETTINGS, "temporary_enabled");
+            values.put(Settings.COLUMN_SETTINGS, temporary_enabled);
             values.put(Settings.COLUMN_RELATED_SETTINGS, "true");
+            newRowID = settingsDB.insert(Settings.TABLE_NAME, null, values);
+
+            values.put(Settings.COLUMN_SETTINGS, evaluation_request);
+            values.put(Settings.COLUMN_RELATED_SETTINGS, "false");
             newRowID = settingsDB.insert(Settings.TABLE_NAME, null, values);
         }
         else if(operation == UPDATE){
             ContentValues values = new ContentValues();
             long newRowID;
 
-            if(!doesSettingsExist("disclosure_acceptation", settingsDB)) {
-                values.put(Settings.COLUMN_SETTINGS, "disclosure_acceptation");
+            if(!doesSettingsExist(disclosure_acceptation, settingsDB)) {
+                values.put(Settings.COLUMN_SETTINGS, disclosure_acceptation);
                 values.put(Settings.COLUMN_RELATED_SETTINGS, "false");
                 newRowID = settingsDB.insert(Settings.TABLE_NAME, null, values);
             }
 
-            if(!doesSettingsExist("used_quantity", settingsDB)) {
-                values.put(Settings.COLUMN_SETTINGS, "used_quantity");
+            if(!doesSettingsExist(used_quantity, settingsDB)) {
+                values.put(Settings.COLUMN_SETTINGS, used_quantity);
                 values.put(Settings.COLUMN_RELATED_SETTINGS, "0");
                 newRowID = settingsDB.insert(Settings.TABLE_NAME, null, values);
             }
 
-            if(!doesSettingsExist("temporary_enabled", settingsDB)) {
-                values.put(Settings.COLUMN_SETTINGS, "temporary_enabled");
+            if(!doesSettingsExist(temporary_enabled, settingsDB)) {
+                values.put(Settings.COLUMN_SETTINGS, temporary_enabled);
                 values.put(Settings.COLUMN_RELATED_SETTINGS, "true");
+                newRowID = settingsDB.insert(Settings.TABLE_NAME, null, values);
+            }
+
+            if(!doesSettingsExist(evaluation_request, settingsDB)) {
+                values.put(Settings.COLUMN_SETTINGS, evaluation_request);
+                values.put(Settings.COLUMN_RELATED_SETTINGS, "false");
                 newRowID = settingsDB.insert(Settings.TABLE_NAME, null, values);
             }
         }

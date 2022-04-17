@@ -104,15 +104,11 @@ public class MainActivity extends AppCompatActivity {
 
         usual = new Usual();
 
-        startActionBar = (Button) findViewById(R.id.button_enable_clicker);
-        counterRestarts = 0;
-        userVisitedAnotherActivity = false;
-        accessibilityServiceDialogIsOpen = false;
-        canDrawOverOtherAppsDialogIsOpen = false;
-        prominentDisclosureDialogIsOpen = false;
+        prepareFields();
         setPreviousOptions();
         prominentDisclosure();
-        checkIfUserIsAlreadyPremium();
+        checkIfUserIsPremium();
+        evaluationRequest();
 
         window = new Window(context);
     }
@@ -120,6 +116,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onRestart(){
         super.onRestart();
+
         counterRestarts++;
         if(counterRestarts % 5 == 4 && userVisitedAnotherActivity == true && !DataManager.getInstace().isUserPremium())
             showInterstitialAd();
@@ -159,10 +156,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(watchTutorial);
                 return true;
             case R.id.menu_rate_app:
-                Intent rateApp =
-                        new Intent("android.intent.action.VIEW",
-                                Uri.parse("http://play.google.com/store/apps/details?id=" + getPackageName()));
-                startActivity(rateApp);
+                rateApp();
                 return true;
             case R.id.menu_share_app:
                 try {
@@ -181,6 +175,17 @@ public class MainActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    void prepareFields(){
+        counterRestarts = 0;
+        userVisitedAnotherActivity = false;
+        accessibilityServiceDialogIsOpen = false;
+        canDrawOverOtherAppsDialogIsOpen = false;
+        prominentDisclosureDialogIsOpen = false;
+
+        mAdView = findViewById(R.id.adView);
+        startActionBar = findViewById(R.id.button_enable_clicker);
     }
 
     public void loadInterstitialAd(){
@@ -472,6 +477,13 @@ public class MainActivity extends AppCompatActivity {
         Intent myIntent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
         myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(myIntent);
+    }
+
+    public void rateApp(){
+        Intent rateApp =
+                new Intent("android.intent.action.VIEW",
+                        Uri.parse("http://play.google.com/store/apps/details?id=" + getPackageName()));
+        startActivity(rateApp);
     }
 
     public boolean enableToPlay(){
@@ -870,7 +882,7 @@ public class MainActivity extends AppCompatActivity {
         queue.add(jsonObjectRequest);
     }
 
-    public void checkIfUserIsAlreadyPremium(){
+    public void checkIfUserIsPremium(){
 
         //just to setListener not to be null
         purchasesUpdatedListener = new PurchasesUpdatedListener() {
@@ -890,7 +902,7 @@ public class MainActivity extends AppCompatActivity {
             public void onBillingSetupFinished(BillingResult billingResult) {
                 if (billingResult.getResponseCode() ==  BillingClient.BillingResponseCode.OK) {
                     // The BillingClient is ready. You can query purchases here.
-                    billingClient.queryPurchasesAsync(BillingClient.SkuType.INAPP, new PurchasesResponseListener() {
+                    billingClient.queryPurchasesAsync(BillingClient.SkuType.SUBS, new PurchasesResponseListener() {
                         @Override
                         public void onQueryPurchasesResponse(@NonNull BillingResult billingResult, @NonNull List<Purchase> list) {
                             boolean isPremium = false;
@@ -898,14 +910,17 @@ public class MainActivity extends AppCompatActivity {
                                 for(Purchase purchase : list){
                                     if(purchase.getPurchaseState() == Purchase.PurchaseState.PURCHASED && purchase.isAcknowledged()){
                                         isPremium = true;
-                                        DataManager.getInstace().isPremiumUpdate(true);
-
                                     }
                                 }
                             }
 
+                            DataManager.getInstace().isPremiumUpdate(isPremium);
                             if(!isPremium)
                                 enableAds();
+                            else
+                                hideBannerAd();
+
+                            billingClient.endConnection(); //finishing connection to avoid multiple calls
                         }
                     });
                 }
@@ -917,6 +932,7 @@ public class MainActivity extends AppCompatActivity {
                 enableAds();
                 Toast toast = Toast.makeText(context, context.getString(R.string.in_app_billing_error_to_connect_to_google_play), Toast.LENGTH_LONG);
                 toast.show();
+                billingClient.endConnection(); //finishing connection to avoid multiple calls
             }
         });
     }
@@ -931,8 +947,52 @@ public class MainActivity extends AppCompatActivity {
 
         loadInterstitialAd();
 
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView = findViewById(R.id.adView);
-        mAdView.loadAd(adRequest); //banner
+        ((MainActivity) context).runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                AdRequest adRequest = new AdRequest.Builder().build();
+                mAdView.setVisibility(View.VISIBLE);
+                mAdView.loadAd(adRequest); //banner
+            }
+        });
+    }
+
+    public void hideBannerAd(){
+        ((MainActivity) context).runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mAdView.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    public void evaluationRequest(){
+        int used_quantity = Integer.parseInt(DataBase.getDbInstance(context).getSettings(getString(R.string.data_base_used_quantity)));
+
+        if(DataBase.getDbInstance(context).getSettings(getString(R.string.data_base_evaluation_request)).equals("false") && used_quantity % 10 == 2){
+            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+            String instruction_title = getString(R.string.main_evaluation_title);
+            String instruction = getString(R.string.main_evaluation_text);
+            builder
+                    .setTitle(instruction_title)
+                    .setMessage(instruction)
+                    .setPositiveButton(getString(R.string.main_evaluation_yes), new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            DataBase.getDbInstance(context).updateSettings(context.getString(R.string.data_base_evaluation_request), "true");
+                            rateApp();
+                        }
+                    })
+                    .setNegativeButton(getString(R.string.main_evaluation_no), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            DataBase.getDbInstance(context).updateSettings(context.getString(R.string.data_base_evaluation_request), "true");
+                        }
+                    })
+                    .setNeutralButton(getString(R.string.main_evaluation_later), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {}
+                    })
+                    .show();
+        }
     }
 }

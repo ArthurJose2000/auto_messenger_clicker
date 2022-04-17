@@ -73,6 +73,11 @@
      Se mesmo assim não der certo, reinicie o telefone.</string>
     <string name="problems_solution_go_to_accessibility_settings"><u>Ir para configurações de acessibilidade</u></string>
     <string name="main_become_premium">Seja Premium</string>
+    <string name="main_evaluation_yes">Avaliar</string>
+    <string name="main_evaluation_no">Não</string>
+    <string name="main_evaluation_later">Mais tarde</string>
+    <string name="main_evaluation_title">Avaliar app</string>
+    <string name="main_evaluation_text">Está gostando do app? Avalie-nos na Play Store. =)</string>
     <!-- // -->
 
     <!-- MessagesEditorActivity Class -->
@@ -129,10 +134,11 @@
     <string name="purchase_increases_2">Grupos de mensagens ilimitados</string>
     <string name="purchase_increases_3">Remoção de anúncios</string>
     <string name="purchase_dot_1">Cancele a assinatura a qualquer momento</string>
-    <string name="purchase_dot_2">1 dia de carência</string>
+    <string name="purchase_dot_2">3 dias de carência</string>
     <string name="purchase_important_advice">Este app te dá um poder de uso muito grande. Use-o com cautela.</string>
     <string name="purchase_loading">Carregando...</string>
     <string name="purchase_you_are_premium">Você é Premium!</string>
+    <string name="purchase_manage_subscription">Gerenciar assinatura</string>
     <!-- // -->
 
     <!-- AutoClickService Class -->
