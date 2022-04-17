@@ -356,15 +356,46 @@
                     android:textSize="20sp" />
 
                 <Button
-                    android:id="@+id/button_my_quiz"
+                    android:id="@+id/button_premium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_margin="20dp"
+                    android:layout_marginTop="20dp"
                     android:backgroundTint="@color/teal_200"
-                    android:onClick="goToMyQuiz"
-                    android:text="@string/main_button_my_quiz"
+                    android:onClick="goToPurchaseActivity"
+                    android:text="@string/main_button_premium"
                     android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/problems_solution"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="@string/main_problems_solution"
+                    android:onClick="openMiniTutorial"
+                    android:textAlignment="center"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/problems_solution_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/problems_solution_text"
+                    android:textSize="16sp"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/problems_solution_go_to_acessibility_settings"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="textEnd"
+                    android:layout_marginBottom="20dp"
+                    android:textColor="#007bff"
+                    android:onClick="goToAccessibilitySettings"
+                    android:text="@string/problems_solution_go_to_acessibility_settings"
+                    android:textSize="16sp"
+                    android:visibility="gone" />
+
             </LinearLayout>
 
             <TextView

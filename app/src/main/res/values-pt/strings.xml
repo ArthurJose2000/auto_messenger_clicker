@@ -46,7 +46,6 @@
     <string name="main_button_enable_clicker">Habilitar</string>
     <string name="main_other_options">Outros</string>
     <string name="main_button_tutorial">Tutorial</string>
-    <string name="main_button_my_quiz">Gosta de Quizzes?</string>
     <string name="main_warning">Aviso</string>
     <string name="main_enable_accessibility_service">Ative a permissão de acessibilidade para que o
         Auto Messenger execute gestos de clique automatizados.</string>
@@ -68,6 +67,11 @@
     <string name="main_custom_dialog_permissions_accessibility_services_link"><u>Assista ao tutorial</u></string>
     <string name="main_menu_contact_title">Contato</string>
     <string name="main_menu_contact">Envie um e-mail para <b>arthur2000jose@gmail.com</b> para dúvidas, sugestões e outros assuntos.</string>
+    <string name="main_button_premium">Experiência premium</string>
+    <string name="main_problems_solution"><u>O app tem apresentado mau funcionamento?</u></string>
+    <string name="problems_solution_text">Se o app apresentar mau funcionamento, <b>desligue e ligue novamente</b> a permissão de acessibilidade.
+     Se mesmo assim não der certo, reinicie o telefone.</string>
+    <string name="problems_solution_go_to_acessibility_settings"><u>Ir para configurações de acessibilidade</u></string>
     <!-- // -->
 
     <!-- MessagesEditorActivity Class -->
@@ -111,6 +115,17 @@
 
     <!-- ListMessagesGroupActivity Class -->
     <string name="list_messages_group_list_group">Lista de grupos</string>
+    <!-- // -->
+
+    <!-- PurchaseActivity Class -->
+    <string name="purchase_start">Assinar</string>
+    <string name="purchase_header">Assinatura Premium</string>
+    <string name="purchase_increases_1">Uso ilimitado</string>
+    <string name="purchase_increases_2">Grupos de mensagens ilimitados</string>
+    <string name="purchase_increases_3">Funcionalidade de repetição infinita</string>
+    <string name="purchase_increases_4">Remoção de anúncios</string>
+    <string name="purchase_loading">Carregando...</string>
+    <string name="purchase_you_are_premium">Você é Premium!</string>
     <!-- // -->
 
     <!-- AutoClickService Class -->

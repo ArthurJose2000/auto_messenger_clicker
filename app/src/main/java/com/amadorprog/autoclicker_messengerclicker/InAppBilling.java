@@ -2,6 +2,7 @@ package com.amadorprog.autoclicker_messengerclicker;
 
 import android.app.Activity;
 import android.content.Context;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -13,6 +14,7 @@ import com.android.billingclient.api.BillingClientStateListener;
 import com.android.billingclient.api.BillingFlowParams;
 import com.android.billingclient.api.BillingResult;
 import com.android.billingclient.api.Purchase;
+import com.android.billingclient.api.PurchasesResponseListener;
 import com.android.billingclient.api.PurchasesUpdatedListener;
 import com.android.billingclient.api.SkuDetails;
 import com.android.billingclient.api.SkuDetailsParams;
@@ -57,6 +59,7 @@ public class InAppBilling {
                 if (billingResult.getResponseCode() ==  BillingClient.BillingResponseCode.OK) {
                     // The BillingClient is ready. You can query purchases here.
                     getProducts();
+                    checkIfUserIsAlreadyPremium();
                 }
             }
             @Override
@@ -108,14 +111,30 @@ public class InAppBilling {
                 billingClient.acknowledgePurchase(acknowledgePurchaseParams, new AcknowledgePurchaseResponseListener() {
                     @Override
                     public void onAcknowledgePurchaseResponse(@NonNull BillingResult billingResult) {
-
+                        DataManager.getInstace().isPremiumUpdate(true);
                     }
                 });
             }
         }
     }
 
+    public void checkIfUserIsAlreadyPremium(){
+        billingClient.queryPurchasesAsync(BillingClient.SkuType.INAPP, new PurchasesResponseListener() {
+            @Override
+            public void onQueryPurchasesResponse(@NonNull BillingResult billingResult, @NonNull List< Purchase > list) {
+                if(billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK){
+                    for(Purchase purchase : list){
+                        if(purchase.getPurchaseState() == Purchase.PurchaseState.PURCHASED && purchase.isAcknowledged()){
+                            DataManager.getInstace().isPremiumUpdate(true);
+                        }
+                    }
+                }
+            }
+        });
+    }
+
     public BillingClient getBillingClient(){
         return billingClient;
     }
+
 }

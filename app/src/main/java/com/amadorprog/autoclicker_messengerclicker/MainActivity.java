@@ -29,14 +29,6 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.android.billingclient.api.BillingClient;
-import com.android.billingclient.api.BillingClientStateListener;
-import com.android.billingclient.api.BillingResult;
-import com.android.billingclient.api.ConsumeParams;
-import com.android.billingclient.api.ConsumeResponseListener;
-import com.android.billingclient.api.Purchase;
-import com.android.billingclient.api.PurchasesResponseListener;
-import com.android.billingclient.api.PurchasesUpdatedListener;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -59,7 +51,6 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -117,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
         mAdView.loadAd(adRequest); //banner
 
         usual = new Usual();
-        inAppBilling = new InAppBilling(context);
+        inAppBilling = new InAppBilling(context); //do not remove. this is to update data manager if user is premium
 
         startActionBar = (Button) findViewById(R.id.button_enable_clicker);
         counterRestarts = 0;
@@ -190,34 +181,6 @@ public class MainActivity extends AppCompatActivity {
             checkPermissions();
 
         completeGroupNamesSpinner();
-
-//        inAppBilling.startPurchase();
-//
-//        inAppBilling.getBillingClient().queryPurchasesAsync(BillingClient.SkuType.INAPP, new PurchasesResponseListener() {
-//            @Override
-//            public void onQueryPurchasesResponse(@NonNull BillingResult billingResult, @NonNull List<Purchase> list) {
-//                if(billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK){
-//                    for(Purchase purchase : list){
-//                        if(purchase.getPurchaseState() == Purchase.PurchaseState.PURCHASED && purchase.isAcknowledged()){
-//                            System.out.println("#################################");
-//                            System.out.println("#################################");
-//                            System.out.println("#################################");
-//                            System.out.println("#################################");
-//                            System.out.println("#################################");
-//                            System.out.println("o que tah acontecendo");
-//                            System.out.println("#################################");
-//                            System.out.println("#################################");
-//                            System.out.println("#################################");
-//                            System.out.println("#################################");
-//                            System.out.println("#################################");
-//                            System.out.println("#################################");
-//                            System.out.println("#################################");
-//                            System.out.println("#################################");
-//                        }
-//                    }
-//                }
-//            }
-//        });
     }
 
     @Override
@@ -471,6 +434,12 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void goToPurchaseActivity(View view){
+        userVisitedAnotherActivity = true;
+        Intent intent = new Intent(this, PurchaseActivity.class);
+        startActivity(intent);
+    }
+
     public void openActionBar(View view) throws IOException, InterruptedException {
         if(!window.isOpen()) {
             if (enableToPlay())
@@ -486,12 +455,24 @@ public class MainActivity extends AppCompatActivity {
         startActivity(viewIntent);
     }
 
-    public void goToMyQuiz(View view){
-        userVisitedAnotherActivity = true;
-        Intent goToDesktopVersion =
-                new Intent("android.intent.action.VIEW",
-                        Uri.parse("https://play.google.com/store/apps/details?id=com.amadorprog.myquiz"));
-        startActivity(goToDesktopVersion);
+    public void openMiniTutorial(View view){
+        TextView text = findViewById(R.id.problems_solution_text);
+        TextView linkToAccessibilitySettings = findViewById(R.id.problems_solution_go_to_acessibility_settings);
+
+        if(View.VISIBLE == text.getVisibility()){
+            text.setVisibility(View.VISIBLE);
+            linkToAccessibilitySettings.setVisibility(View.VISIBLE);
+        }
+        else{
+            text.setVisibility(View.GONE);
+            linkToAccessibilitySettings.setVisibility(View.GONE);
+        }
+    }
+
+    public void goToAccessibilitySettings(View view){
+        Intent myIntent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
+        myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(myIntent);
     }
 
     public boolean enableToPlay(){

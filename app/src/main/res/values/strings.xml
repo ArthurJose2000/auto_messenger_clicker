@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Auto Messenger</string>
-    <string translatable="false" name="my_quiz_package">com.amadorprog.myquiz</string>
+    <string name="my_quiz_package" translatable="false">com.amadorprog.myquiz</string>
     <string name="version">Version 2.3.0</string>
     <string name="menu_tutorial">Tutorial</string>
     <string name="menu_rate_app">Rate app</string>
@@ -14,20 +14,20 @@
         <item>min</item>
     </string-array>
     <string name="toast_accessibility_service_is_not_connected">AccessibilityService of this device is not properly connected</string>
-    <string translatable="false" name="youtube_tutorial_link">https://youtu.be/PCGr105dG9k</string>
+    <string name="youtube_tutorial_link" translatable="false">https://youtu.be/PCGr105dG9k</string>
 
     <!-- DataBase Class -->
     <!-- Do not modify!!!!!!!!!!!!!!!!! -->
-    <string translatable="false" name="data_base_disclosure_acceptation">disclosure_acceptation</string>
-    <string translatable="false" name="data_base_used_quantity">used_quantity</string>
-    <string translatable="false" name="data_base_enabled_5">enabled_5</string>
-    <string translatable="false" name="data_base_enabled_20">enabled_20</string>
-    <string translatable="false" name="data_base_typingfield">typingfield</string>
-    <string translatable="false" name="data_base_sendfield">sendfield</string>
-    <string translatable="false" name="data_base_spacebar">spacebar</string>
-    <string translatable="false" name="data_base_capslock">capslock</string>
-    <string translatable="false" name="data_base_specialchar">specialchar</string>
-    <string translatable="false" name="data_base_breakline">breakline</string>
+    <string name="data_base_disclosure_acceptation" translatable="false">disclosure_acceptation</string>
+    <string name="data_base_used_quantity" translatable="false">used_quantity</string>
+    <string name="data_base_enabled_5" translatable="false">enabled_5</string>
+    <string name="data_base_enabled_20" translatable="false">enabled_20</string>
+    <string name="data_base_typingfield" translatable="false">typingfield</string>
+    <string name="data_base_sendfield" translatable="false">sendfield</string>
+    <string name="data_base_spacebar" translatable="false">spacebar</string>
+    <string name="data_base_capslock" translatable="false">capslock</string>
+    <string name="data_base_specialchar" translatable="false">specialchar</string>
+    <string name="data_base_breakline" translatable="false">breakline</string>
     <!-- // -->
 
     <!-- MainActivity class -->
@@ -61,7 +61,6 @@
     <string name="main_button_enable_clicker">Enable</string>
     <string name="main_other_options">Others</string>
     <string name="main_button_tutorial">Tutorial</string>
-    <string name="main_button_my_quiz">Do you like quizzes?</string>
     <string name="main_warning">Warning</string>
     <string name="main_enable_accessibility_service">Enable accessibility permission for the
         Auto Messenger perform automated click gestures.</string>
@@ -83,6 +82,10 @@
     <string name="main_custom_dialog_permissions_accessibility_services_link">Watch the tutorial</string>
     <string name="main_menu_contact_title">Contact</string>
     <string name="main_menu_contact">Send an email to <b>arthur2000jose@gmail.com</b> to questions, suggestions and others matters.</string>
+    <string name="main_button_premium">Premium experience</string>
+    <string name="main_problems_solution"><u>Has the app been malfunctioning?</u></string>
+    <string name="problems_solution_text">If the app malfunctions, turn access permission <b>off and on again</b>. If it still doesn\'t work, restart your phone.</string>
+    <string name="problems_solution_go_to_acessibility_settings"><u>Go to Accessibility Settings</u></string>
     <!-- // -->
 
     <!-- MessagesEditorActivity Class -->
@@ -128,6 +131,17 @@
     <string name="list_messages_group_list_group">Group list</string>
     <!-- // -->
 
+    <!-- PurchaseActivity Class -->
+    <string name="purchase_start">Subscribe</string>
+    <string name="purchase_header">Premium Subscription</string>
+    <string name="purchase_increases_1">Unlimited usage amount</string>
+    <string name="purchase_increases_2">Unlimited message groups</string>
+    <string name="purchase_increases_3">Infinite loop feature</string>
+    <string name="purchase_increases_4">Ad removal</string>
+    <string name="purchase_loading">Loading...</string>
+    <string name="purchase_you_are_premium">You are premium!</string>
+    <!-- // -->
+
     <!-- AutoClickService Class -->
     <string name="auto_click_service_finished">Finished operation</string>
     <string name="auto_click_generic_error">Some error occurred</string>
@@ -143,7 +157,7 @@
     <!-- // -->
 
     <!-- InAppBilling Class -->
-    <string translatable="false" name="in_app_billing_product_id">premiumversion001</string>
+    <string name="in_app_billing_product_id" translatable="false">premiumversion001</string>
     <string name="in_app_billing_error_to_connect_to_google_play">Unable to connect to google play</string>
     <!-- // -->
 </resources>

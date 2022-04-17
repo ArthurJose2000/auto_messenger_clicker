@@ -13,41 +13,47 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AutoClickerMessengerClicker">
+
         <!-- Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713 -->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-8798131674672035~3558088240"/>
+            android:value="ca-app-pub-8798131674672035~3558088240" />
+
         <service
-            android:name="com.amadorprog.autoclicker_messengerclicker.AutoClickService"
+            android:name=".AutoClickService"
             android:enabled="true"
+            android:exported="false"
             android:label="@string/accessibility_service_name"
-            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE"
-            android:exported="false">
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
             <intent-filter>
-                <action android:name="android.accessibilityservice.AccessibilityService"/>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
             </intent-filter>
 
             <meta-data
                 android:name="android.accessibilityservice"
-                android:resource="@xml/config_accessibility_service"/>
+                android:resource="@xml/config_accessibility_service" />
         </service>
 
         <activity
-            android:name="com.amadorprog.autoclicker_messengerclicker.ListMessagesGroupActivity"
+            android:name=".PurchaseActivity"
             android:exported="true"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.amadorprog.autoclicker_messengerclicker.ConfigCoordinatesActivity"
+            android:name=".ListMessagesGroupActivity"
             android:exported="true"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.amadorprog.autoclicker_messengerclicker.MessagesEditorActivity"
+            android:name=".ConfigCoordinatesActivity"
             android:exported="true"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.amadorprog.autoclicker_messengerclicker.MainActivity"
+            android:name=".MessagesEditorActivity"
             android:exported="true"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
