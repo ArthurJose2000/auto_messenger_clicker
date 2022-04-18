@@ -112,6 +112,7 @@ public class MainActivity extends AppCompatActivity {
         prominentDisclosure();
         checkIfUserIsPremium();
         evaluationRequest();
+        enableAds();
 
         window = new Window(context);
     }
@@ -923,9 +924,7 @@ public class MainActivity extends AppCompatActivity {
                             }
 
                             DataManager.getInstace().isPremiumUpdate(isPremium);
-                            if(!isPremium)
-                                enableAds();
-                            else
+                            if(isPremium)
                                 hideBannerAd();
 
                             billingClient.endConnection(); //finishing connection to avoid multiple calls
@@ -937,7 +936,6 @@ public class MainActivity extends AppCompatActivity {
             public void onBillingServiceDisconnected() {
                 // Try to restart the connection on the next request to
                 // Google Play by calling the startConnection() method.
-                enableAds();
                 Toast toast = Toast.makeText(context, context.getString(R.string.in_app_billing_error_to_connect_to_google_play), Toast.LENGTH_LONG);
                 toast.show();
                 billingClient.endConnection(); //finishing connection to avoid multiple calls
@@ -955,14 +953,9 @@ public class MainActivity extends AppCompatActivity {
 
         loadInterstitialAd();
 
-        ((MainActivity) context).runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                AdRequest adRequest = new AdRequest.Builder().build();
-                mAdView.setVisibility(View.VISIBLE);
-                mAdView.loadAd(adRequest); //banner
-            }
-        });
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.setVisibility(View.VISIBLE);
+        mAdView.loadAd(adRequest); //banner
     }
 
     public void hideBannerAd(){
