@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Auto Messenger</string>
     <string name="my_quiz_package" translatable="false">com.amadorprog.myquiz</string>
-    <string name="version">Version 2.3.0</string>
+    <string name="version">Version 2.3.3</string>
     <string name="menu_tutorial">Tutorial</string>
     <string name="menu_rate_app">Rate app</string>
     <string name="menu_share_app">Share app</string>

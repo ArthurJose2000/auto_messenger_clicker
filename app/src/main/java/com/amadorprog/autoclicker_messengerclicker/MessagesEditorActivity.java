@@ -168,8 +168,14 @@ public class MessagesEditorActivity extends AppCompatActivity {
         ArrayList<String> groupNames;
         groupNames = DataBase.getDbInstance(context).getGroupNamesFromDataBase();
         for(int i = 0; i < groupNames.size(); i++)
-            if(groupName.equals(groupNames.get(i)) && !previousGroupName.equals(groupNames.get(i)))
-                return true;
+            if(previousGroupName != null) {
+                if (groupName.equals(groupNames.get(i)) && !previousGroupName.equals(groupNames.get(i)))
+                    return true;
+            }
+            else {
+                if (groupName.equals(groupNames.get(i)))
+                    return true;
+            }
 
         return false;
     }
@@ -205,24 +211,14 @@ public class MessagesEditorActivity extends AppCompatActivity {
             }
         });
 
-        ((MessagesEditorActivity) context).runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                mAdView = findViewById(R.id.adView2);
-                mAdView.setVisibility(View.VISIBLE);
-                AdRequest adRequest = new AdRequest.Builder().build();
-                mAdView.loadAd(adRequest);
-            }
-        });
+        mAdView = findViewById(R.id.adView2);
+        mAdView.setVisibility(View.VISIBLE);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
     }
 
     public void hideBannerAd(){
-        ((MessagesEditorActivity) context).runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                mAdView = findViewById(R.id.adView2);
-                mAdView.setVisibility(View.GONE);
-            }
-        });
+        mAdView = findViewById(R.id.adView2);
+        mAdView.setVisibility(View.GONE);
     }
 }

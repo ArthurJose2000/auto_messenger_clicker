@@ -85,6 +85,9 @@ public class MainActivity extends AppCompatActivity {
     int delay_s = 20;
     int maxDelay_s = 30;
     int minDelay_s = 20;
+    int delay_s_aux = 1;
+    int maxDelay_s_aux = 1;
+    int minDelay_s_aux = 1;
     int myQuizFactor = 6;
     boolean isInfiniteLoop = false;
     boolean isRandomOrder = false;
@@ -116,6 +119,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onRestart(){
         super.onRestart();
+
+        checkBannerAd();
 
         counterRestarts++;
         if(counterRestarts % 5 == 4 && userVisitedAnotherActivity == true && !DataManager.getInstace().isUserPremium())
@@ -448,7 +453,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void openWindow(){
-        window.open(isRandomDelay, delay_s, maxDelay_s, minDelay_s, isInfiniteLoop, isRandomOrder, groupName);
+        window.open(isRandomDelay, delay_s_aux, maxDelay_s_aux, minDelay_s_aux, isInfiniteLoop, isRandomOrder, groupName);
     }
 
     public void openYouTubeTutorial(View view){
@@ -528,8 +533,10 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
             else{
-                minDelay_s = timeSecondMinDelay;
-                maxDelay_s = timeSecondMaxDelay;
+                //minDelay_s = timeSecondMinDelay;
+                //maxDelay_s = timeSecondMaxDelay;
+                minDelay_s_aux = timeSecondMinDelay;
+                maxDelay_s_aux = timeSecondMaxDelay;
             }
         }
         else{
@@ -546,7 +553,8 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
             else{
-                delay_s = timeSecondDelay;
+                //delay_s = timeSecondDelay;
+                delay_s_aux = timeSecondDelay;
             }
         }
 
@@ -994,5 +1002,10 @@ public class MainActivity extends AppCompatActivity {
                     })
                     .show();
         }
+    }
+
+    public void checkBannerAd(){
+        if(DataManager.getInstace().isUserPremium() && mAdView.getVisibility() == View.VISIBLE)
+            hideBannerAd();
     }
 }
