@@ -117,15 +117,14 @@ public class PurchaseActivity extends AppCompatActivity {
             public void onBillingServiceDisconnected() {
                 // Try to restart the connection on the next request to
                 // Google Play by calling the startConnection() method.
-                Toast toast = Toast.makeText(context, context.getString(R.string.in_app_billing_error_to_connect_to_google_play), Toast.LENGTH_LONG);
-                toast.show();
+                errorToConnectToGooglePlay();
             }
         });
     }
 
     public void getProducts(){
         List<String> skuList = new ArrayList<>();
-        skuList.add(getString(R.string.in_app_billing_premium_subscription));
+        skuList.add(getString(R.string.purchase_premium_subscription_id));
         SkuDetailsParams.Builder params = SkuDetailsParams.newBuilder();
         //params.setSkusList(skuList).setType(BillingClient.SkuType.INAPP);
         params.setSkusList(skuList).setType(BillingClient.SkuType.SUBS);
@@ -139,15 +138,19 @@ public class PurchaseActivity extends AppCompatActivity {
     }
 
     public void startPurchase(View view){
-        if(mySkuListDetails.size() != 0) {
-            // Retrieve a value for "skuDetails" by calling querySkuDetailsAsync().
-            BillingFlowParams billingFlowParams = BillingFlowParams.newBuilder()
-                    .setSkuDetails(mySkuListDetails.get(0))
-                    .build();
-            int responseCode = billingClient.launchBillingFlow(PurchaseActivity.this, billingFlowParams).getResponseCode();
+        if(mySkuListDetails != null) {
+            if (mySkuListDetails.size() != 0) {
+                // Retrieve a value for "skuDetails" by calling querySkuDetailsAsync().
+                BillingFlowParams billingFlowParams = BillingFlowParams.newBuilder()
+                        .setSkuDetails(mySkuListDetails.get(0))
+                        .build();
+                int responseCode = billingClient.launchBillingFlow(PurchaseActivity.this, billingFlowParams).getResponseCode();
 
-            // Handle the result.
+                // Handle the result.
+            }
         }
+        else
+            errorToConnectToGooglePlay();
     }
 
     void handlePurchase(Purchase purchase) {
@@ -194,5 +197,10 @@ public class PurchaseActivity extends AppCompatActivity {
                 handleButtons();
             }
         });
+    }
+
+    public void errorToConnectToGooglePlay(){
+        Toast toast = Toast.makeText(context, context.getString(R.string.purchase_error_to_connect_to_google_play), Toast.LENGTH_LONG);
+        toast.show();
     }
 }

@@ -91,7 +91,6 @@ public class AutoClickService extends AccessibilityService {
                         int sizeStackCoordinates;
 
                         if(!isDefaultCoordinatesObtained() && isInfiniteLoop) {
-                            auxCoordinates = new ArrayList<ArrayList<Integer>>();
                             defaultCoordinates = new ArrayList<ArrayList<Integer>>();
                             for(int j = 0; j < coordinates.size(); j++){
                                 defaultCoordinates.add(new ArrayList<Integer>());
@@ -142,6 +141,7 @@ public class AutoClickService extends AccessibilityService {
                         }
                         else{
                             if(isInfiniteLoop){ //Infinite repeat
+                                auxCoordinates = new ArrayList<ArrayList<Integer>>();
                                 for(int j = 0; j < defaultCoordinates.size(); j++){
                                     auxCoordinates.add(new ArrayList<Integer>());
                                     auxCoordinates.get(j).add(defaultCoordinates.get(j).get(0));

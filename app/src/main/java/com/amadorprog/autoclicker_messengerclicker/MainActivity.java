@@ -192,6 +192,9 @@ public class MainActivity extends AppCompatActivity {
 
         mAdView = findViewById(R.id.adView);
         startActionBar = findViewById(R.id.button_enable_clicker);
+
+        TextView version = findViewById(R.id.main_version);
+        version.setText(getString(R.string.main_version) + " " + BuildConfig.VERSION_NAME);
     }
 
     public void loadInterstitialAd(){
@@ -936,7 +939,7 @@ public class MainActivity extends AppCompatActivity {
             public void onBillingServiceDisconnected() {
                 // Try to restart the connection on the next request to
                 // Google Play by calling the startConnection() method.
-                Toast toast = Toast.makeText(context, context.getString(R.string.in_app_billing_error_to_connect_to_google_play), Toast.LENGTH_LONG);
+                Toast toast = Toast.makeText(context, context.getString(R.string.purchase_error_to_connect_to_google_play), Toast.LENGTH_LONG);
                 toast.show();
                 billingClient.endConnection(); //finishing connection to avoid multiple calls
             }
@@ -970,7 +973,7 @@ public class MainActivity extends AppCompatActivity {
     public void evaluationRequest(){
         int used_quantity = Integer.parseInt(DataBase.getDbInstance(context).getSettings(getString(R.string.data_base_used_quantity)));
 
-        if(DataBase.getDbInstance(context).getSettings(getString(R.string.data_base_evaluation_request)).equals("false") && used_quantity % 10 == 2){
+        if(DataBase.getDbInstance(context).getSettings(getString(R.string.data_base_evaluation_request)).equals("false") && used_quantity % 3 == 2){
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
             String instruction_title = getString(R.string.main_evaluation_title);
             String instruction = getString(R.string.main_evaluation_text);

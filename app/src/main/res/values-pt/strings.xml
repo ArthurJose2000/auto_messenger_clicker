@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Auto Messenger</string>
-    <string name="version">Versão 2.3.0</string>
     <string name="menu_tutorial">Tutorial</string>
     <string name="menu_rate_app">Avaliar app</string>
     <string name="menu_share_app">Compartilhar app</string>
@@ -78,6 +77,7 @@
     <string name="main_evaluation_later">Mais tarde</string>
     <string name="main_evaluation_title">Avaliar app</string>
     <string name="main_evaluation_text">Está gostando do app? Avalie-nos na Play Store. =)</string>
+    <string name="main_version">Versão</string>
     <!-- // -->
 
     <!-- MessagesEditorActivity Class -->
@@ -139,6 +139,7 @@
     <string name="purchase_loading">Carregando...</string>
     <string name="purchase_you_are_premium">Você é Premium!</string>
     <string name="purchase_manage_subscription">Gerenciar assinatura</string>
+    <string name="purchase_error_to_connect_to_google_play">Não foi possível se conectar ao Google Play. Verifique sua conexão com a Internet</string>
     <!-- // -->
 
     <!-- AutoClickService Class -->
@@ -153,9 +154,5 @@
 
     <!-- Target Class -->
     <string name="target_toast_coordinate_registered">Coordenada registrada</string>
-    <!-- // -->
-
-    <!-- InAppBilling Class -->
-    <string name="in_app_billing_error_to_connect_to_google_play">Não foi possível se conectar ao Google Play</string>
     <!-- // -->
 </resources>

@@ -1,7 +1,6 @@
 <resources>
     <string name="app_name">Auto Messenger</string>
     <string name="my_quiz_package" translatable="false">com.amadorprog.myquiz</string>
-    <string name="version">Version 2.3.3</string>
     <string name="menu_tutorial">Tutorial</string>
     <string name="menu_rate_app">Rate app</string>
     <string name="menu_share_app">Share app</string>
@@ -92,6 +91,7 @@
     <string name="main_evaluation_later">Later</string>
     <string name="main_evaluation_title">Rate app</string>
     <string name="main_evaluation_text">Are you enjoying the app? Rate us on the Play Store. =)</string>
+    <string name="main_version">Version</string>
     <!-- // -->
 
     <!-- MessagesEditorActivity Class -->
@@ -153,6 +153,8 @@
     <string name="purchase_loading">Loading...</string>
     <string name="purchase_you_are_premium">You are premium!</string>
     <string name="purchase_manage_subscription">Manage subscription</string>
+    <string name="purchase_error_to_connect_to_google_play">Unable to connect to Google Play. Check your internet connection</string>
+    <string name="purchase_premium_subscription_id" translatable="false">premiumsubscription001</string>
     <!-- // -->
 
     <!-- AutoClickService Class -->
@@ -167,11 +169,6 @@
 
     <!-- Target Class -->
     <string name="target_toast_coordinate_registered">Registered coordinate</string>
-    <!-- // -->
-
-    <!-- InAppBilling Class -->
-    <string name="in_app_billing_premium_subscription" translatable="false">premiumsubscription001</string>
-    <string name="in_app_billing_error_to_connect_to_google_play">Unable to connect to google play</string>
     <!-- // -->
 
     <!-- Ads -->
