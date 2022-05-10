@@ -13,6 +13,8 @@
         <item>min</item>
     </string-array>
     <string name="toast_accessibility_service_is_not_connected">O serviço de acessibilidade deste dispositivo não está devidamente conectado</string>
+    <string name="dialog_yes">Sim</string>
+    <string name="dialog_no">Não</string>
 
     <!-- MainActivity class -->
     <string name="main_loading">Verificando...</string>
@@ -86,6 +88,8 @@
     <string name="messages_editor_add_group_name">Nome do grupo:</string>
     <string name="messages_editor_button_save_message">Salvar</string>
     <string name="messages_editor_button_instr_text_message">Instruções</string>
+    <string name="messages_editor_not_save_title">Atenção</string>
+    <string name="messages_editor_not_save_text">Suas alterações não foram salvas. Deseja salvar antes de sair?</string>
     <!-- // -->
 
     <!-- ConfigCoordinates Class -->

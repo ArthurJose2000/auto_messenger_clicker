@@ -121,11 +121,10 @@ public class MainActivity extends AppCompatActivity {
     public void onRestart(){
         super.onRestart();
 
-        checkBannerAd();
-
         counterRestarts++;
-        if(counterRestarts % 2 == 1 && userVisitedAnotherActivity == true && !DataManager.getInstace().isUserPremium())
-            showInterstitialAd();
+
+        checkBannerAd();
+        checkInterstitialAd();
 
         if(!prominentDisclosureDialogIsOpen)
             checkPermissions();
@@ -369,7 +368,7 @@ public class MainActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if(b) {
 
-                    int used_quantity = Integer.parseInt(DataBase.getDbInstance(context).getSettings(getString(R.string.data_base_used_quantity)));
+                    int used_quantity = getAmountOfUse();
                     boolean lock = used_quantity > lockFactor && !DataManager.getInstace().isUserPremium();
 
                     if(lock){
@@ -864,7 +863,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void evaluationRequest(){
-        int used_quantity = Integer.parseInt(DataBase.getDbInstance(context).getSettings(getString(R.string.data_base_used_quantity)));
+        int used_quantity = getAmountOfUse();
 
         if(DataBase.getDbInstance(context).getSettings(getString(R.string.data_base_evaluation_request)).equals("false") && used_quantity % 2 == 1){
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
@@ -896,5 +895,20 @@ public class MainActivity extends AppCompatActivity {
     public void checkBannerAd(){
         if(DataManager.getInstace().isUserPremium() && mAdView.getVisibility() == View.VISIBLE)
             hideBannerAd();
+    }
+
+    public void checkInterstitialAd(){
+        int used_quantity = getAmountOfUse();
+
+        if(!DataManager.getInstace().isUserPremium()){
+            if(counterRestarts % 2 == 1 && userVisitedAnotherActivity == true)
+                showInterstitialAd();
+            else if(used_quantity > lockFactor)
+                showInterstitialAd();
+        }
+    }
+
+    public int getAmountOfUse(){
+        return Integer.parseInt(DataBase.getDbInstance(context).getSettings(getString(R.string.data_base_used_quantity)));
     }
 }

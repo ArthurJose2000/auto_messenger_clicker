@@ -28,6 +28,7 @@ public class MessagesEditorActivity extends AppCompatActivity {
     EditText editGroupName;
     Bundle bundle;
     String previousGroupName;
+    String previousMessage;
     private AdView mAdView;
 
     @Override
@@ -38,6 +39,20 @@ public class MessagesEditorActivity extends AppCompatActivity {
 
         context = this;
 
+        prepareFields();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
+    @Override
+    public void onBackPressed(){
+        checkIfUserWouldLikeToSave();
+    }
+
+    public void prepareFields(){
         save = findViewById(R.id.button_save_message);
         editMessage = findViewById(R.id.text_message);
         editGroupName = findViewById(R.id.text_add_group_name);
@@ -51,18 +66,22 @@ public class MessagesEditorActivity extends AppCompatActivity {
             enableAds();
         else
             hideBannerAd();
-    }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
+        save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                saveMessage();
+            }
+        });
     }
 
     public void checkBundleContent(){
         if(bundle != null){
             previousGroupName = bundle.getString("groupName");
             editGroupName.setText(previousGroupName);
-            editMessage.setText(bundle.getString("message"));
+
+            previousMessage = bundle.getString("message");
+            editMessage.setText(previousMessage);
         }
     }
 
@@ -82,7 +101,7 @@ public class MessagesEditorActivity extends AppCompatActivity {
         });
     }
 
-    public void saveMessage(View view){
+    public void saveMessage(){
         String message = editMessage.getText().toString();
         String groupName = editGroupName.getText().toString();
 
@@ -220,5 +239,39 @@ public class MessagesEditorActivity extends AppCompatActivity {
     public void hideBannerAd(){
         mAdView = findViewById(R.id.adView2);
         mAdView.setVisibility(View.GONE);
+    }
+
+    public void checkIfUserWouldLikeToSave(){
+        if(previousGroupName == null && previousMessage == null){
+            if(editMessage.getText().toString().trim().length() > 0 || editGroupName.getText().toString().trim().length() > 0)
+                saveDialog();
+            else
+                finish();
+        }
+        else if(!previousGroupName.equals(editGroupName.getText().toString()) || !previousMessage.equals(editMessage.getText().toString())){
+            saveDialog();
+        }
+        else
+            finish();
+    }
+
+    public void saveDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        String instruction_title = getString(R.string.messages_editor_not_save_title);
+        String instruction = getString(R.string.messages_editor_not_save_text);
+        builder
+                .setTitle(instruction_title)
+                .setMessage(instruction)
+                .setPositiveButton(getString(R.string.dialog_yes), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        saveMessage();
+                    }
+                })
+                .setNegativeButton(getString(R.string.dialog_no), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                })
+                .show();
     }
 }

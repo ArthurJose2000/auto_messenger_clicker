@@ -72,7 +72,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
             android:backgroundTint="@color/teal_200"
-            android:onClick="saveMessage"
             android:text="@string/messages_editor_button_save_message"
             android:textColor="@color/white"
             android:textSize="20sp"
