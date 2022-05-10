@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Auto Messenger</string>
-    <string name="my_quiz_package" translatable="false">com.amadorprog.myquiz</string>
     <string name="menu_tutorial">Tutorial</string>
     <string name="menu_rate_app">Rate app</string>
     <string name="menu_share_app">Share app</string>
@@ -30,19 +29,10 @@
     <!-- // -->
 
     <!-- MainActivity class -->
-    <string name="main_my_quiz_dialog_title">Unlock access</string>
-    <string name="main_my_quiz_dialog_text_start">To continue using Auto Messenger you need to be Premium or to have more than</string>
-    <string name="main_my_quiz_dialog_text_end">XP in the My Quiz app.</string>
-    <string name="main_my_quiz_dialog_text_link"><u>Download My Quiz</u></string>
-    <string name="main_my_quiz_dialog_check">I already have</string>
-    <string name="main_my_quiz_check_email">Type your email registered in My Quiz app to check your score.</string>
-    <string name="main_my_quiz_check_email_button">Check</string>
-    <string name="main_my_quiz_unlocked">Successfully unlocked!</string>
     <string name="main_error_title">Error</string>
     <string name="main_error">An error has occurred. Check your internet connection or wait a few moments.</string>
     <string name="main_loading">Checking...</string>
     <string name="main_invalid_email">Invalid email.</string>
-    <string name="main_my_quiz_not_unlocked">You do not have enough XP in My Quiz. Play more!</string>
     <string name="main_basic_settings">Basic settings</string>
     <string name="main_msg_group">Message group:</string>
     <string name="main_delay_time_simple">Delay:</string>
@@ -92,6 +82,8 @@
     <string name="main_evaluation_title">Rate app</string>
     <string name="main_evaluation_text">Are you enjoying the app? Rate us on the Play Store. =)</string>
     <string name="main_version">Version</string>
+    <string name="main_lock_dialog_title">Functionality blocked</string>
+    <string name="main_lock_dialog">You have reached your free limit. To use Infinite Loop, your account must be Premium.</string>
     <!-- // -->
 
     <!-- MessagesEditorActivity Class -->

@@ -15,19 +15,10 @@
     <string name="toast_accessibility_service_is_not_connected">O serviço de acessibilidade deste dispositivo não está devidamente conectado</string>
 
     <!-- MainActivity class -->
-    <string name="main_my_quiz_dialog_title">Desbloquear acesso</string>
-    <string name="main_my_quiz_dialog_text_start">Para continuar utilizando o Auto Messenger, você precisa ser <b>Premium</b> ou ter mais do que</string>
-    <string name="main_my_quiz_dialog_text_end">XP no app My Quiz.</string>
-    <string name="main_my_quiz_dialog_text_link"><u>Fazer o download do My Quiz</u></string>
-    <string name="main_my_quiz_check_email">Digite seu endereço de e-mail cadastrado no app My Quiz para verificarmos sua pontuação.</string>
-    <string name="main_my_quiz_dialog_check">Eu já tenho</string>
-    <string name="main_my_quiz_check_email_button">Verificar</string>
-    <string name="main_my_quiz_unlocked">Desbloqueado com sucesso!</string>
     <string name="main_loading">Verificando...</string>
     <string name="main_error_title">Erro</string>
     <string name="main_error">Algum erro ocorreu. Verifique sua conexão com a Internet ou aguarde alguns instantes.</string>
     <string name="main_invalid_email">E-mail inválido.</string>
-    <string name="main_my_quiz_not_unlocked">Você ainda não possui pontos suficientes. Jogue mais!</string>
     <string name="main_basic_settings">Configurações básicas</string>
     <string name="main_msg_group">Grupo de mensagens:</string>
     <string name="main_delay_time_simple">Delay:</string>
@@ -78,6 +69,8 @@
     <string name="main_evaluation_title">Avaliar app</string>
     <string name="main_evaluation_text">Está gostando do app? Avalie-nos na Play Store. =)</string>
     <string name="main_version">Versão</string>
+    <string name="main_lock_dialog_title">Funcionalidade bloqueada</string>
+    <string name="main_lock_dialog">Você já atingiu seu limite de uso gratuito. Para utilizar a Repetição Infinita, sua conta deve ser Premium.</string>
     <!-- // -->
 
     <!-- MessagesEditorActivity Class -->

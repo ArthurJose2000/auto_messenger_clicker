@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
     int delay_s_aux = 1;
     int maxDelay_s_aux = 1;
     int minDelay_s_aux = 1;
-    int myQuizFactor = 3;
+    int lockFactor = 7;
     boolean isInfiniteLoop = false;
     boolean isRandomOrder = false;
     String groupName = "";
@@ -124,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
         checkBannerAd();
 
         counterRestarts++;
-        if(counterRestarts % 5 == 4 && userVisitedAnotherActivity == true && !DataManager.getInstace().isUserPremium())
+        if(counterRestarts % 2 == 1 && userVisitedAnotherActivity == true && !DataManager.getInstace().isUserPremium())
             showInterstitialAd();
 
         if(!prominentDisclosureDialogIsOpen)
@@ -367,8 +367,19 @@ public class MainActivity extends AppCompatActivity {
         infiniteLoop.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if(b)
-                    isInfiniteLoop = true;
+                if(b) {
+
+                    int used_quantity = Integer.parseInt(DataBase.getDbInstance(context).getSettings(getString(R.string.data_base_used_quantity)));
+                    boolean lock = used_quantity > lockFactor && !DataManager.getInstace().isUserPremium();
+
+                    if(lock){
+                        infiniteLoop.setChecked(false);
+                        isInfiniteLoop = false;
+                        openLockDialog();
+                    }
+                    else
+                        isInfiniteLoop = true;
+                }
                 else
                     isInfiniteLoop = false;
             }
@@ -537,8 +548,6 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
             else{
-                //minDelay_s = timeSecondMinDelay;
-                //maxDelay_s = timeSecondMaxDelay;
                 minDelay_s_aux = timeSecondMinDelay;
                 maxDelay_s_aux = timeSecondMaxDelay;
             }
@@ -557,22 +566,8 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
             else{
-                //delay_s = timeSecondDelay;
                 delay_s_aux = timeSecondDelay;
             }
-        }
-
-        int used_quantity = Integer.parseInt(DataBase.getDbInstance(context).getSettings(getString(R.string.data_base_used_quantity)));
-        boolean temporaryLock = used_quantity % 5 == 0
-                                && used_quantity > 0
-                                && !DataManager.getInstace().isUserPremium()
-                                && DataBase.getDbInstance(context).getSettings(getString(R.string.data_base_temporary_enabled)).equals("false")
-                                ? true : false;
-
-        //this verification should be always in the end of enableToPlay()!!!!!!!!!!
-        if(temporaryLock){
-            openMyQuizDialog(used_quantity * myQuizFactor);
-            return false;
         }
 
         return true;
@@ -779,119 +774,17 @@ public class MainActivity extends AppCompatActivity {
                 .show();
     }
 
-    public void openMyQuizDialog(int minimumScore){
-        String instruction_title = getString(R.string.main_my_quiz_dialog_title);
-        String instruction = getString(R.string.main_my_quiz_dialog_text_start)
-                + " " + minimumScore + " " + getString(R.string.main_my_quiz_dialog_text_end);
-
-        AlertDialog myQuizDialog;
-        LayoutInflater layoutInflater = getLayoutInflater();
-        View customLayout = layoutInflater.inflate(R.layout.custom_dialog_temporary_lock, null);
-        TextView message = customLayout.findViewById(R.id.custom_dialog_text);
-        TextView link = customLayout.findViewById(R.id.custom_dialog_link);
-
-        link.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent rateApp =
-                        new Intent("android.intent.action.VIEW",
-                                Uri.parse("http://play.google.com/store/apps/details?id=" + getString(R.string.my_quiz_package)));
-                startActivity(rateApp);
-            }
-        });
-
-        message.setText(instruction);
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setView(customLayout)
+    public void openLockDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        String instruction_title = getString(R.string.main_lock_dialog_title);
+        String instruction = getString(R.string.main_lock_dialog);
+        builder
                 .setTitle(instruction_title)
-                .setPositiveButton(getString(R.string.main_become_premium), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        userVisitedAnotherActivity = true;
-                        Intent intent = new Intent(context, PurchaseActivity.class);
-                        startActivity(intent);
-                    }
+                .setMessage(instruction)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {}
                 })
-                .setNegativeButton(getString(R.string.main_my_quiz_dialog_check), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        askEmailDialog(minimumScore);
-                    }
-                });
-        myQuizDialog = builder.create();
-        myQuizDialog.show();
-    }
-
-    public void askEmailDialog(int minimumScore){
-        AlertDialog insertEmailDialog;
-        LayoutInflater layoutInflater = getLayoutInflater();
-        View customLayout = layoutInflater.inflate(R.layout.custom_dialog_myquiz_check_email, null);
-        EditText emailInput = customLayout.findViewById(R.id.custom_dialog_input);
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setView(customLayout)
-                .setTitle(R.string.main_my_quiz_dialog_title)
-                .setPositiveButton(R.string.main_my_quiz_check_email_button, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        String email = emailInput.getText().toString().trim();
-
-                        String regex = "^[A-Za-z0-9+_.-]+@(.+)$";
-                        Pattern pattern = Pattern.compile(regex);
-                        Matcher matcher = pattern.matcher(email);
-
-                        if(matcher.matches())
-                            checkScoreInMyQuiz(email, minimumScore);
-                        else
-                            usual.genericAlert(context, getString(R.string.main_error_title), getString(R.string.main_invalid_email));
-                    }
-                });
-        insertEmailDialog = builder.create();
-        insertEmailDialog.show();
-    }
-
-    public void checkScoreInMyQuiz(String email, int minimumScore){
-        usual.openSpinnerAlert(context, getString(R.string.main_loading));
-
-        RequestQueue queue = Volley.newRequestQueue(this);
-        //String route_check_score = "http://192.168.0.134:80/MyQuiz/MyQuizAPI/AutoMessenger/controller_check_score.php";
-        String route_check_score = "https://www.amadorprog.com/MyQuizAPI/AutoMessenger/controller_check_score.php";
-        JSONObject postData = new JSONObject();
-        try {
-            postData.put("email", email);
-            postData.put("score", minimumScore);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, route_check_score, postData, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                usual.closeSpinnerAlert();
-                boolean success = false;
-                try {
-
-
-                    if(response.getString("permission").equals("true")) {
-                        DataBase.getDbInstance(context).updateSettings(context.getString(R.string.data_base_temporary_enabled), "true");
-                        openWindow();
-                        usual.genericAlert(context, getString(R.string.main_my_quiz_dialog_title), getString(R.string.main_my_quiz_unlocked));
-                    }
-                    else
-                        usual.genericAlert(context, getString(R.string.main_my_quiz_dialog_title), email + ": " + getString(R.string.main_my_quiz_not_unlocked));
-
-                    success = true;
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-                if(!success)
-                    usual.genericAlert(context, getString(R.string.main_error_title), getString(R.string.main_error));
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                usual.closeSpinnerAlert();
-                usual.genericAlert(context, getString(R.string.main_error_title), getString(R.string.main_error));
-            }
-        });
-        queue.add(jsonObjectRequest);
+                .show();
     }
 
     public void checkIfUserIsPremium(){
@@ -973,7 +866,7 @@ public class MainActivity extends AppCompatActivity {
     public void evaluationRequest(){
         int used_quantity = Integer.parseInt(DataBase.getDbInstance(context).getSettings(getString(R.string.data_base_used_quantity)));
 
-        if(DataBase.getDbInstance(context).getSettings(getString(R.string.data_base_evaluation_request)).equals("false") && used_quantity % 3 == 2){
+        if(DataBase.getDbInstance(context).getSettings(getString(R.string.data_base_evaluation_request)).equals("false") && used_quantity % 2 == 1){
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
             String instruction_title = getString(R.string.main_evaluation_title);
             String instruction = getString(R.string.main_evaluation_text);

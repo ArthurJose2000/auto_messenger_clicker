@@ -281,7 +281,7 @@ public final class DataBase {
             "DROP TABLE IF EXISTS " + Settings.TABLE_NAME;
 
     public class SettingsDbHelper extends SQLiteOpenHelper {
-        public static final int DATABASE_VERSION = 3;
+        public static final int DATABASE_VERSION = 4;
         public static final String DATABASE_NAME = "Settings.db";
 
         public SettingsDbHelper(Context context) {
@@ -295,8 +295,10 @@ public final class DataBase {
             manageInitialSettings(db, UPDATE);
             String delete_1 = "'enabled_5'";
             String delete_2 = "'enabled_20'";
+            String delete_3 = "'temporary_enabled'";
             db.execSQL("DELETE FROM settings WHERE settings = " + delete_1);
             db.execSQL("DELETE FROM settings WHERE settings = " + delete_2);
+            db.execSQL("DELETE FROM settings WHERE settings = " + delete_3);
         }
         public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
             onUpgrade(db, oldVersion, newVersion);
@@ -308,7 +310,6 @@ public final class DataBase {
 
         String disclosure_acceptation = "disclosure_acceptation";
         String used_quantity = "used_quantity";
-        String temporary_enabled = "temporary_enabled";
         String evaluation_request = "evaluation_request";
 
         if(operation == CREATE) {
@@ -321,10 +322,6 @@ public final class DataBase {
 
             values.put(Settings.COLUMN_SETTINGS, used_quantity);
             values.put(Settings.COLUMN_RELATED_SETTINGS, "0");
-            newRowID = settingsDB.insert(Settings.TABLE_NAME, null, values);
-
-            values.put(Settings.COLUMN_SETTINGS, temporary_enabled);
-            values.put(Settings.COLUMN_RELATED_SETTINGS, "true");
             newRowID = settingsDB.insert(Settings.TABLE_NAME, null, values);
 
             values.put(Settings.COLUMN_SETTINGS, evaluation_request);
@@ -344,12 +341,6 @@ public final class DataBase {
             if(!doesSettingsExist(used_quantity, settingsDB)) {
                 values.put(Settings.COLUMN_SETTINGS, used_quantity);
                 values.put(Settings.COLUMN_RELATED_SETTINGS, "0");
-                newRowID = settingsDB.insert(Settings.TABLE_NAME, null, values);
-            }
-
-            if(!doesSettingsExist(temporary_enabled, settingsDB)) {
-                values.put(Settings.COLUMN_SETTINGS, temporary_enabled);
-                values.put(Settings.COLUMN_RELATED_SETTINGS, "true");
                 newRowID = settingsDB.insert(Settings.TABLE_NAME, null, values);
             }
 
