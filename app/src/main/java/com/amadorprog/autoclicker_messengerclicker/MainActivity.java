@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
     int delay_s_aux = 1;
     int maxDelay_s_aux = 1;
     int minDelay_s_aux = 1;
-    int myQuizFactor = 6;
+    int myQuizFactor = 3;
     boolean isInfiniteLoop = false;
     boolean isRandomOrder = false;
     String groupName = "";
