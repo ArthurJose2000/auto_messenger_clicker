@@ -245,10 +245,11 @@ public class MainActivity extends AppCompatActivity {
     public void showInterstitialAd(){
         if (mInterstitialAd != null) {
             mInterstitialAd.show(MainActivity.this);
-            needToLoadInterstitialAd = true;
         } else {
             Log.d("TAG", "The interstitial ad wasn't ready yet.");
         }
+
+        needToLoadInterstitialAd = true;
     }
 
     public void setPreviousOptions(){
