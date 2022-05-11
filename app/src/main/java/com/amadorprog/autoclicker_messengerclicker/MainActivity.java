@@ -76,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
     private InterstitialAd mInterstitialAd;
     boolean userVisitedAnotherActivity;
     boolean prominentDisclosureDialogIsOpen, accessibilityServiceDialogIsOpen, canDrawOverOtherAppsDialogIsOpen;
+    boolean needToLoadInterstitialAd;
     String timeUnityDelay_s = "s";
     String timeUnityMaxDelay_s = "s";
     String timeUnityMinDelay_s = "s";
@@ -188,6 +189,7 @@ public class MainActivity extends AppCompatActivity {
         accessibilityServiceDialogIsOpen = false;
         canDrawOverOtherAppsDialogIsOpen = false;
         prominentDisclosureDialogIsOpen = false;
+        needToLoadInterstitialAd = false;
 
         mAdView = findViewById(R.id.adView);
         startActionBar = findViewById(R.id.button_enable_clicker);
@@ -198,7 +200,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void loadInterstitialAd(){
         AdRequest adRequest = new AdRequest.Builder().build();
-        InterstitialAd.load(this,getString(R.string.ad_main_interstitial), adRequest, //interstitial
+        InterstitialAd.load(this, getString(R.string.ad_main_interstitial), adRequest, //interstitial
                 new InterstitialAdLoadCallback() {
                     @Override
                     public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
@@ -243,6 +245,7 @@ public class MainActivity extends AppCompatActivity {
     public void showInterstitialAd(){
         if (mInterstitialAd != null) {
             mInterstitialAd.show(MainActivity.this);
+            needToLoadInterstitialAd = true;
         } else {
             Log.d("TAG", "The interstitial ad wasn't ready yet.");
         }
@@ -901,7 +904,11 @@ public class MainActivity extends AppCompatActivity {
         int used_quantity = getAmountOfUse();
 
         if(!DataManager.getInstace().isUserPremium()){
-            if(counterRestarts % 2 == 1 && userVisitedAnotherActivity == true)
+            if(needToLoadInterstitialAd) {
+                loadInterstitialAd();
+                needToLoadInterstitialAd = false;
+            }
+            else if(counterRestarts % 2 == 1 && userVisitedAnotherActivity == true)
                 showInterstitialAd();
             else if(used_quantity > lockFactor)
                 showInterstitialAd();
