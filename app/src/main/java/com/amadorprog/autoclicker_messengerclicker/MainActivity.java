@@ -249,7 +249,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void setPreviousOptions(){
-        groupNames = (Spinner) findViewById(R.id.db_msg_group);
+        groupNames = findViewById(R.id.db_msg_group);
         completeGroupNamesSpinner();
         groupNames.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
             @Override
@@ -261,7 +261,7 @@ public class MainActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> adapterView) {}
         });
 
-        timeUnityDelay = (Spinner) findViewById(R.id.spinner_unit_time_1);
+        timeUnityDelay = findViewById(R.id.spinner_unit_time_1);
         timeUnityDelay.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -272,7 +272,7 @@ public class MainActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> adapterView) {}
         });
 
-        timeUnityMaxDelay = (Spinner) findViewById(R.id.spinner_unit_time_2);
+        timeUnityMaxDelay = findViewById(R.id.spinner_unit_time_2);
         timeUnityMaxDelay.setEnabled(false);
         timeUnityMaxDelay.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
             @Override
@@ -284,7 +284,7 @@ public class MainActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> adapterView) {}
         });
 
-        timeUnityMinDelay = (Spinner) findViewById(R.id.spinner_unit_time_3);
+        timeUnityMinDelay = findViewById(R.id.spinner_unit_time_3);
         timeUnityMinDelay.setEnabled(false);
         timeUnityMinDelay.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
             @Override
@@ -296,7 +296,7 @@ public class MainActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> adapterView) {}
         });
 
-        delay = (EditText) findViewById(R.id.num_delay_time_simple);
+        delay = findViewById(R.id.num_delay_time_simple);
         delay.setText(Integer.toString(delay_s));
         delay.addTextChangedListener(new TextWatcher() {
             @Override
@@ -314,7 +314,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        maxDelay = (EditText) findViewById(R.id.num_delay_time_max);
+        maxDelay = findViewById(R.id.num_delay_time_max);
         maxDelay.setText(Integer.toString(maxDelay_s));
         maxDelay.setEnabled(false);
         maxDelay.addTextChangedListener(new TextWatcher() {
@@ -333,7 +333,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        minDelay = (EditText) findViewById(R.id.num_delay_time_min);
+        minDelay = findViewById(R.id.num_delay_time_min);
         minDelay.setText(Integer.toString(minDelay_s));
         minDelay.setEnabled(false);
         minDelay.addTextChangedListener(new TextWatcher() {
@@ -352,7 +352,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        randomOrder = (CheckBox) findViewById(R.id.checkbox_random_order);
+        randomOrder = findViewById(R.id.checkbox_random_order);
         randomOrder.setChecked(isRandomOrder);
         randomOrder.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -361,7 +361,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        infiniteLoop = (CheckBox) findViewById(R.id.checkbox_infinite_loop);
+        infiniteLoop = findViewById(R.id.checkbox_infinite_loop);
         infiniteLoop.setChecked(isInfiniteLoop);
         infiniteLoop.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -384,7 +384,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        randomDelay = (CheckBox) findViewById(R.id.checkbox_random_delay);
+        randomDelay = findViewById(R.id.checkbox_random_delay);
         randomDelay.setChecked(isRandomDelay);
         randomDelay.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
