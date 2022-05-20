@@ -182,6 +182,24 @@ public class Window {
         return open;
     }
 
+    public void hide(){
+        try {
+            if(mView.getVisibility() == View.VISIBLE)
+                mView.setVisibility(View.INVISIBLE);
+        } catch (Exception e) {
+            Log.d("Error2",e.toString());
+        }
+    }
+
+    public void unhide(){
+        try {
+            if(mView.getVisibility() == View.INVISIBLE)
+                mView.setVisibility(View.VISIBLE);
+        } catch (Exception e) {
+            Log.d("Error2",e.toString());
+        }
+    }
+
     public void close() {
 
         try {

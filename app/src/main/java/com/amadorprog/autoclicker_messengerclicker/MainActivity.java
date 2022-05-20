@@ -94,7 +94,6 @@ public class MainActivity extends AppCompatActivity {
     boolean isRandomOrder = false;
     String groupName = "";
 
-    Usual usual;
     public PurchasesUpdatedListener purchasesUpdatedListener;
     public BillingClient billingClient;
 
@@ -106,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
 
         context = this;
 
-        usual = new Usual();
+        window = new Window(context);
 
         prepareFields();
         setPreviousOptions();
@@ -114,8 +113,6 @@ public class MainActivity extends AppCompatActivity {
         checkIfUserIsPremium();
         evaluationRequest();
         enableAds();
-
-        window = new Window(context);
     }
 
     @Override
@@ -207,18 +204,25 @@ public class MainActivity extends AppCompatActivity {
                         // The mInterstitialAd reference will be null until
                         // an ad is loaded.
                         mInterstitialAd = interstitialAd;
+                        needToLoadInterstitialAd = false;
                         //Log.i(TAG, "onAdLoaded");
                         mInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback(){
                             @Override
                             public void onAdDismissedFullScreenContent() {
                                 // Called when fullscreen content is dismissed.
                                 //Log.d("TAG", "The ad was dismissed.");
+                                if(window.isOpen())
+                                    window.unhide();
+
+                                needToLoadInterstitialAd = true;
                             }
 
                             @Override
                             public void onAdFailedToShowFullScreenContent(AdError adError) {
                                 // Called when fullscreen content failed to show.
-                                Log.d("TAG", "The ad failed to show.");
+                                //Log.d("TAG", "The ad failed to show.");
+
+                                needToLoadInterstitialAd = true;
                             }
 
                             @Override
@@ -228,6 +232,9 @@ public class MainActivity extends AppCompatActivity {
                                 // show it a second time.
                                 mInterstitialAd = null;
                                 //Log.d("TAG", "The ad was shown.");
+
+                                if(window.isOpen())
+                                    window.hide();
                             }
                         });
                     }
@@ -235,21 +242,20 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
                         // Handle the error
-                        Log.i("TAG", loadAdError.getMessage());
+                        //Log.i("TAG", loadAdError.getMessage());
                         mInterstitialAd = null;
+
+                        needToLoadInterstitialAd = true;
                     }
                 });
 
     }
 
     public void showInterstitialAd(){
-        if (mInterstitialAd != null) {
+        if (mInterstitialAd != null)
             mInterstitialAd.show(MainActivity.this);
-        } else {
+        else
             Log.d("TAG", "The interstitial ad wasn't ready yet.");
-        }
-
-        needToLoadInterstitialAd = true;
     }
 
     public void setPreviousOptions(){
@@ -572,6 +578,10 @@ public class MainActivity extends AppCompatActivity {
                 delay_s_aux = timeSecondDelay;
             }
         }
+
+        int used_quantity = getAmountOfUse();
+        if(!DataManager.getInstace().isUserPremium() && used_quantity > lockFactor)
+            showInterstitialAd();
 
         return true;
     }
@@ -905,10 +915,8 @@ public class MainActivity extends AppCompatActivity {
         int used_quantity = getAmountOfUse();
 
         if(!DataManager.getInstace().isUserPremium()){
-            if(needToLoadInterstitialAd) {
+            if(needToLoadInterstitialAd)
                 loadInterstitialAd();
-                needToLoadInterstitialAd = false;
-            }
             else if(counterRestarts % 2 == 1 && userVisitedAnotherActivity == true)
                 showInterstitialAd();
             else if(used_quantity > lockFactor)
