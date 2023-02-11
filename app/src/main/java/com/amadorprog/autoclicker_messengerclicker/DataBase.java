@@ -440,7 +440,7 @@ public final class DataBase {
         String code = "";
         String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         Random generator = new Random();
-        int codeSize = 6;
+        int codeSize = 8;
 
         for (int i = 0; i < codeSize; i++) {
             int randomCharIndex = generator.nextInt(characters.length());

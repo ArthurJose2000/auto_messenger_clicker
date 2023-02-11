@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
     int delay_s_aux = 1;
     int maxDelay_s_aux = 1;
     int minDelay_s_aux = 1;
-    int lockFactor = 10;
+    int lockFactor = 7;
     boolean isInfiniteLoop = false;
     boolean isRandomOrder = false;
     String groupName = "";

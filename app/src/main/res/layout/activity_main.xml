@@ -432,6 +432,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="30dp"
+                android:textSize="16sp"
                 android:layout_marginBottom="10dp" />
 
             <TextView
@@ -440,6 +441,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
+                android:textSize="16sp"
                 android:layout_marginBottom="100dp" />
         </LinearLayout>
     </ScrollView>
