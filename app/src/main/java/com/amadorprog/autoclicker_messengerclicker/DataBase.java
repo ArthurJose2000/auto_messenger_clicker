@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
+import java.util.Random;
 
 import java.util.ArrayList;
 
@@ -281,7 +282,7 @@ public final class DataBase {
             "DROP TABLE IF EXISTS " + Settings.TABLE_NAME;
 
     public class SettingsDbHelper extends SQLiteOpenHelper {
-        public static final int DATABASE_VERSION = 4;
+        public static final int DATABASE_VERSION = 5;
         public static final String DATABASE_NAME = "Settings.db";
 
         public SettingsDbHelper(Context context) {
@@ -311,6 +312,7 @@ public final class DataBase {
         String disclosure_acceptation = "disclosure_acceptation";
         String used_quantity = "used_quantity";
         String evaluation_request = "evaluation_request";
+        String user_code = "user_code";
 
         if(operation == CREATE) {
             ContentValues values = new ContentValues();
@@ -327,26 +329,36 @@ public final class DataBase {
             values.put(Settings.COLUMN_SETTINGS, evaluation_request);
             values.put(Settings.COLUMN_RELATED_SETTINGS, "false");
             newRowID = settingsDB.insert(Settings.TABLE_NAME, null, values);
+
+            values.put(Settings.COLUMN_SETTINGS, user_code);
+            values.put(Settings.COLUMN_RELATED_SETTINGS, createUserCode());
+            newRowID = settingsDB.insert(Settings.TABLE_NAME, null, values);
         }
         else if(operation == UPDATE){
             ContentValues values = new ContentValues();
             long newRowID;
 
-            if(!doesSettingsExist(disclosure_acceptation, settingsDB)) {
+            if(!doSettingsExist(disclosure_acceptation, settingsDB)) {
                 values.put(Settings.COLUMN_SETTINGS, disclosure_acceptation);
                 values.put(Settings.COLUMN_RELATED_SETTINGS, "false");
                 newRowID = settingsDB.insert(Settings.TABLE_NAME, null, values);
             }
 
-            if(!doesSettingsExist(used_quantity, settingsDB)) {
+            if(!doSettingsExist(used_quantity, settingsDB)) {
                 values.put(Settings.COLUMN_SETTINGS, used_quantity);
                 values.put(Settings.COLUMN_RELATED_SETTINGS, "0");
                 newRowID = settingsDB.insert(Settings.TABLE_NAME, null, values);
             }
 
-            if(!doesSettingsExist(evaluation_request, settingsDB)) {
+            if(!doSettingsExist(evaluation_request, settingsDB)) {
                 values.put(Settings.COLUMN_SETTINGS, evaluation_request);
                 values.put(Settings.COLUMN_RELATED_SETTINGS, "false");
+                newRowID = settingsDB.insert(Settings.TABLE_NAME, null, values);
+            }
+
+            if(!doSettingsExist(user_code, settingsDB)) {
+                values.put(Settings.COLUMN_SETTINGS, user_code);
+                values.put(Settings.COLUMN_RELATED_SETTINGS, createUserCode());
                 newRowID = settingsDB.insert(Settings.TABLE_NAME, null, values);
             }
         }
@@ -355,7 +367,7 @@ public final class DataBase {
         //return success;
     }
 
-    private boolean doesSettingsExist(String settings, SQLiteDatabase settingsDB){
+    private boolean doSettingsExist(String settings, SQLiteDatabase settingsDB){
         String[] projection = {
                 Settings.COLUMN_RELATED_SETTINGS
         };
@@ -422,5 +434,19 @@ public final class DataBase {
         String selection = Settings.COLUMN_SETTINGS + " LIKE ?";
         String[] selectionArgs = { settings };
         int count = settingsDB.update(Settings.TABLE_NAME, values, selection, selectionArgs);
+    }
+
+    private String createUserCode() {
+        String code = "";
+        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        Random generator = new Random();
+        int codeSize = 6;
+
+        for (int i = 0; i < codeSize; i++) {
+            int randomCharIndex = generator.nextInt(characters.length());
+            code = code + characters.charAt(randomCharIndex);
+        }
+
+        return code;
     }
 }

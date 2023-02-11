@@ -71,6 +71,7 @@
     <string name="main_evaluation_title">Avaliar app</string>
     <string name="main_evaluation_text">Está gostando do app? Avalie-nos na Play Store. =)</string>
     <string name="main_version">Versão</string>
+    <string name="main_user_code">Código de usuário:</string>
     <string name="main_lock_dialog_title">Funcionalidade bloqueada</string>
     <string name="main_lock_dialog">Você já atingiu seu limite de uso gratuito. Para utilizar a Repetição Infinita, sua conta deve ser Premium.</string>
     <!-- // -->

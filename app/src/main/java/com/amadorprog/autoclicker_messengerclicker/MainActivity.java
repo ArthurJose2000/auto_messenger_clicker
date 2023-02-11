@@ -20,6 +20,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.provider.Settings;
+import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -71,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
     CheckBox randomOrder, randomDelay, infiniteLoop;
     Window window;
     Button startActionBar;
+    WebView myWebView;
     public int counterRestarts;
     private AdView mAdView;
     private InterstitialAd mInterstitialAd;
@@ -89,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
     int delay_s_aux = 1;
     int maxDelay_s_aux = 1;
     int minDelay_s_aux = 1;
-    int lockFactor = 7;
+    int lockFactor = 10;
     boolean isInfiniteLoop = false;
     boolean isRandomOrder = false;
     String groupName = "";
@@ -108,11 +110,18 @@ public class MainActivity extends AppCompatActivity {
         window = new Window(context);
 
         prepareFields();
-        setPreviousOptions();
-        prominentDisclosure();
-        checkIfUserIsPremium();
-        evaluationRequest();
-        enableAds();
+//        setPreviousOptions();
+//        prominentDisclosure();
+//        checkIfUserIsPremium();
+//        evaluationRequest();
+//        enableAds();
+
+
+
+
+        myWebView = findViewById(R.id.layout_main_webview);
+        //myWebView.setVerticalScrollBarEnabled(true);
+        myWebView.loadUrl("https://amadorprog.com");
     }
 
     @Override
@@ -193,6 +202,9 @@ public class MainActivity extends AppCompatActivity {
 
         TextView version = findViewById(R.id.main_version);
         version.setText(getString(R.string.main_version) + " " + BuildConfig.VERSION_NAME);
+
+        TextView userCode = findViewById(R.id.main_user_code);
+        userCode.setText(getString(R.string.main_user_code) + " " + getUserCode());
     }
 
     public void loadInterstitialAd(){
@@ -579,9 +591,10 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        int used_quantity = getAmountOfUse();
-        if(!DataManager.getInstace().isUserPremium() && used_quantity > lockFactor)
-            showInterstitialAd();
+        // Removed to decrease the quantity of ads
+        // int used_quantity = getAmountOfUse();
+        // if(!DataManager.getInstace().isUserPremium() && used_quantity > lockFactor)
+        //    showInterstitialAd();
 
         return true;
     }
@@ -912,19 +925,24 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void checkInterstitialAd(){
-        int used_quantity = getAmountOfUse();
-
         if(!DataManager.getInstace().isUserPremium()){
             if(needToLoadInterstitialAd)
                 loadInterstitialAd();
-            else if(counterRestarts % 2 == 1 && userVisitedAnotherActivity == true)
+            else if(counterRestarts % 3 == 1 && userVisitedAnotherActivity == true)
                 showInterstitialAd();
-            else if(used_quantity > lockFactor)
-                showInterstitialAd();
+
+            // Removed to decrease the quantity of ads
+            // int used_quantity = getAmountOfUse();
+            // else if(used_quantity > lockFactor)
+            //    showInterstitialAd();
         }
     }
 
     public int getAmountOfUse(){
         return Integer.parseInt(DataBase.getDbInstance(context).getSettings(getString(R.string.data_base_used_quantity)));
+    }
+
+    public String getUserCode() {
+        return DataBase.getDbInstance(context).getSettings(getString(R.string.data_base_user_code));
     }
 }

@@ -293,6 +293,34 @@
                 </LinearLayout>
             </LinearLayout>
 
+            <!-- WebView test -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="400dp"
+                android:layout_margin="10dp"
+                android:background="@drawable/layout_main_card"
+                android:elevation="10dp"
+                android:orientation="vertical"
+                android:padding="5dp">
+
+                <WebView
+                    android:id="@+id/layout_main_webview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                />
+
+
+            </LinearLayout>
+            <!-- WebView test -->
+
+
+
+
+
+
+
+
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -399,11 +427,19 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/main_version"
+                android:id="@+id/main_user_code"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="30dp"
+                android:layout_marginBottom="10dp" />
+
+            <TextView
+                android:id="@+id/main_version"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
                 android:layout_marginBottom="100dp" />
         </LinearLayout>
     </ScrollView>

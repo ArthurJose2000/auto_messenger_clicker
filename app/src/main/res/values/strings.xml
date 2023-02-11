@@ -28,6 +28,7 @@
     <string name="data_base_specialchar" translatable="false">specialchar</string>
     <string name="data_base_breakline" translatable="false">breakline</string>
     <string name="data_base_evaluation_request" translatable="false">evaluation_request</string>
+    <string name="data_base_user_code" translatable="false">user_code</string>
     <!-- // -->
 
     <!-- MainActivity class -->
@@ -84,6 +85,7 @@
     <string name="main_evaluation_title">Rate app</string>
     <string name="main_evaluation_text">Are you enjoying the app? Rate us on the Play Store. =)</string>
     <string name="main_version">Version</string>
+    <string name="main_user_code">User code:</string>
     <string name="main_lock_dialog_title">Functionality blocked</string>
     <string name="main_lock_dialog">You have reached your free limit. To use Infinite Loop, your account must be Premium.</string>
     <!-- // -->
