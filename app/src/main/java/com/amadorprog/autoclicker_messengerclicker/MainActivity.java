@@ -98,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
 
     public PurchasesUpdatedListener purchasesUpdatedListener;
     public BillingClient billingClient;
+    public API api;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -205,6 +206,8 @@ public class MainActivity extends AppCompatActivity {
 
         TextView userCode = findViewById(R.id.main_user_code);
         userCode.setText(getString(R.string.main_user_code) + " " + getUserCode());
+
+        api = new API(context);
     }
 
     public void loadInterstitialAd(){
