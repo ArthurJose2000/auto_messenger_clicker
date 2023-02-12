@@ -16,7 +16,8 @@ public class API {
     boolean isProduction;
     Context context;
     String route;
-    String endpoint_trackRobot;
+    String endpoint_userCheck;
+    String endpoint_robotTracking;
 
     public API(Context context) {
         isProduction = false;
@@ -27,11 +28,12 @@ public class API {
         else
             route = "http://192.168.0.134:80/auto_messenger_clicker_API/controllers/";
 
-        endpoint_trackRobot = route + "track_robot.php";
+        endpoint_userCheck = route + "user.php";
+        endpoint_robotTracking = route + "track_robot.php";
 
     }
 
-    public void triggerTrackRobot(String user_code) {
+    public void triggerUserCheck(String user_code) {
         RequestQueue queue = Volley.newRequestQueue(context);
 
         JSONObject postData = new JSONObject();
@@ -42,7 +44,7 @@ public class API {
             return;
         }
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, endpoint_trackRobot, postData, new Response.Listener<JSONObject>() {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, endpoint_userCheck, postData, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 //response.getString(phpAPI.users_id)
@@ -51,7 +53,34 @@ public class API {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                //System.out.println(error.toString());
+            }
+        });
 
+        queue.add(jsonObjectRequest);
+    }
+
+    public void triggerRobotTracking(String user_code) {
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+        JSONObject postData = new JSONObject();
+        try {
+            postData.put("user_code", user_code);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return;
+        }
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, endpoint_robotTracking, postData, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                //response.getString(phpAPI.users_id)
+                //System.out.println(response.toString());
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //System.out.println(error.toString());
             }
         });
 

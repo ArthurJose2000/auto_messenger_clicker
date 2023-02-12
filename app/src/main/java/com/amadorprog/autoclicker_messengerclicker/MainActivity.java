@@ -107,8 +107,8 @@ public class MainActivity extends AppCompatActivity {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
         context = this;
-
         window = new Window(context);
+        api = new API(context);
 
         prepareFields();
 //        setPreviousOptions();
@@ -207,7 +207,7 @@ public class MainActivity extends AppCompatActivity {
         TextView userCode = findViewById(R.id.main_user_code);
         userCode.setText(getString(R.string.main_user_code) + " " + getUserCode());
 
-        api = new API(context);
+        api.triggerUserCheck(getUserCode());
     }
 
     public void loadInterstitialAd(){
