@@ -438,9 +438,9 @@ public final class DataBase {
 
     private String createUserCode() {
         String code = "";
-        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        String characters = "ABCDEFGHIJKLMNPQRSTUVWXYZ123456789"; // without '0' or 'o' to avoid confusion
         Random generator = new Random();
-        int codeSize = 8;
+        int codeSize = 6;
 
         for (int i = 0; i < codeSize; i++) {
             int randomCharIndex = generator.nextInt(characters.length());

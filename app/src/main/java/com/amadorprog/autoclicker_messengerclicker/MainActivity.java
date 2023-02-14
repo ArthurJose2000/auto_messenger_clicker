@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -111,11 +112,11 @@ public class MainActivity extends AppCompatActivity {
         api = new API(context);
 
         prepareFields();
-//        setPreviousOptions();
-//        prominentDisclosure();
-//        checkIfUserIsPremium();
-//        evaluationRequest();
-//        enableAds();
+        setPreviousOptions();
+        prominentDisclosure();
+        checkIfUserIsPremium();
+        evaluationRequest();
+        enableAds();
 
 
 
@@ -207,7 +208,7 @@ public class MainActivity extends AppCompatActivity {
         TextView userCode = findViewById(R.id.main_user_code);
         userCode.setText(getString(R.string.main_user_code) + " " + getUserCode());
 
-        api.triggerUserCheck(getUserCode());
+        api.triggerUserCheck();
     }
 
     public void loadInterstitialAd(){
@@ -810,8 +811,39 @@ public class MainActivity extends AppCompatActivity {
         builder
                 .setTitle(instruction_title)
                 .setMessage(instruction)
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {}
+                .setPositiveButton(getString(R.string.main_lock_became_premium), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        userVisitedAnotherActivity = true;
+                        Intent intent = new Intent(context, PurchaseActivity.class);
+                        startActivity(intent);
+                    }
+                })
+                .setNegativeButton(getString(R.string.main_lock_friend_feature), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        openFriendFeature();
+                    }
+                })
+                .show();
+    }
+
+    public void openFriendFeature(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        String instruction_title = getString(R.string.main_lock_friend_feature_title);
+        String instruction = getString(R.string.main_lock_friend_feature_text);
+
+        EditText input = new EditText(context);
+        input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS);
+        input.requestFocus();
+        builder.setView(input);
+
+        builder
+                .setTitle(instruction_title)
+                .setMessage(instruction)
+                .setPositiveButton(getString(R.string.main_lock_friend_feature_check), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        String friend_code = input.getText().toString();
+                        api.unlockFeature(friend_code);
+                    }
                 })
                 .show();
     }

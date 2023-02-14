@@ -107,6 +107,7 @@ public class ConfigCoordinatesActivity extends AppCompatActivity {
                             enableListener = true;
                             startButton.setText(R.string.config_coordinates_abort);
                             startButton.setBackgroundColor(Color.RED);
+                            typingField.requestFocus();
                             verifyConfigProcess();
                         }
                     })

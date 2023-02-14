@@ -76,7 +76,7 @@
     <string name="main_menu_contact">Send an email to <b>arthur2000jose@gmail.com</b> to questions, suggestions and others matters.</string>
     <string name="main_button_premium">Premium experience</string>
     <string name="main_problems_solution"><u>Has the app been malfunctioning?</u></string>
-    <string name="problems_solution_text">If the app malfunctions, turn access permission <b>off and on again</b>. If it still doesn\'t work, restart your phone.</string>
+    <string name="problems_solution_text">If the app malfunctions, <b>turn access permission off and on again</b>. If it still doesn\'t work, restart your phone.</string>
     <string name="problems_solution_go_to_accessibility_settings"><u>Go to Accessibility Settings</u></string>
     <string name="main_become_premium">Become Premium</string>
     <string name="main_evaluation_yes">Rate</string>
@@ -87,7 +87,15 @@
     <string name="main_version">Version</string>
     <string name="main_user_code">User code:</string>
     <string name="main_lock_dialog_title">Functionality blocked</string>
-    <string name="main_lock_dialog">You have reached your free limit. To use Infinite Loop, your account must be Premium.</string>
+    <string name="main_lock_dialog">You have reached your free limit. To use Infinite Loop, your account must be Premium or you can use a friend code.</string>
+    <string name="main_lock_became_premium">Premium subscription</string>
+    <string name="main_lock_friend_feature">Type friend code</string>
+    <string name="main_lock_friend_feature_title">Friend code</string>
+    <string name="main_lock_friend_feature_text">Ask your friend to download this app and get his code at the bottom of the screen. Then type this here.</string>
+    <string name="main_lock_friend_feature_check">Check</string>
+    <string name="main_lock_friend_feature_response_success">Very well! You can use Infinite Loop again.</string>
+    <string name="main_lock_friend_feature_response_invalid">Invalid code.</string>
+    <string name="main_lock_friend_feature_response_already_used">This code has already been used.</string>
     <!-- // -->
 
     <!-- MessagesEditorActivity Class -->

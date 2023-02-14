@@ -30,6 +30,7 @@ public class Window {
     public ArrayList<ArrayList<Integer>> coordinates;
     Target targetSendMessage;
     Target targetTypeField;
+    public API api;
     final int CONFIGSENDMESSAGECOORDINATE = 2; //update send message coordinate
     final int CONFIGTYPINGFIELDCOORDINATE = 3; //update type field coordinate
 
@@ -224,6 +225,7 @@ public class Window {
     }
 
     public void runAlgorithm() {
+
         if(AutoClickService.instance != null) {
             AutoClickService.instance.setDefaultCoordinatesObtained(false); //used to infinite loop
             AutoClickService.instance.setTypingFieldClickStatus(true); //will be clicked
@@ -233,6 +235,10 @@ public class Window {
             toast.show();
             return;
         }
+
+        // Track robot use
+        api = new API(context);
+        api.triggerRobotTracking();
 
         String messages = DataBase.getDbInstance(context).getMessageFromDataBase(groupName);
         if (isRandomOrder) {

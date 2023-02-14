@@ -61,7 +61,7 @@
     <string name="main_menu_contact">Envie um e-mail para <b>arthur2000jose@gmail.com</b> para dúvidas, sugestões e outros assuntos.</string>
     <string name="main_button_premium">Experiência premium</string>
     <string name="main_problems_solution"><u>O app tem apresentado mau funcionamento?</u></string>
-    <string name="problems_solution_text">Se o app apresentar mau funcionamento, <b>desligue e ligue novamente</b> a permissão de acessibilidade.
+    <string name="problems_solution_text">Se o app apresentar mau funcionamento, <b>desligue e ligue novamente a permissão de acessibilidade</b>.
      Se mesmo assim não der certo, reinicie o telefone.</string>
     <string name="problems_solution_go_to_accessibility_settings"><u>Ir para configurações de acessibilidade</u></string>
     <string name="main_become_premium">Seja Premium</string>
@@ -73,7 +73,15 @@
     <string name="main_version">Versão</string>
     <string name="main_user_code">Código de usuário:</string>
     <string name="main_lock_dialog_title">Funcionalidade bloqueada</string>
-    <string name="main_lock_dialog">Você já atingiu seu limite de uso gratuito. Para utilizar a Repetição Infinita, sua conta deve ser Premium.</string>
+    <string name="main_lock_dialog">Você já atingiu seu limite de uso gratuito. Para utilizar a Repetição Infinita, sua conta deve ser Premium ou você pode usar o código de um amigo.</string>
+    <string name="main_lock_became_premium">Assinatura Premium</string>
+    <string name="main_lock_friend_feature">Digitar código de um amigo</string>
+    <string name="main_lock_friend_feature_title">Código de amigo</string>
+    <string name="main_lock_friend_feature_text">Peça para outro usuário baixar o app e pegue o código dele que fica no fim da tela. Digite o código aqui.</string>
+    <string name="main_lock_friend_feature_check">Verificar</string>
+    <string name="main_lock_friend_feature_response_success">Sucesso! Você pode utilizar a Repetição Infinita novamente.</string>
+    <string name="main_lock_friend_feature_response_invalid">Código inválido.</string>
+    <string name="main_lock_friend_feature_response_already_used">Esse código já foi utilizado.</string>
     <!-- // -->
 
     <!-- MessagesEditorActivity Class -->
