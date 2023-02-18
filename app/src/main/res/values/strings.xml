@@ -96,6 +96,7 @@
     <string name="main_lock_friend_feature_response_success">Very well! You can use Infinite Loop again.</string>
     <string name="main_lock_friend_feature_response_invalid">Invalid code.</string>
     <string name="main_lock_friend_feature_response_already_used">This code has already been used.</string>
+    <string name="main_lock_friend_feature_response_unknown_error">Unknown error. Check your Internet connection.</string>
     <!-- // -->
 
     <!-- MessagesEditorActivity Class -->

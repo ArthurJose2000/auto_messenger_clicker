@@ -2,6 +2,7 @@ package com.amadorprog.autoclicker_messengerclicker;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.provider.Settings;
 
 import androidx.appcompat.app.AlertDialog;
 
@@ -30,7 +31,7 @@ public class API {
         if (isProduction)
             route = "https://amadorprog/automessenger/API/controllers/";
         else
-            route = "http://192.168.0.134:80/auto_messenger_clicker_API/controllers/";
+            route = "http://192.168.1.11:80/auto_messenger_clicker_API/controllers/";
 
         endpoint_userCheck = route + "user.php";
         endpoint_robotTracking = route + "track_robot.php";
@@ -40,10 +41,12 @@ public class API {
 
     public void triggerUserCheck() {
         RequestQueue queue = Volley.newRequestQueue(context);
+        String device_id = getDeviceId();
         String user_code = getUserCode();
 
         JSONObject postData = new JSONObject();
         try {
+            postData.put("device_id", device_id);
             postData.put("user_code", user_code);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -68,11 +71,11 @@ public class API {
 
     public void triggerRobotTracking() {
         RequestQueue queue = Volley.newRequestQueue(context);
-        String user_code = getUserCode();
+        String device_id = getDeviceId();
 
         JSONObject postData = new JSONObject();
         try {
-            postData.put("user_code", user_code);
+            postData.put("device_id", device_id);
         } catch (JSONException e) {
             e.printStackTrace();
             return;
@@ -96,11 +99,11 @@ public class API {
 
     public void unlockFeature(String friend_code) {
         RequestQueue queue = Volley.newRequestQueue(context);
-        String user_code = getUserCode();
+        String device_id = getDeviceId();
 
         JSONObject postData = new JSONObject();
         try {
-            postData.put("user_code", user_code);
+            postData.put("device_id", device_id);
             postData.put("friend_code", friend_code);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -134,6 +137,9 @@ public class API {
             @Override
             public void onErrorResponse(VolleyError error) {
                 //System.out.println(error.toString());
+
+                String text = context.getString(R.string.main_lock_friend_feature_response_unknown_error);
+                openUnlockFeatureResponse(text);
             }
         });
 
@@ -151,6 +157,10 @@ public class API {
                     public void onClick(DialogInterface dialog, int which) {}
                 })
                 .show();
+    }
+
+    public String getDeviceId() {
+        return Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
     }
 
     public String getUserCode() {

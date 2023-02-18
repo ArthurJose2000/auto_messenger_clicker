@@ -82,6 +82,7 @@
     <string name="main_lock_friend_feature_response_success">Sucesso! Você pode utilizar a Repetição Infinita novamente.</string>
     <string name="main_lock_friend_feature_response_invalid">Código inválido.</string>
     <string name="main_lock_friend_feature_response_already_used">Esse código já foi utilizado.</string>
+    <string name="main_lock_friend_feature_response_unknown_error">Erro desconhecido. Por favor, verifique a sua conexão com a Internet.</string>
     <!-- // -->
 
     <!-- MessagesEditorActivity Class -->

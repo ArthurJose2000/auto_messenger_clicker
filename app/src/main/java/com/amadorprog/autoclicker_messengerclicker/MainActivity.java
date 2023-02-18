@@ -118,9 +118,6 @@ public class MainActivity extends AppCompatActivity {
         evaluationRequest();
         enableAds();
 
-
-
-
         myWebView = findViewById(R.id.layout_main_webview);
         //myWebView.setVerticalScrollBarEnabled(true);
         myWebView.loadUrl("https://amadorprog.com");
