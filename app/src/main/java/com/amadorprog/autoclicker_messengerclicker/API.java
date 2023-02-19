@@ -3,6 +3,9 @@ package com.amadorprog.autoclicker_messengerclicker;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.provider.Settings;
+import android.view.View;
+import android.webkit.WebView;
+import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AlertDialog;
 
@@ -23,6 +26,8 @@ public class API {
     String endpoint_userCheck;
     String endpoint_robotTracking;
     String endpoint_unlockFeature;
+    String endpoint_getAd;
+    String endpoint_marketingTrack;
 
     public API(Context context) {
         isProduction = false;
@@ -36,10 +41,12 @@ public class API {
         endpoint_userCheck = route + "user.php";
         endpoint_robotTracking = route + "track_robot.php";
         endpoint_unlockFeature = route + "unlock_feature.php";
+        endpoint_getAd = route + "get_ad.php";
+        endpoint_marketingTrack = route + "track_marketing.php";
 
     }
 
-    public void triggerUserCheck() {
+    public void userCheck() {
         RequestQueue queue = Volley.newRequestQueue(context);
         String device_id = getDeviceId();
         String user_code = getUserCode();
@@ -69,7 +76,7 @@ public class API {
         queue.add(jsonObjectRequest);
     }
 
-    public void triggerRobotTracking() {
+    public void robotTracking() {
         RequestQueue queue = Volley.newRequestQueue(context);
         String device_id = getDeviceId();
 
@@ -140,6 +147,76 @@ public class API {
 
                 String text = context.getString(R.string.main_lock_friend_feature_response_unknown_error);
                 openUnlockFeatureResponse(text);
+            }
+        });
+
+        queue.add(jsonObjectRequest);
+    }
+
+    public void getAd(LinearLayout myWebViewWrapper, WebView myWebView, Marketing marketing) {
+        RequestQueue queue = Volley.newRequestQueue(context);
+        String device_id = getDeviceId();
+
+        JSONObject postData = new JSONObject();
+        try {
+            postData.put("device_id", device_id);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return;
+        }
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, endpoint_getAd, postData, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    String message = response.getString("message");
+                    if (message.equals("SUCCESS")) {
+                        String id = response.getString("id");
+                        String affiliateLink = response.getString("affiliate_link");
+                        String product_link = response.getString("product_link");
+
+                        marketing.setMarketing(id, affiliateLink, product_link);
+                        myWebViewWrapper.setVisibility(View.VISIBLE);
+                        myWebView.loadUrl(affiliateLink);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //System.out.println(error.toString());
+            }
+        });
+
+        queue.add(jsonObjectRequest);
+    }
+
+    public void marketTracking(String marketing_id, int marketing_behavior) {
+        RequestQueue queue = Volley.newRequestQueue(context);
+        String device_id = getDeviceId();
+
+        JSONObject postData = new JSONObject();
+        try {
+            postData.put("device_id", device_id);
+            postData.put("marketing_id", marketing_id);
+            postData.put("marketing_behavior", marketing_behavior);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return;
+        }
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, endpoint_marketingTrack, postData, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                //response.getString(phpAPI.users_id)
+                //System.out.println(response.toString());
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //System.out.println(error.toString());
             }
         });
 

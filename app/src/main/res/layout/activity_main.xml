@@ -295,13 +295,15 @@
 
             <!-- WebView test -->
             <LinearLayout
+                android:id="@+id/layout_main_webview_wrapper"
                 android:layout_width="match_parent"
                 android:layout_height="400dp"
                 android:layout_margin="10dp"
                 android:background="@drawable/layout_main_card"
                 android:elevation="10dp"
                 android:orientation="vertical"
-                android:padding="5dp">
+                android:padding="5dp"
+                android:visibility="gone">
 
                 <WebView
                     android:id="@+id/layout_main_webview"

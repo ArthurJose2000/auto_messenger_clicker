@@ -238,7 +238,7 @@ public class Window {
 
         // Track robot use
         api = new API(context);
-        api.triggerRobotTracking();
+        api.robotTracking();
 
         String messages = DataBase.getDbInstance(context).getMessageFromDataBase(groupName);
         if (isRandomOrder) {

@@ -19,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.provider.Settings;
 import android.webkit.WebView;
@@ -28,6 +29,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -73,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
     CheckBox randomOrder, randomDelay, infiniteLoop;
     Window window;
     Button startActionBar;
+    LinearLayout myWebViewWrapper;
     WebView myWebView;
     public int counterRestarts;
     private AdView mAdView;
@@ -100,6 +103,7 @@ public class MainActivity extends AppCompatActivity {
     public PurchasesUpdatedListener purchasesUpdatedListener;
     public BillingClient billingClient;
     public API api;
+    public Marketing marketing;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,6 +114,7 @@ public class MainActivity extends AppCompatActivity {
         context = this;
         window = new Window(context);
         api = new API(context);
+        marketing = new Marketing();
 
         prepareFields();
         setPreviousOptions();
@@ -117,10 +122,6 @@ public class MainActivity extends AppCompatActivity {
         checkIfUserIsPremium();
         evaluationRequest();
         enableAds();
-
-        myWebView = findViewById(R.id.layout_main_webview);
-        //myWebView.setVerticalScrollBarEnabled(true);
-        myWebView.loadUrl("https://amadorprog.com");
     }
 
     @Override
@@ -129,7 +130,9 @@ public class MainActivity extends AppCompatActivity {
 
         counterRestarts++;
 
-        checkBannerAd();
+        // User may have became premium
+        checkAdViews();
+
         checkInterstitialAd();
 
         if(!prominentDisclosureDialogIsOpen)
@@ -198,6 +201,8 @@ public class MainActivity extends AppCompatActivity {
 
         mAdView = findViewById(R.id.adView);
         startActionBar = findViewById(R.id.button_enable_clicker);
+        myWebView = findViewById(R.id.layout_main_webview);
+        myWebViewWrapper = findViewById(R.id.layout_main_webview_wrapper);
 
         TextView version = findViewById(R.id.main_version);
         version.setText(getString(R.string.main_version) + " " + BuildConfig.VERSION_NAME);
@@ -205,7 +210,7 @@ public class MainActivity extends AppCompatActivity {
         TextView userCode = findViewById(R.id.main_user_code);
         userCode.setText(getString(R.string.main_user_code) + " " + getUserCode());
 
-        api.triggerUserCheck();
+        api.userCheck();
     }
 
     public void loadInterstitialAd(){
@@ -878,8 +883,10 @@ public class MainActivity extends AppCompatActivity {
                             }
 
                             DataManager.getInstace().isPremiumUpdate(isPremium);
-                            if(isPremium)
+                            if(isPremium) {
                                 hideBannerAd();
+                                hideMyMarketing();
+                            }
 
                             billingClient.endConnection(); //finishing connection to avoid multiple calls
                         }
@@ -905,11 +912,26 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // Interstitial ad
         loadInterstitialAd();
 
+        // Banner ad
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.setVisibility(View.VISIBLE);
         mAdView.loadAd(adRequest); //banner
+
+        // My marketing
+        api.getAd(myWebViewWrapper, myWebView, marketing);
+        myWebView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if(motionEvent.getAction() == MotionEvent.ACTION_UP){
+                    goToAffiliateLink();
+                    return true;
+                }
+                return false;
+            }
+        });
     }
 
     public void hideBannerAd(){
@@ -917,6 +939,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 mAdView.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    public void hideMyMarketing() {
+        ((MainActivity) context).runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                myWebViewWrapper.setVisibility(View.GONE);
             }
         });
     }
@@ -951,9 +982,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void checkBannerAd(){
-        if(DataManager.getInstace().isUserPremium() && mAdView.getVisibility() == View.VISIBLE)
-            hideBannerAd();
+    public void checkAdViews(){
+        if(DataManager.getInstace().isUserPremium()) {
+            if (mAdView.getVisibility() == View.VISIBLE)
+                hideBannerAd();
+            if (myWebViewWrapper.getVisibility() == View.VISIBLE)
+                hideMyMarketing();
+        }
     }
 
     public void checkInterstitialAd(){
@@ -968,6 +1003,16 @@ public class MainActivity extends AppCompatActivity {
             // else if(used_quantity > lockFactor)
             //    showInterstitialAd();
         }
+    }
+
+    public void goToAffiliateLink() {
+        api.marketTracking(marketing.id, marketing.BEHAVIOR_CLICK);
+
+        userVisitedAnotherActivity = true;
+        Intent viewIntent =
+                new Intent("android.intent.action.VIEW",
+                        Uri.parse(marketing.affiliate_link));
+        startActivity(viewIntent);
     }
 
     public int getAmountOfUse(){
