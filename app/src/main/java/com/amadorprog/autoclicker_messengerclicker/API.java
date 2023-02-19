@@ -28,15 +28,20 @@ public class API {
     String endpoint_unlockFeature;
     String endpoint_getAd;
     String endpoint_marketingTrack;
+    String myMarketingPage;
 
     public API(Context context) {
         isProduction = false;
         this.context = context;
 
-        if (isProduction)
+        if (isProduction) {
             route = "https://amadorprog/automessenger/API/controllers/";
-        else
+            myMarketingPage = "https://amadorprog.com/automessenger/API/index.php";
+        }
+        else {
             route = "http://192.168.1.11:80/auto_messenger_clicker_API/controllers/";
+            myMarketingPage = "http://192.168.1.11:80/auto_messenger_clicker_API/index.php";
+        }
 
         endpoint_userCheck = route + "user.php";
         endpoint_robotTracking = route + "track_robot.php";
@@ -173,11 +178,12 @@ public class API {
                     if (message.equals("SUCCESS")) {
                         String id = response.getString("id");
                         String affiliateLink = response.getString("affiliate_link");
-                        String product_link = response.getString("product_link");
 
-                        marketing.setMarketing(id, affiliateLink, product_link);
+                        marketing.setMarketing(id, affiliateLink);
                         myWebViewWrapper.setVisibility(View.VISIBLE);
-                        myWebView.loadUrl(affiliateLink);
+
+                        String url = myMarketingPage + "?marketing_id=" + id;
+                        myWebView.loadUrl(url);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

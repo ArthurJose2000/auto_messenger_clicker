@@ -501,7 +501,7 @@ public class MainActivity extends AppCompatActivity {
             Intent shareIntent = new Intent(Intent.ACTION_SEND);
             shareIntent.setType("text/plain");
             shareIntent.putExtra(Intent.EXTRA_SUBJECT, "My application name");
-            String shareMessage = marketing.product_link;
+            String shareMessage = marketing.affiliate_link;
             shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage);
             startActivity(Intent.createChooser(shareIntent, "choose one"));
         } catch(Exception e) {
