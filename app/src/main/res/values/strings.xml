@@ -51,6 +51,7 @@
     <string name="main_check_infinite_loop">Infinite repeat:</string>
     <string name="main_enable_clicker">Enable Auto Messenger</string>
     <string name="main_button_enable_clicker">Enable</string>
+    <string name="main_button_share_ad">Share</string>
     <string name="main_other_options">Others</string>
     <string name="main_button_tutorial">Tutorial</string>
     <string name="main_warning">Warning</string>

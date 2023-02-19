@@ -293,11 +293,10 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <!-- WebView test -->
             <LinearLayout
                 android:id="@+id/layout_main_webview_wrapper"
                 android:layout_width="match_parent"
-                android:layout_height="400dp"
+                android:layout_height="match_parent"
                 android:layout_margin="10dp"
                 android:background="@drawable/layout_main_card"
                 android:elevation="10dp"
@@ -308,20 +307,20 @@
                 <WebView
                     android:id="@+id/layout_main_webview"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="400dp"
                 />
 
-
+                <Button
+                    android:id="@+id/button_share_ad"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="10dp"
+                    android:backgroundTint="@color/special_blue"
+                    android:onClick="shareAd"
+                    android:text="@string/main_button_share_ad"
+                    android:textSize="20sp" />
             </LinearLayout>
-            <!-- WebView test -->
-
-
-
-
-
-
-
-
 
             <LinearLayout
                 android:layout_width="match_parent"
