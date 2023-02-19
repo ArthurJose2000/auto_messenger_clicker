@@ -75,6 +75,8 @@
     <string name="main_custom_dialog_permissions_accessibility_services_link">Watch the tutorial</string>
     <string name="main_menu_contact_title">Contact</string>
     <string name="main_menu_contact">Send an email to <b>arthur2000jose@gmail.com</b> to questions, suggestions and others matters.</string>
+    <string name="main_advertise_your_product"><u>Want to advertise your product here?</u></string>
+    <string name="main_marketing_contact">Send an email to arthur2000jose@gmail.com to know more and get a quotation.</string>
     <string name="main_button_premium">Premium experience</string>
     <string name="main_problems_solution"><u>Has the app been malfunctioning?</u></string>
     <string name="problems_solution_text">If the app malfunctions, <b>turn access permission off and on again</b>. If it still doesn\'t work, restart your phone.</string>

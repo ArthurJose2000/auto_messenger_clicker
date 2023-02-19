@@ -509,6 +509,20 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void openMailMarketingContact(View view) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        String instruction_title = getString(R.string.main_menu_contact_title);
+        String instruction = getString(R.string.main_marketing_contact);
+        builder
+                .setTitle(instruction_title)
+                .setMessage(instruction)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                })
+                .show();
+    }
+
     public void openWindow(){
         window.open(isRandomDelay, delay_s_aux, maxDelay_s_aux, minDelay_s_aux, isInfiniteLoop, isRandomOrder, groupName);
     }

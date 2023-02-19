@@ -60,6 +60,8 @@
     <string name="main_custom_dialog_permissions_accessibility_services_link"><u>Assista ao tutorial</u></string>
     <string name="main_menu_contact_title">Contato</string>
     <string name="main_menu_contact">Envie um e-mail para <b>arthur2000jose@gmail.com</b> para dúvidas, sugestões e outros assuntos.</string>
+    <string name="main_advertise_your_product"><u>Quer anunciar o seu produto aqui?</u></string>
+    <string name="main_marketing_contact">Envie um e-mail para arthur2000jose@gmail.com para entender mais e obter uma cotação.</string>
     <string name="main_button_premium">Experiência premium</string>
     <string name="main_problems_solution"><u>O app tem apresentado mau funcionamento?</u></string>
     <string name="problems_solution_text">Se o app apresentar mau funcionamento, <b>desligue e ligue novamente a permissão de acessibilidade</b>.

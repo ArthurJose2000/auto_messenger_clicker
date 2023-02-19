@@ -31,11 +31,11 @@ public class API {
     String myMarketingPage;
 
     public API(Context context) {
-        isProduction = false;
+        isProduction = true;
         this.context = context;
 
         if (isProduction) {
-            route = "https://amadorprog/automessenger/API/controllers/";
+            route = "https://amadorprog.com/automessenger/API/controllers/";
             myMarketingPage = "https://amadorprog.com/automessenger/API/index.php";
         }
         else {
