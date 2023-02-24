@@ -39,8 +39,8 @@ public class API {
             myMarketingPage = "https://amadorprog.com/automessenger/API/index.php";
         }
         else {
-            route = "http://192.168.1.11:80/auto_messenger_clicker_API/controllers/";
-            myMarketingPage = "http://192.168.1.11:80/auto_messenger_clicker_API/index.php";
+            route = "http://192.168.0.134:80/auto_messenger_clicker_API/controllers/";
+            myMarketingPage = "http://192.168.0.134:80/auto_messenger_clicker_API/index.php";
         }
 
         endpoint_userCheck = route + "user.php";

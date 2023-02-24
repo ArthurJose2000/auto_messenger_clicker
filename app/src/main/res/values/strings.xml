@@ -89,8 +89,8 @@
     <string name="main_evaluation_text">Are you enjoying the app? Rate us on the Play Store. =)</string>
     <string name="main_version">Version</string>
     <string name="main_user_code">User code:</string>
-    <string name="main_lock_dialog_title">Functionality blocked</string>
-    <string name="main_lock_dialog">You have reached your free limit. To use Infinite Loop, your account must be Premium or you can use a friend code.</string>
+    <string name="main_lock_dialog_title">Free limit</string>
+    <string name="main_lock_dialog">You have reached your free limit. To continue using this bot, your account must be Premium or you can use a friend code.</string>
     <string name="main_lock_became_premium">Premium subscription</string>
     <string name="main_lock_friend_feature">Type friend code</string>
     <string name="main_lock_friend_feature_title">Friend code</string>
@@ -160,6 +160,7 @@
     <string name="purchase_dot_1">Unsubscribe at any time</string>
     <string name="purchase_dot_2">3 days of grace</string>
     <string name="purchase_important_advice">This app gives you a lot of power to use. Use it with caution.</string>
+    <string name="purchase_important_advice_2">Excessive use of this app in social networks can lead to temporary bans. Be careful.</string>
     <string name="purchase_loading">Loading...</string>
     <string name="purchase_you_are_premium">You are premium!</string>
     <string name="purchase_manage_subscription">Manage subscription</string>

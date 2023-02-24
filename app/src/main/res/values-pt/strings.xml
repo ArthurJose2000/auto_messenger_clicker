@@ -75,8 +75,8 @@
     <string name="main_evaluation_text">Está gostando do app? Avalie-nos na Play Store. =)</string>
     <string name="main_version">Versão</string>
     <string name="main_user_code">Código de usuário:</string>
-    <string name="main_lock_dialog_title">Funcionalidade bloqueada</string>
-    <string name="main_lock_dialog">Você já atingiu seu limite de uso gratuito. Para utilizar a Repetição Infinita, sua conta deve ser Premium ou você pode usar o código de um amigo.</string>
+    <string name="main_lock_dialog_title">Limite gratuito</string>
+    <string name="main_lock_dialog">Você atingiu seu limite de uso gratuito. Para continuar utilizando este bot, sua conta deve ser Premium ou você pode usar o código de um amigo.</string>
     <string name="main_lock_became_premium">Assinatura Premium</string>
     <string name="main_lock_friend_feature">Digitar código de um amigo</string>
     <string name="main_lock_friend_feature_title">Código de amigo</string>
@@ -146,6 +146,7 @@
     <string name="purchase_dot_1">Cancele a assinatura a qualquer momento</string>
     <string name="purchase_dot_2">3 dias de carência</string>
     <string name="purchase_important_advice">Este app te dá um poder de uso muito grande. Use-o com cautela.</string>
+    <string name="purchase_important_advice_2">O uso excessivo deste app em redes sociais pode conduzir a banimentos temporários. Use-o com moderação.</string>
     <string name="purchase_loading">Carregando...</string>
     <string name="purchase_you_are_premium">Você é Premium!</string>
     <string name="purchase_manage_subscription">Gerenciar assinatura</string>

@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
     int delay_s_aux = 1;
     int maxDelay_s_aux = 1;
     int minDelay_s_aux = 1;
-    int lockFactor = 7;
+    int lockFactor = 11;
     boolean isInfiniteLoop = false;
     boolean isRandomOrder = false;
     String groupName = "";
@@ -394,21 +394,7 @@ public class MainActivity extends AppCompatActivity {
         infiniteLoop.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if(b) {
-
-                    int used_quantity = getAmountOfUse();
-                    boolean lock = used_quantity > lockFactor && !DataManager.getInstace().isUserPremium();
-
-                    if(lock){
-                        infiniteLoop.setChecked(false);
-                        isInfiniteLoop = false;
-                        openLockDialog();
-                    }
-                    else
-                        isInfiniteLoop = true;
-                }
-                else
-                    isInfiniteLoop = false;
+                    isInfiniteLoop = b;
             }
         });
 
@@ -577,6 +563,13 @@ public class MainActivity extends AppCompatActivity {
             return false;
         }
 
+        //Check if user is unlocked
+         int used_quantity = getAmountOfUse();
+         if(!DataManager.getInstace().isUserPremium() && used_quantity > lockFactor) {
+             openLockDialog();
+             return false;
+         }
+
         //Check delay situation
         if(isRandomDelay){
             int timeSecondMaxDelay, timeSecondMinDelay;
@@ -625,11 +618,6 @@ public class MainActivity extends AppCompatActivity {
                 delay_s_aux = timeSecondDelay;
             }
         }
-
-        // Removed to decrease the quantity of ads
-        // int used_quantity = getAmountOfUse();
-        // if(!DataManager.getInstace().isUserPremium() && used_quantity > lockFactor)
-        //    showInterstitialAd();
 
         return true;
     }
