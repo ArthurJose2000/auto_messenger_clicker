@@ -24,6 +24,7 @@ public class API {
     Context context;
     String route;
     String endpoint_userCheck;
+    String endpoint_premiumCheck;
     String endpoint_robotTracking;
     String endpoint_unlockFeature;
     String endpoint_getAd;
@@ -44,6 +45,7 @@ public class API {
         }
 
         endpoint_userCheck = route + "user.php";
+        endpoint_premiumCheck = route + "premium_check.php";
         endpoint_robotTracking = route + "track_robot.php";
         endpoint_unlockFeature = route + "unlock_feature.php";
         endpoint_getAd = route + "get_ad.php";
@@ -66,6 +68,35 @@ public class API {
         }
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, endpoint_userCheck, postData, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                //response.getString(phpAPI.users_id)
+                //System.out.println(response.toString());
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //System.out.println(error.toString());
+            }
+        });
+
+        queue.add(jsonObjectRequest);
+    }
+
+    public void premiumCheck(boolean isPremium) {
+        RequestQueue queue = Volley.newRequestQueue(context);
+        String device_id = getDeviceId();
+
+        JSONObject postData = new JSONObject();
+        try {
+            postData.put("device_id", device_id);
+            postData.put("is_premium", isPremium);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return;
+        }
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, endpoint_premiumCheck, postData, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 //response.getString(phpAPI.users_id)

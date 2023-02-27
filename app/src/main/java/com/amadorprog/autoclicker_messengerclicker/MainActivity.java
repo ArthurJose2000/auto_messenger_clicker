@@ -905,6 +905,8 @@ public class MainActivity extends AppCompatActivity {
                                 hideMyMarketing();
                             }
 
+                            api.premiumCheck(isPremium);
+
                             billingClient.endConnection(); //finishing connection to avoid multiple calls
                         }
                     });
