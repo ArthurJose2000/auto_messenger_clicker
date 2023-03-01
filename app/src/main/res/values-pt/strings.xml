@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Auto Messenger</string>
+    <string name="app_name">Robô de comentários</string>
     <string name="menu_tutorial">Tutorial</string>
     <string name="menu_rate_app">Avaliar app</string>
     <string name="menu_share_app">Compartilhar app</string>
     <string name="menu_contact">Contato</string>
     <string name="accessibility_service_description">Por favor, ative a permissão de acessibilidade para que o
-        Auto Messenger execute gestos de clique automatizados.\n\nNenhuma informação pessoal é coletada pelo Auto Messenger.</string>
-    <string name="accessibility_service_name">Auto Messenger</string>
+        Robô de comentários execute gestos de clique automatizados.\n\nNenhuma informação pessoal é coletada pelo Robô de comentários.</string>
+    <string name="accessibility_service_name">Robô de comentários</string>
     <string-array name="unity_time">
         <item>s</item>
         <item>min</item>
@@ -15,6 +15,7 @@
     <string name="toast_accessibility_service_is_not_connected">O serviço de acessibilidade deste dispositivo não está devidamente conectado</string>
     <string name="dialog_yes">Sim</string>
     <string name="dialog_no">Não</string>
+    <string name="youtube_tutorial_link">https://youtu.be/PCGr105dG9k</string>
 
     <!-- MainActivity class -->
     <string name="main_loading">Verificando...</string>
@@ -34,15 +35,15 @@
     <string name="main_delay_time_min">Mínimo:</string>
     <string name="main_hint_delay_time_min">10</string>
     <string name="main_check_infinite_loop">Repetição infinita:</string>
-    <string name="main_enable_clicker">Habilitar Auto Messenger</string>
+    <string name="main_enable_clicker">Habilitar Robô de comentários</string>
     <string name="main_button_enable_clicker">Habilitar</string>
     <string name="main_button_share_ad">Compartilhar</string>
     <string name="main_other_options">Outros</string>
     <string name="main_button_tutorial">Tutorial</string>
     <string name="main_warning">Aviso</string>
     <string name="main_enable_accessibility_service">Ative a permissão de acessibilidade para que o
-        Auto Messenger execute gestos de clique automatizados.</string>
-    <string name="main_enable_overlay_permission">Ative a permissão de navegabilidade sobre outros apps para que o Auto Messenger possa atuar.</string>
+        Robô de comentários execute gestos de clique automatizados.</string>
+    <string name="main_enable_overlay_permission">Ative a permissão de navegabilidade sobre outros apps para que o Robô de comentários possa atuar.</string>
     <string name="main_prominent_disclosure">Serviço de acessibilidade</string>
     <string name="main_prominent_disclosure_message">A principal funcionalidade deste app utiliza a API Accessibility Service para simular cliques.
     \n\n1. Por que este app necessita utilizar esta ferramenta?\nNós utilizamos este método para simular cliques.\n\n
@@ -124,8 +125,8 @@
     <string name="config_coordinates_register_space_bar">Grave a coordenada correspondente à barra de espaços.</string>
     <string name="config_coordinates_warning">Aviso</string>
     <string name="config_coordinates_enable_accessibility_service">Ative a permissão de acessibilidade para que o
-        Auto Messenger execute gestos de clique automatizados.</string>
-    <string name="config_coordinates_enable_overlay_permission">Ative a permissão de navegabilidade sobre outros apps para que o Auto Messenger possa atuar.</string>
+        Robô de comentários execute gestos de clique automatizados.</string>
+    <string name="config_coordinates_enable_overlay_permission">Ative a permissão de navegabilidade sobre outros apps para que o Robô de comentários possa atuar.</string>
     <string name="config_coordinates_button_tutorial">Tutorial</string>
     <!-- // -->
 

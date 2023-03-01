@@ -19,6 +19,8 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Locale;
+
 public class API {
     boolean isProduction;
     Context context;
@@ -62,6 +64,8 @@ public class API {
         try {
             postData.put("device_id", device_id);
             postData.put("user_code", user_code);
+            postData.put("language", getLanguage());
+            postData.put("country", getCountry());
         } catch (JSONException e) {
             e.printStackTrace();
             return;
@@ -279,5 +283,13 @@ public class API {
 
     public String getUserCode() {
         return DataBase.getDbInstance(context).getSettings(context.getString(R.string.data_base_user_code));
+    }
+
+    public String getLanguage() {
+        return Locale.getDefault().getLanguage();
+    }
+
+    public String getCountry() {
+        return Locale.getDefault().getCountry();
     }
 }
