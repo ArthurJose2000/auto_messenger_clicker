@@ -200,6 +200,8 @@ public class API {
         JSONObject postData = new JSONObject();
         try {
             postData.put("device_id", device_id);
+            postData.put("language", getLanguage());
+            postData.put("country", getCountry());
         } catch (JSONException e) {
             e.printStackTrace();
             return;
