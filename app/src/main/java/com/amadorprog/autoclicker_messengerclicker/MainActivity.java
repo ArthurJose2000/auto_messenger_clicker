@@ -29,6 +29,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -110,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
         prominentDisclosure();
         checkIfUserIsPremium();
         evaluationRequest();
-        enableAds();
+        //enableAds();
     }
 
     @Override
@@ -153,10 +154,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item){
         switch (item.getItemId()){
             case R.id.menu_tutorials:
-                Intent watchTutorial =
-                        new Intent("android.intent.action.VIEW",
-                                Uri.parse(getString(R.string.youtube_tutorial_link)));
-                startActivity(watchTutorial);
+                openTutorial();
                 return true;
             case R.id.menu_rate_app:
                 rateApp();
@@ -498,16 +496,43 @@ public class MainActivity extends AppCompatActivity {
                 .show();
     }
 
+    public void manageAdvancedSettingsView(View view) {
+        LinearLayout randomSend = findViewById(R.id.advanced_settings_random_send);
+        LinearLayout randomDelay = findViewById(R.id.advanced_settings_random_delay);
+        LinearLayout randomDelayMax = findViewById(R.id.advanced_settings_random_delay_max);
+        LinearLayout randomDelayMin = findViewById(R.id.advanced_settings_random_delay_min);
+        LinearLayout infiniteLoop = findViewById(R.id.advanced_settings_infinite_loop);
+
+        int visibility = randomSend.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE;
+
+        randomSend.setVisibility(visibility);
+        randomDelay.setVisibility(visibility);
+        randomDelayMax.setVisibility(visibility);
+        randomDelayMin.setVisibility(visibility);
+        infiniteLoop.setVisibility(visibility);
+
+        ImageButton curtainButton = findViewById(R.id.advanced_settings_button);
+
+        if (visibility == View.VISIBLE)
+            curtainButton.setImageResource(android.R.drawable.arrow_up_float);
+        else
+            curtainButton.setImageResource(android.R.drawable.arrow_down_float);
+    }
+
     public void openWindow(){
         window.open(isRandomDelay, delay_s_aux, maxDelay_s_aux, minDelay_s_aux, isInfiniteLoop, isRandomOrder, groupName);
     }
 
-    public void openYouTubeTutorial(View view){
-        userVisitedAnotherActivity = true;
-        Intent viewIntent =
+    public void openTutorial() {
+        Intent watchTutorial =
                 new Intent("android.intent.action.VIEW",
                         Uri.parse(getString(R.string.youtube_tutorial_link)));
-        startActivity(viewIntent);
+        startActivity(watchTutorial);
+    }
+
+    public void openYouTubeTutorial(View view){
+        userVisitedAnotherActivity = true;
+        openTutorial();
     }
 
     public void openMiniTutorial(View view){
@@ -641,17 +666,20 @@ public class MainActivity extends AppCompatActivity {
                 .show();
     }
 
-    public void configureMessagesDb(){
+    public void configureMessagesDb() {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         String instruction_title = context.getResources().getString(R.string.main_error_alert_title);
         String instruction = context.getResources().getString(R.string.main_error_messages_db);
         builder
                 .setTitle(instruction_title)
                 .setMessage(instruction)
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                .setNegativeButton(R.string.main_button_tutorial, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-
+                        openTutorial();
                     }
+                })
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {}
                 })
                 .show();
     }
@@ -663,6 +691,11 @@ public class MainActivity extends AppCompatActivity {
         builder
                 .setTitle(instruction_title)
                 .setMessage(instruction)
+                .setNegativeButton(R.string.main_button_tutorial, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        openTutorial();
+                    }
+                })
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
 
@@ -683,10 +716,7 @@ public class MainActivity extends AppCompatActivity {
                 link.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Intent watchTutorial =
-                                new Intent("android.intent.action.VIEW",
-                                        Uri.parse(getString(R.string.youtube_tutorial_link)));
-                        startActivity(watchTutorial);
+                        openTutorial();
                     }
                 });
 
@@ -714,10 +744,7 @@ public class MainActivity extends AppCompatActivity {
                 link.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Intent watchTutorial =
-                                new Intent("android.intent.action.VIEW",
-                                        Uri.parse(getString(R.string.youtube_tutorial_link)));
-                        startActivity(watchTutorial);
+                        openTutorial();
                     }
                 });
 
@@ -1003,7 +1030,7 @@ public class MainActivity extends AppCompatActivity {
         if(!DataManager.getInstace().isUserPremium()){
             if(needToLoadInterstitialAd)
                 loadInterstitialAd();
-            else if(counterRestarts % 3 == 1 && userVisitedAnotherActivity == true)
+            else if(counterRestarts % 2 == 1 && userVisitedAnotherActivity == true)
                 showInterstitialAd();
 
             // Removed to decrease the quantity of ads
