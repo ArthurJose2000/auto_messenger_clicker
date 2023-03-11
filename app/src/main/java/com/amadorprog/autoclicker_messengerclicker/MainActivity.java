@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
         prominentDisclosure();
         checkIfUserIsPremium();
         evaluationRequest();
-        //enableAds();
+        enableAds();
     }
 
     @Override
