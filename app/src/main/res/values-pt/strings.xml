@@ -84,7 +84,7 @@
     <string name="main_lock_friend_feature_title">Código de amigo</string>
     <string name="main_lock_friend_feature_text">Peça para outro usuário baixar o app e pegue o código dele que fica no fim da tela. Digite o código aqui.</string>
     <string name="main_lock_friend_feature_check">Verificar</string>
-    <string name="main_lock_friend_feature_response_success">Sucesso! Você pode utilizar a Repetição Infinita novamente.</string>
+    <string name="main_lock_friend_feature_response_success">Sucesso! Você pode utilizar o bot novamente.</string>
     <string name="main_lock_friend_feature_response_invalid">Código inválido.</string>
     <string name="main_lock_friend_feature_response_already_used">Esse código já foi utilizado.</string>
     <string name="main_lock_friend_feature_response_unknown_error">Erro desconhecido. Por favor, verifique a sua conexão com a Internet.</string>
