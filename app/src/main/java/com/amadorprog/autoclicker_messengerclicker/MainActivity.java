@@ -460,6 +460,13 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void goToPCVersion(View view){
+        Intent watchTutorial =
+                new Intent("android.intent.action.VIEW",
+                        Uri.parse(getString(R.string.pc_version)));
+        startActivity(watchTutorial);
+    }
+
     public void openActionBar(View view) throws IOException, InterruptedException {
         if(!window.isOpen()) {
             if (enableToPlay())
@@ -1028,15 +1035,14 @@ public class MainActivity extends AppCompatActivity {
 
     public void checkInterstitialAd(){
         if(!DataManager.getInstace().isUserPremium()){
+            int used_quantity = getAmountOfUse();
+
             if(needToLoadInterstitialAd)
                 loadInterstitialAd();
             else if(counterRestarts % 2 == 1 && userVisitedAnotherActivity == true)
                 showInterstitialAd();
-
-            // Removed to decrease the quantity of ads
-            // int used_quantity = getAmountOfUse();
-            // else if(used_quantity > lockFactor)
-            //    showInterstitialAd();
+            else if(counterRestarts % 2 == 1 && used_quantity > 5)
+                showInterstitialAd();
         }
     }
 

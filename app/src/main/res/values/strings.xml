@@ -15,6 +15,7 @@
     <string name="youtube_tutorial_link">https://youtu.be/tw-_GwFCueE</string>
     <string name="dialog_yes">Yes</string>
     <string name="dialog_no">No</string>
+    <string name="pc_version" translatable="false">https://amadorprog.com</string>
 
     <!-- DataBase Class -->
     <!-- Do not modify!!!!!!!!!!!!!!!!! -->
@@ -78,6 +79,7 @@
     <string name="main_advertise_your_product"><u>Want to advertise your product here?</u></string>
     <string name="main_marketing_contact">Send an email to arthur2000jose@gmail.com to know more and get a quotation.</string>
     <string name="main_button_premium">Premium experience</string>
+    <string name="main_button_pc_version">PC version</string>
     <string name="main_problems_solution"><u>Has the app been malfunctioning?</u></string>
     <string name="problems_solution_text">If the app malfunctions, <b>turn access permission off and on again</b>. If it still doesn\'t work, restart your phone.</string>
     <string name="problems_solution_go_to_accessibility_settings"><u>Go to Accessibility Settings</u></string>
