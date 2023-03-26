@@ -88,6 +88,8 @@
     <string name="main_lock_friend_feature_response_invalid">Código inválido.</string>
     <string name="main_lock_friend_feature_response_already_used">Esse código já foi utilizado.</string>
     <string name="main_lock_friend_feature_response_unknown_error">Erro desconhecido. Por favor, verifique a sua conexão com a Internet.</string>
+    <string name="main_rewarded_feature_title">Atenção</string>
+    <string name="main_rewarded_feature_instruction">Por favor assista ao anúncio por completo para liberar o bot.</string>
     <!-- // -->
 
     <!-- MessagesEditorActivity Class -->
@@ -144,7 +146,7 @@
     <string name="purchase_header">Assinatura Premium</string>
     <string name="purchase_increases_1">Uso ilimitado</string>
     <string name="purchase_increases_2">Grupos de mensagens ilimitados</string>
-    <string name="purchase_increases_3">Remoção de anúncios</string>
+    <string name="purchase_increases_3">Remoção de anúncios impeditivos</string>
     <string name="purchase_dot_1">Cancele a assinatura a qualquer momento</string>
     <string name="purchase_dot_2">3 dias de carência</string>
     <string name="purchase_important_advice">Este app te dá um poder de uso muito grande. Use-o com cautela.</string>

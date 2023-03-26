@@ -198,7 +198,7 @@ public class API {
         queue.add(jsonObjectRequest);
     }
 
-    public void getAd(LinearLayout myWebViewWrapper, WebView myWebView, Marketing marketing) {
+    public void getAd(LinearLayout myWebViewWrapper, WebView myWebView, Marketing marketing, boolean marketing_flag) {
         RequestQueue queue = Volley.newRequestQueue(context);
         String device_id = getDeviceId();
 
@@ -207,6 +207,7 @@ public class API {
             postData.put("device_id", device_id);
             postData.put("language", getLanguage());
             postData.put("country", getCountry());
+            postData.put("marketing_flag", marketing_flag);
         } catch (JSONException e) {
             e.printStackTrace();
             return;

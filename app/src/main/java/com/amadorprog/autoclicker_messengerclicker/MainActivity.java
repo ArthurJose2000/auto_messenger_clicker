@@ -47,13 +47,19 @@ import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.FullScreenContentCallback;
 import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.OnUserEarnedRewardListener;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
+import com.google.android.gms.ads.rewarded.RewardItem;
+import com.google.android.gms.ads.rewarded.RewardedAd;
+import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -70,9 +76,11 @@ public class MainActivity extends AppCompatActivity {
     public int counterRestarts;
     private AdView mAdView;
     private InterstitialAd mInterstitialAd;
+    private RewardedAd rewardedAd;
     boolean userVisitedAnotherActivity;
     boolean prominentDisclosureDialogIsOpen, accessibilityServiceDialogIsOpen, canDrawOverOtherAppsDialogIsOpen;
     boolean needToLoadInterstitialAd;
+    boolean needToLoadRewardedAd;
     String timeUnityDelay_s = "s";
     String timeUnityMaxDelay_s = "s";
     String timeUnityMinDelay_s = "s";
@@ -85,7 +93,9 @@ public class MainActivity extends AppCompatActivity {
     int delay_s_aux = 1;
     int maxDelay_s_aux = 1;
     int minDelay_s_aux = 1;
-    int lockFactor = 11;
+    int lockFactor = 25;
+    int rewardedAdFactor = 10;
+    long lastMyMarketingLoad;
     boolean isInfiniteLoop = false;
     boolean isRandomOrder = false;
     String groupName = "";
@@ -93,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
     public PurchasesUpdatedListener purchasesUpdatedListener;
     public BillingClient billingClient;
     public API api;
-    public Marketing marketing;
+    public Marketing myMarketing;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
         context = this;
         window = new Window(context);
         api = new API(context);
-        marketing = new Marketing();
+        myMarketing = new Marketing();
 
         prepareFields();
         setPreviousOptions();
@@ -123,7 +133,15 @@ public class MainActivity extends AppCompatActivity {
         // User may have became premium
         checkAdViews();
 
+        // Check if is necessary to reload or show ads
         checkInterstitialAd();
+        checkRewardedAd();
+
+        // Reload my marketing
+        if (reloadMyMarketing()) {
+            api.getAd(myWebViewWrapper, myWebView, myMarketing, true);
+            lastMyMarketingLoad = System.currentTimeMillis();
+        }
 
         if(!prominentDisclosureDialogIsOpen)
             checkPermissions();
@@ -185,6 +203,7 @@ public class MainActivity extends AppCompatActivity {
         canDrawOverOtherAppsDialogIsOpen = false;
         prominentDisclosureDialogIsOpen = false;
         needToLoadInterstitialAd = false;
+        needToLoadRewardedAd = false;
 
         mAdView = findViewById(R.id.adView);
         startActionBar = findViewById(R.id.button_enable_clicker);
@@ -254,6 +273,64 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
+    }
+
+    public void loadRewardedAd() {
+        AdRequest adRequest = new AdRequest.Builder().build();
+        RewardedAd.load(this, getString(R.string.ad_rewarded_ad),
+                adRequest, new RewardedAdLoadCallback() {
+                    @Override
+                    public void onAdLoaded(@NonNull RewardedAd ad) {
+                        rewardedAd = ad;
+                        needToLoadRewardedAd = false;
+                        //Log.d(TAG, "Ad was loaded.");
+
+                        rewardedAd.setFullScreenContentCallback(new FullScreenContentCallback() {
+                            @Override
+                            public void onAdClicked() {
+                                // Called when a click is recorded for an ad.
+                                //Log.d(TAG, "Ad was clicked.");
+                            }
+
+                            @Override
+                            public void onAdDismissedFullScreenContent() {
+                                // Called when ad is dismissed.
+                                // Set the ad reference to null so you don't show the ad a second time.
+                                //Log.d(TAG, "Ad dismissed fullscreen content.");
+                                rewardedAd = null;
+                                needToLoadRewardedAd = true;
+                            }
+
+                            @Override
+                            public void onAdFailedToShowFullScreenContent(AdError adError) {
+                                // Called when ad fails to show.
+                                //Log.e(TAG, "Ad failed to show fullscreen content.");
+                                rewardedAd = null;
+                                needToLoadRewardedAd = true;
+                            }
+
+                            @Override
+                            public void onAdImpression() {
+                                // Called when an impression is recorded for an ad.
+                                //Log.d(TAG, "Ad recorded an impression.");
+                            }
+
+                            @Override
+                            public void onAdShowedFullScreenContent() {
+                                // Called when ad is shown.
+                                //Log.d(TAG, "Ad showed fullscreen content.");
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                        // Handle the error.
+                        //Log.d(TAG, loadAdError.toString());
+                        rewardedAd = null;
+                        needToLoadRewardedAd = true;
+                    }
+                });
     }
 
     public void showInterstitialAd(){
@@ -475,13 +552,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void shareAd(View view) {
-        api.marketTracking(marketing.id, marketing.BEHAVIOR_SHARE);
+        api.marketTracking(myMarketing.id, myMarketing.BEHAVIOR_SHARE);
 
         try {
             Intent shareIntent = new Intent(Intent.ACTION_SEND);
             shareIntent.setType("text/plain");
             shareIntent.putExtra(Intent.EXTRA_SUBJECT, "My application name");
-            String shareMessage = marketing.affiliate_link;
+            String shareMessage = myMarketing.affiliate_link;
             shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage);
             startActivity(Intent.createChooser(shareIntent, "choose one"));
         } catch(Exception e) {
@@ -584,13 +661,6 @@ public class MainActivity extends AppCompatActivity {
             return false;
         }
 
-        //Check if user is unlocked
-         int used_quantity = getAmountOfUse();
-         if(!DataManager.getInstace().isUserPremium() && used_quantity > lockFactor) {
-             openLockDialog();
-             return false;
-         }
-
         //Check delay situation
         if(isRandomDelay){
             int timeSecondMaxDelay, timeSecondMinDelay;
@@ -637,6 +707,22 @@ public class MainActivity extends AppCompatActivity {
             }
             else{
                 delay_s_aux = timeSecondDelay;
+            }
+        }
+
+        if (!DataManager.getInstace().isUserPremium()) {
+            int used_quantity = getAmountOfUse();
+
+            // Check if user is unlocked
+            if (used_quantity > lockFactor) {
+                openLockDialog();
+                return false;
+            }
+
+            // Rewarded feature
+            if (used_quantity > rewardedAdFactor && rewardedAd != null) {
+                rewardedFeature();
+                return false;
             }
         }
 
@@ -925,7 +1011,7 @@ public class MainActivity extends AppCompatActivity {
                             DataManager.getInstace().isPremiumUpdate(isPremium);
                             if(isPremium) {
                                 hideBannerAd();
-                                hideMyMarketing();
+                                //hideMyMarketing();
                             }
 
                             api.premiumCheck(isPremium);
@@ -957,13 +1043,17 @@ public class MainActivity extends AppCompatActivity {
         // Interstitial ad
         loadInterstitialAd();
 
+        // Rewarded ad
+        loadRewardedAd();
+
         // Banner ad
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.setVisibility(View.VISIBLE);
         mAdView.loadAd(adRequest); //banner
 
         // My marketing
-        api.getAd(myWebViewWrapper, myWebView, marketing);
+        api.getAd(myWebViewWrapper, myWebView, myMarketing, false);
+        lastMyMarketingLoad = System.currentTimeMillis();
         myWebView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -1028,12 +1118,12 @@ public class MainActivity extends AppCompatActivity {
         if(DataManager.getInstace().isUserPremium()) {
             if (mAdView.getVisibility() == View.VISIBLE)
                 hideBannerAd();
-            if (myWebViewWrapper.getVisibility() == View.VISIBLE)
-                hideMyMarketing();
+            //if (myWebViewWrapper.getVisibility() == View.VISIBLE)
+                //hideMyMarketing();
         }
     }
 
-    public void checkInterstitialAd(){
+    public void checkInterstitialAd() {
         if(!DataManager.getInstace().isUserPremium()){
             int used_quantity = getAmountOfUse();
 
@@ -1046,13 +1136,18 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void checkRewardedAd() {
+        if(!DataManager.getInstace().isUserPremium() && needToLoadRewardedAd)
+            loadRewardedAd();
+    }
+
     public void goToAffiliateLink() {
-        api.marketTracking(marketing.id, marketing.BEHAVIOR_CLICK);
+        api.marketTracking(myMarketing.id, myMarketing.BEHAVIOR_CLICK);
 
         userVisitedAnotherActivity = true;
         Intent viewIntent =
                 new Intent("android.intent.action.VIEW",
-                        Uri.parse(marketing.affiliate_link));
+                        Uri.parse(myMarketing.affiliate_link));
         startActivity(viewIntent);
     }
 
@@ -1062,5 +1157,44 @@ public class MainActivity extends AppCompatActivity {
 
     public String getUserCode() {
         return DataBase.getDbInstance(context).getSettings(getString(R.string.data_base_user_code));
+    }
+
+    public boolean reloadMyMarketing() {
+        if (!userVisitedAnotherActivity)
+            return false;
+
+        long millisDiff = System.currentTimeMillis() - lastMyMarketingLoad;
+        int secondsDiff = (int) (millisDiff / 1000);
+
+        if (secondsDiff > 40)
+            return true;
+
+        return false;
+    }
+
+    public void rewardedFeature() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        String instruction_title = getString(R.string.main_rewarded_feature_title);
+        String instruction = getString(R.string.main_rewarded_feature_instruction);
+        builder
+                .setTitle(instruction_title)
+                .setMessage(instruction)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        rewardedAd.show(MainActivity.this, new OnUserEarnedRewardListener() {
+                            @Override
+                            public void onUserEarnedReward(@NonNull RewardItem rewardItem) {
+                                // Handle the reward.
+                                //Log.d(TAG, "The user earned the reward.");
+                                //int rewardAmount = rewardItem.getAmount();
+                                //String rewardType = rewardItem.getType();
+
+                                openWindow();
+                                loadRewardedAd();
+                            }
+                        });
+                    }
+                })
+                .show();
     }
 }

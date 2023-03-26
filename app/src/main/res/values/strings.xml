@@ -102,6 +102,8 @@
     <string name="main_lock_friend_feature_response_invalid">Invalid code.</string>
     <string name="main_lock_friend_feature_response_already_used">This code has already been used.</string>
     <string name="main_lock_friend_feature_response_unknown_error">Unknown error. Check your Internet connection.</string>
+    <string name="main_rewarded_feature_title">Attention</string>
+    <string name="main_rewarded_feature_instruction">Please watch all this ad to unlock the bot.</string>
     <!-- // -->
 
     <!-- MessagesEditorActivity Class -->
@@ -158,7 +160,7 @@
     <string name="purchase_header">Premium Subscription</string>
     <string name="purchase_increases_1">Unlimited usage amount</string>
     <string name="purchase_increases_2">Unlimited message groups</string>
-    <string name="purchase_increases_3">Ad removal</string>
+    <string name="purchase_increases_3">Removal of impediment ads</string>
     <string name="purchase_dot_1">Unsubscribe at any time</string>
     <string name="purchase_dot_2">3 days of grace</string>
     <string name="purchase_important_advice">This app gives you a lot of power to use. Use it with caution.</string>
@@ -188,11 +190,13 @@
     <string name="ad_main_banner" translatable="false">ca-app-pub-8798131674672035/3707451425</string>
     <string name="ad_main_interstitial" translatable="false">ca-app-pub-8798131674672035/3977598488</string>
     <string name="ad_messages_editor_banner" translatable="false">ca-app-pub-8798131674672035/8129620586</string>
+    <string name="ad_rewarded_ad" translatable="false">ca-app-pub-8798131674672035/4583455646</string>
     <!-- // -->
 
 <!--    &lt;!&ndash; Test Ads &ndash;&gt;-->
 <!--    <string name="ad_main_banner" translatable="false">ca-app-pub-3940256099942544/6300978111</string>-->
 <!--    <string name="ad_main_interstitial" translatable="false">ca-app-pub-3940256099942544/1033173712</string>-->
 <!--    <string name="ad_messages_editor_banner" translatable="false">ca-app-pub-3940256099942544/6300978111</string>-->
+<!--    <string name="ad_rewarded_ad" translatable="false">ca-app-pub-3940256099942544/5224354917</string>-->
 <!--    &lt;!&ndash; // &ndash;&gt;-->
 </resources>
