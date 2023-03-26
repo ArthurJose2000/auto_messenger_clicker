@@ -299,6 +299,9 @@ public class MainActivity extends AppCompatActivity {
                                 //Log.d(TAG, "Ad dismissed fullscreen content.");
                                 rewardedAd = null;
                                 needToLoadRewardedAd = true;
+
+                                openWindow();
+                                loadRewardedAd();
                             }
 
                             @Override
@@ -1188,9 +1191,6 @@ public class MainActivity extends AppCompatActivity {
                                 //Log.d(TAG, "The user earned the reward.");
                                 //int rewardAmount = rewardItem.getAmount();
                                 //String rewardType = rewardItem.getType();
-
-                                openWindow();
-                                loadRewardedAd();
                             }
                         });
                     }
