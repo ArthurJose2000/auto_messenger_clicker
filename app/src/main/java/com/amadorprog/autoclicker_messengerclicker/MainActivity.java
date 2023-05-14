@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
     int delay_s_aux = 1;
     int maxDelay_s_aux = 1;
     int minDelay_s_aux = 1;
-    int lockFactor = 25;
+    // int lockFactor = 25;
     int rewardedAdFactor = 10;
     long lastMyMarketingLoad;
     boolean isInfiniteLoop = false;
@@ -716,11 +716,13 @@ public class MainActivity extends AppCompatActivity {
         if (!DataManager.getInstace().isUserPremium()) {
             int used_quantity = getAmountOfUse();
 
+            /*
             // Check if user is unlocked
             if (used_quantity > lockFactor) {
                 openLockDialog();
                 return false;
             }
+            */
 
             // Rewarded feature
             if (used_quantity > rewardedAdFactor && rewardedAd != null) {
