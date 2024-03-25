@@ -35,12 +35,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.billingclient.api.BillingClient;
-import com.android.billingclient.api.BillingClientStateListener;
-import com.android.billingclient.api.BillingResult;
-import com.android.billingclient.api.Purchase;
-import com.android.billingclient.api.PurchasesResponseListener;
-import com.android.billingclient.api.PurchasesUpdatedListener;
+//import com.android.billingclient.api.BillingClient;
+//import com.android.billingclient.api.BillingClientStateListener;
+//import com.android.billingclient.api.BillingResult;
+//import com.android.billingclient.api.Purchase;
+//import com.android.billingclient.api.PurchasesResponseListener;
+//import com.android.billingclient.api.PurchasesUpdatedListener;
 import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -100,8 +100,8 @@ public class MainActivity extends AppCompatActivity {
     boolean isRandomOrder = false;
     String groupName = "";
 
-    public PurchasesUpdatedListener purchasesUpdatedListener;
-    public BillingClient billingClient;
+//    public PurchasesUpdatedListener purchasesUpdatedListener;
+//    public BillingClient billingClient;
     public API api;
     public Marketing myMarketing;
 
@@ -119,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
         prepareFields();
         setPreviousOptions();
         prominentDisclosure();
-        checkIfUserIsPremium();
+        //checkIfUserIsPremium();
         evaluationRequest();
         enableAds();
     }
@@ -131,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
         counterRestarts++;
 
         // User may have became premium
-        checkAdViews();
+//        checkAdViews();
 
         // Check if is necessary to reload or show ads
         checkInterstitialAd();
@@ -534,11 +534,11 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void goToPurchaseActivity(View view){
-        userVisitedAnotherActivity = true;
-        Intent intent = new Intent(this, PurchaseActivity.class);
-        startActivity(intent);
-    }
+//    public void goToPurchaseActivity(View view){
+//        userVisitedAnotherActivity = true;
+//        Intent intent = new Intent(this, PurchaseActivity.class);
+//        startActivity(intent);
+//    }
 
     public void goToPCVersion(View view){
         Intent watchTutorial =
@@ -713,23 +713,23 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        if (!DataManager.getInstace().isUserPremium()) {
-            int used_quantity = getAmountOfUse();
-
-            /*
-            // Check if user is unlocked
-            if (used_quantity > lockFactor) {
-                openLockDialog();
-                return false;
-            }
-            */
-
-            // Rewarded feature
-            if (used_quantity > rewardedAdFactor && rewardedAd != null) {
-                rewardedFeature();
-                return false;
-            }
-        }
+//        if (!DataManager.getInstace().isUserPremium()) {
+//            int used_quantity = getAmountOfUse();
+//
+//            /*
+//            // Check if user is unlocked
+//            if (used_quantity > lockFactor) {
+//                openLockDialog();
+//                return false;
+//            }
+//            */
+//
+//            // Rewarded feature
+//            if (used_quantity > rewardedAdFactor && rewardedAd != null) {
+//                rewardedFeature();
+//                return false;
+//            }
+//        }
 
         return true;
     }
@@ -937,27 +937,27 @@ public class MainActivity extends AppCompatActivity {
                 .show();
     }
 
-    public void openLockDialog(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-        String instruction_title = getString(R.string.main_lock_dialog_title);
-        String instruction = getString(R.string.main_lock_dialog);
-        builder
-                .setTitle(instruction_title)
-                .setMessage(instruction)
-                .setPositiveButton(getString(R.string.main_lock_became_premium), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        userVisitedAnotherActivity = true;
-                        Intent intent = new Intent(context, PurchaseActivity.class);
-                        startActivity(intent);
-                    }
-                })
-                .setNegativeButton(getString(R.string.main_lock_friend_feature), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        openFriendFeature();
-                    }
-                })
-                .show();
-    }
+//    public void openLockDialog(){
+//        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+//        String instruction_title = getString(R.string.main_lock_dialog_title);
+//        String instruction = getString(R.string.main_lock_dialog);
+//        builder
+//                .setTitle(instruction_title)
+//                .setMessage(instruction)
+//                .setPositiveButton(getString(R.string.main_lock_became_premium), new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        userVisitedAnotherActivity = true;
+//                        Intent intent = new Intent(context, PurchaseActivity.class);
+//                        startActivity(intent);
+//                    }
+//                })
+//                .setNegativeButton(getString(R.string.main_lock_friend_feature), new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        openFriendFeature();
+//                    }
+//                })
+//                .show();
+//    }
 
     public void openFriendFeature(){
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
@@ -981,61 +981,61 @@ public class MainActivity extends AppCompatActivity {
                 .show();
     }
 
-    public void checkIfUserIsPremium(){
-
-        //just to setListener not to be null
-        purchasesUpdatedListener = new PurchasesUpdatedListener() {
-            @Override
-            public void onPurchasesUpdated(BillingResult billingResult, List<Purchase> purchases) {
-
-            }
-        };
-
-        billingClient = BillingClient.newBuilder(context)
-                .setListener(purchasesUpdatedListener)
-                .enablePendingPurchases()
-                .build();
-
-        billingClient.startConnection(new BillingClientStateListener() {
-            @Override
-            public void onBillingSetupFinished(BillingResult billingResult) {
-                if (billingResult.getResponseCode() ==  BillingClient.BillingResponseCode.OK) {
-                    // The BillingClient is ready. You can query purchases here.
-                    billingClient.queryPurchasesAsync(BillingClient.SkuType.SUBS, new PurchasesResponseListener() {
-                        @Override
-                        public void onQueryPurchasesResponse(@NonNull BillingResult billingResult, @NonNull List<Purchase> list) {
-                            boolean isPremium = false;
-                            if(billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK){
-                                for(Purchase purchase : list){
-                                    if(purchase.getPurchaseState() == Purchase.PurchaseState.PURCHASED && purchase.isAcknowledged()){
-                                        isPremium = true;
-                                    }
-                                }
-                            }
-
-                            DataManager.getInstace().isPremiumUpdate(isPremium);
-                            if(isPremium) {
-                                hideBannerAd();
-                                //hideMyMarketing();
-                            }
-
-                            api.premiumCheck(isPremium);
-
-                            billingClient.endConnection(); //finishing connection to avoid multiple calls
-                        }
-                    });
-                }
-            }
-            @Override
-            public void onBillingServiceDisconnected() {
-                // Try to restart the connection on the next request to
-                // Google Play by calling the startConnection() method.
-                Toast toast = Toast.makeText(context, context.getString(R.string.purchase_error_to_connect_to_google_play), Toast.LENGTH_LONG);
-                toast.show();
-                billingClient.endConnection(); //finishing connection to avoid multiple calls
-            }
-        });
-    }
+//    public void checkIfUserIsPremium(){
+//
+//        //just to setListener not to be null
+//        purchasesUpdatedListener = new PurchasesUpdatedListener() {
+//            @Override
+//            public void onPurchasesUpdated(BillingResult billingResult, List<Purchase> purchases) {
+//
+//            }
+//        };
+//
+//        billingClient = BillingClient.newBuilder(context)
+//                .setListener(purchasesUpdatedListener)
+//                .enablePendingPurchases()
+//                .build();
+//
+//        billingClient.startConnection(new BillingClientStateListener() {
+//            @Override
+//            public void onBillingSetupFinished(BillingResult billingResult) {
+//                if (billingResult.getResponseCode() ==  BillingClient.BillingResponseCode.OK) {
+//                    // The BillingClient is ready. You can query purchases here.
+//                    billingClient.queryPurchasesAsync(BillingClient.SkuType.SUBS, new PurchasesResponseListener() {
+//                        @Override
+//                        public void onQueryPurchasesResponse(@NonNull BillingResult billingResult, @NonNull List<Purchase> list) {
+//                            boolean isPremium = false;
+//                            if(billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK){
+//                                for(Purchase purchase : list){
+//                                    if(purchase.getPurchaseState() == Purchase.PurchaseState.PURCHASED && purchase.isAcknowledged()){
+//                                        isPremium = true;
+//                                    }
+//                                }
+//                            }
+//
+//                            DataManager.getInstace().isPremiumUpdate(isPremium);
+//                            if(isPremium) {
+//                                hideBannerAd();
+//                                //hideMyMarketing();
+//                            }
+//
+//                            api.premiumCheck(isPremium);
+//
+//                            billingClient.endConnection(); //finishing connection to avoid multiple calls
+//                        }
+//                    });
+//                }
+//            }
+//            @Override
+//            public void onBillingServiceDisconnected() {
+//                // Try to restart the connection on the next request to
+//                // Google Play by calling the startConnection() method.
+//                Toast toast = Toast.makeText(context, context.getString(R.string.purchase_error_to_connect_to_google_play), Toast.LENGTH_LONG);
+//                toast.show();
+//                billingClient.endConnection(); //finishing connection to avoid multiple calls
+//            }
+//        });
+//    }
 
     public void enableAds(){
         MobileAds.initialize(context, new OnInitializationCompleteListener() {
@@ -1119,31 +1119,33 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void checkAdViews(){
-        if(DataManager.getInstace().isUserPremium()) {
-            if (mAdView.getVisibility() == View.VISIBLE)
-                hideBannerAd();
-            //if (myWebViewWrapper.getVisibility() == View.VISIBLE)
-                //hideMyMarketing();
-        }
-    }
+//    public void checkAdViews(){
+//        if(DataManager.getInstace().isUserPremium()) {
+//            if (mAdView.getVisibility() == View.VISIBLE)
+//                hideBannerAd();
+//            //if (myWebViewWrapper.getVisibility() == View.VISIBLE)
+//                //hideMyMarketing();
+//        }
+//    }
 
     public void checkInterstitialAd() {
-        if(!DataManager.getInstace().isUserPremium()){
-            int used_quantity = getAmountOfUse();
+//        if(!DataManager.getInstace().isUserPremium()){
 
-            if(needToLoadInterstitialAd)
-                loadInterstitialAd();
-            else if(counterRestarts % 2 == 1 && userVisitedAnotherActivity == true)
-                showInterstitialAd();
-            else if(counterRestarts % 2 == 1 && used_quantity > 5)
-                showInterstitialAd();
-        }
+        int used_quantity = getAmountOfUse();
+
+        if(needToLoadInterstitialAd)
+            loadInterstitialAd();
+        else if(counterRestarts % 3 == 1 && userVisitedAnotherActivity == true)
+            showInterstitialAd();
+        else if(counterRestarts % 3 == 1 && used_quantity > 5)
+            showInterstitialAd();
+
+//        }
     }
 
     public void checkRewardedAd() {
-        if(!DataManager.getInstace().isUserPremium() && needToLoadRewardedAd)
-            loadRewardedAd();
+//        if(!DataManager.getInstace().isUserPremium() && needToLoadRewardedAd)
+        loadRewardedAd();
     }
 
     public void goToAffiliateLink() {

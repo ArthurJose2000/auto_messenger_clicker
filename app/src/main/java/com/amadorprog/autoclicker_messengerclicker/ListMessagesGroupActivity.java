@@ -22,7 +22,7 @@ public class ListMessagesGroupActivity extends AppCompatActivity {
     ArrayAdapter<String> arrayAdapter;
     Context context;
 
-    int limitOfGroups_freeVersion = 2;
+//    int limitOfGroups_freeVersion = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,37 +73,39 @@ public class ListMessagesGroupActivity extends AppCompatActivity {
     }
 
     public void openActivityMessagesEditor(View view){
-        if(groups.size() >= limitOfGroups_freeVersion && !DataManager.getInstace().isUserPremium())
-            noPremiumUserLock();
-        else{
-            Intent intent = new Intent(this, MessagesEditorActivity.class);
-            startActivity(intent);
-        }
-    }
+//        if(groups.size() >= limitOfGroups_freeVersion && !DataManager.getInstace().isUserPremium())
+//            noPremiumUserLock();
+//        else{
 
-    public void noPremiumUserLock(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        String instruction_title = getString(R.string.list_messages_group_lock_dialog_title);
-        String instruction = getString(R.string.list_messages_group_lock_dialog_text);
-        builder
-                .setTitle(instruction_title)
-                .setMessage(instruction)
-                .setPositiveButton(getString(R.string.list_messages_group_lock_dialog_become_premium), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        goToPurchaseActivity();
-                    }
-                })
-                .setNegativeButton(getString(R.string.list_messages_group_lock_dialog_understand), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-
-                    }
-                })
-                .show();
-    }
-
-    public void goToPurchaseActivity(){
-        Intent intent = new Intent(this, PurchaseActivity.class);
+        Intent intent = new Intent(this, MessagesEditorActivity.class);
         startActivity(intent);
+
+//        }
     }
+
+//    public void noPremiumUserLock(){
+//        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+//        String instruction_title = getString(R.string.list_messages_group_lock_dialog_title);
+//        String instruction = getString(R.string.list_messages_group_lock_dialog_text);
+//        builder
+//                .setTitle(instruction_title)
+//                .setMessage(instruction)
+//                .setPositiveButton(getString(R.string.list_messages_group_lock_dialog_become_premium), new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        goToPurchaseActivity();
+//                    }
+//                })
+//                .setNegativeButton(getString(R.string.list_messages_group_lock_dialog_understand), new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialogInterface, int i) {
+//
+//                    }
+//                })
+//                .show();
+//    }
+
+//    public void goToPurchaseActivity(){
+//        Intent intent = new Intent(this, PurchaseActivity.class);
+//        startActivity(intent);
+//    }
 }

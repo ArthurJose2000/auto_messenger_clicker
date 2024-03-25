@@ -62,10 +62,10 @@ public class MessagesEditorActivity extends AppCompatActivity {
         bundle = getIntent().getExtras();
         checkBundleContent();
 
-        if(!DataManager.getInstace().isUserPremium())
-            enableAds();
-        else
-            hideBannerAd();
+//        if(!DataManager.getInstace().isUserPremium())
+        enableAds();
+//        else
+//            hideBannerAd();
 
         save.setOnClickListener(new View.OnClickListener() {
             @Override

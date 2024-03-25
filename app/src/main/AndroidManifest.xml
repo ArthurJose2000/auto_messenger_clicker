@@ -35,10 +35,6 @@
         </service>
 
         <activity
-            android:name=".PurchaseActivity"
-            android:exported="true"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".ListMessagesGroupActivity"
             android:exported="true"
             android:screenOrientation="portrait" />
