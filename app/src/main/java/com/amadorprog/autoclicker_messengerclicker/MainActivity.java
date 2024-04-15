@@ -1135,9 +1135,9 @@ public class MainActivity extends AppCompatActivity {
 
         if(needToLoadInterstitialAd)
             loadInterstitialAd();
-        else if(counterRestarts % 3 == 1 && userVisitedAnotherActivity == true)
+        else if(counterRestarts % 2 == 1 && userVisitedAnotherActivity == true)
             showInterstitialAd();
-        else if(counterRestarts % 3 == 1 && used_quantity > 5)
+        else if(counterRestarts % 2 == 1 && used_quantity > 3)
             showInterstitialAd();
 
 //        }
